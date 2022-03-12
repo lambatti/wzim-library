@@ -1,0 +1,23 @@
+@import "src/app/styles/main";
+
+.background {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../../assets/images/dziefczynaZKsionszkom.png");
+  background-size: 110% 100%;
+  background-repeat: no-repeat;
+}
+
+
+.greeting {
+  &__h1 {
+    color: $white;
+    @include respond-to('md') {
+      font-size: map-get($font-size, '4xl');
+    }
+  }
+
+  &__h3 {
+    color: $white;
+  }
+}

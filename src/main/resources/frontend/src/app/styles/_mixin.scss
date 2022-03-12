@@ -1,0 +1,18 @@
+@import "variables";
+
+@mixin respond-to($breakpoint) {
+  @media (min-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+@mixin font-header() {
+  @include respond-to('md') {
+    font-size: 20px;
+  }
+  @include respond-to('xl') {
+    font-size: 25px;
+  }
+
+}
+
+

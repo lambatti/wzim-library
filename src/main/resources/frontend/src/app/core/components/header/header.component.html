@@ -1,0 +1,14 @@
+<nz-header nzAlign='middle' nzJustify='space-between' nz-row class='header'>
+  <div nz-col [nzXs]='8'>
+    <h5 nz-typography><a class='logo' nz-button nzType='link' href='#'>Moja książka</a></h5>
+  </div>
+  <nav *ngIf='!isAuth' nz-col [nzXs]='12' [nzMd]='12'>
+    <ul class='list-none'>
+      <li><a nz-button nzType='link' class='navigation__link navigation__link--dark'>Logowanie</a></li>
+      <li><a nz-button nzType='link' class='navigation__link'>Rejestracja</a></li>
+    </ul>
+  </nav>
+  <div *ngIf='isAuth' nz-col [nzXs]='12' [nzMd]='12'>
+    <h5 nz-typography class='user__greeting'>Witaj<span>{{name}}</span></h5>
+  </div>
+</nz-header>
