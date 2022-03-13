@@ -21,14 +21,14 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    Gender gender;
+    private Gender gender;
 
     @Enumerated(EnumType.STRING)
-    SecurityQuestion securityQuestion;
+    private SecurityQuestion securityQuestion;
 
-    String securityQuestionAnswer;
+    private String securityQuestionAnswer;
 
     @Enumerated(EnumType.STRING)
-    Role role;
+    private Role role;
 
 }
