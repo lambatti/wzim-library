@@ -13,5 +13,6 @@ public interface SqlUserRepository extends UserRepository, JpaRepository<User, I
     @Override
     List<User> findAll();
 
+    @Override
     Optional<User> findByEmail(String email);
 }
