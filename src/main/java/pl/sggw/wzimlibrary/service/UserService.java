@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.sggw.wzimlibrary.adapter.SqlUserRepository;
+import pl.sggw.wzimlibrary.model.Role;
 import pl.sggw.wzimlibrary.model.User;
 
 import java.util.ArrayList;
@@ -26,19 +27,45 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
         Optional<User> tempUser = findByEmail(email);
 
         if (tempUser.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         } else {
             User user = tempUser.get();
-            List<GrantedAuthority> authorities = new ArrayList<>();
 
-            authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+            List<GrantedAuthority> authorities = generateAuthorities(user);
 
             return new org.springframework.security.core.userdetails.User(
                     user.getEmail(), user.getPassword(),
                     authorities);
         }
+    }
+
+    private List<GrantedAuthority> generateAuthorities(User user) {
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        Role userRole = user.getRole();
+
+        switch (userRole) {
+            case ADMIN: {
+                authorities.add(new SimpleGrantedAuthority(Role.ADMIN.toString()));
+            }
+            case WORKER: {
+                authorities.add(new SimpleGrantedAuthority(Role.WORKER.toString()));
+            }
+            case USER: {
+                authorities.add(new SimpleGrantedAuthority(Role.USER.toString()));
+                break;
+            }
+            default: {
+                authorities.add(new SimpleGrantedAuthority(Role.USER.toString()));
+                break;
+            }
+        }
+
+        return authorities;
     }
 }
