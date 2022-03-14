@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.sggw.wzimlibrary.filter.JwtRequestFilter;
+import pl.sggw.wzimlibrary.model.Role;
 import pl.sggw.wzimlibrary.service.UserService;
 
 @Configuration
@@ -35,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests().expressionHandler(expressionHandler)
+                .antMatchers("/api/users").hasAuthority(Role.ADMIN.toString())
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

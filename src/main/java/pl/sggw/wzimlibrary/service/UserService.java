@@ -1,6 +1,7 @@
 package pl.sggw.wzimlibrary.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,8 @@ import pl.sggw.wzimlibrary.model.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
@@ -21,14 +24,20 @@ public class UserService implements UserDetailsService {
 
     private final SqlUserRepository userRepository;
 
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    @Async
+    public CompletableFuture<Optional<User>> findByEmail(String email) {
+        return CompletableFuture.completedFuture(userRepository.findByEmail(email));
+    }
+
+    @Async
+    public CompletableFuture<List<User>> findAll() {
+        return CompletableFuture.completedFuture(userRepository.findAll());
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Optional<User> tempUser = findByEmail(email);
+        Optional<User> tempUser = getUserFromCompletableFuture(email);
 
         if (tempUser.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
@@ -42,6 +51,17 @@ public class UserService implements UserDetailsService {
                     authorities);
         }
     }
+
+    private Optional<User> getUserFromCompletableFuture(String email) {
+        Optional<User> user = Optional.empty();
+        try {
+            user = findByEmail(email).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
 
     private List<GrantedAuthority> generateAuthorities(User user) {
 
