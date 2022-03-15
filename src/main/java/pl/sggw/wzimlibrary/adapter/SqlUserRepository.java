@@ -15,4 +15,7 @@ public interface SqlUserRepository extends UserRepository, JpaRepository<User, I
 
     @Override
     Optional<User> findByEmail(String email);
+
+    @Override
+    <S extends User> S save(S s);
 }
