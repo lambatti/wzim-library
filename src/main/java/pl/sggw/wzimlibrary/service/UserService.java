@@ -1,16 +1,20 @@
 package pl.sggw.wzimlibrary.service;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sggw.wzimlibrary.adapter.SqlUserRepository;
 import pl.sggw.wzimlibrary.model.Role;
 import pl.sggw.wzimlibrary.model.User;
+import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
+import pl.sggw.wzimlibrary.util.JwtUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +27,9 @@ import java.util.concurrent.ExecutionException;
 public class UserService implements UserDetailsService {
 
     private final SqlUserRepository userRepository;
+    private final JwtUtil jwtUtil;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Async
     public CompletableFuture<Optional<User>> findByEmail(String email) {
@@ -32,6 +39,34 @@ public class UserService implements UserDetailsService {
     @Async
     public CompletableFuture<List<User>> findAll() {
         return CompletableFuture.completedFuture(userRepository.findAll());
+    }
+
+    @Async
+    public CompletableFuture<User> save(User user) {
+        return CompletableFuture.completedFuture(userRepository.save(user));
+    }
+
+
+    private String extractEmailFromToken(String token) {
+        token = jwtUtil.removeBearer(token);
+        return jwtUtil.extractEmail(token);
+    }
+
+
+    public Optional<User> getUserByToken(String token) {
+        String email = extractEmailFromToken(token);
+        return userRepository.findByEmail(email);
+    }
+
+    public User registerUser(UserRegistrationDto userRegistrationDto) throws ExecutionException, InterruptedException {
+
+        if (findByEmail(userRegistrationDto.getEmail()).get().isPresent()) {
+            return null;
+        }
+
+        userRegistrationDto.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
+
+        return save(modelMapper.map(userRegistrationDto, User.class)).get();
     }
 
     @Override
