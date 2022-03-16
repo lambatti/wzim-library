@@ -1,10 +1,30 @@
 <nz-layout class='background'>
   <app-header></app-header>
-  <nz-content>
-    // TODO changed name class
-    <div class='greeting'>
-      <h1 nz-typography class='greeting__h1 '>Witaj w Moja książka</h1>
-      <h3 nz-typography class='greeting__h3'>Lorem ipsum dolor sit emit itp sit emit itp sit emit itp</h3>
+  <nz-content class='greeting' nz-col [nzXs]='24' [nzMd]='8'>
+    <div class='greeting__heading' nz-row nzAlign='middle' nzJustify='center'>
+      <h1 nz-typography class='greeting__heading__h1 '>Witaj w <span>wzim-library</span></h1>
+      <h3 nz-typography class='greeting__heading__h3'>
+        W naszej bibliotece jest ponad 6500 książek sprawdź czy znajdziesz coś dla siebie
+      </h3>
+    </div>
+    <div nz-row nzJustify='center'>
+      <div class='greeting__buttonWrapper'>
+        <input class='greeting__buttonWrapper__input' placeholder='Znajdź swoją książkę' />
+        <button class='greeting__buttonWrapper__button' (click)='dodaj()'>
+          <i nz-icon nzType='search' nzTheme='outline'></i>
+        </button>
+      </div>
     </div>
   </nz-content>
 </nz-layout>
+<nz-layout>
+  <app-popular-section heading='Bestsellery'>
+  </app-popular-section>
+  <app-popular-section heading='Nie wiem'>
+  </app-popular-section>
+  <app-popular-section heading='dsjkal'>
+  </app-popular-section>
+</nz-layout>
+<nz-footer>
+  dfsauiku
+</nz-footer>

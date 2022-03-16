@@ -9,4 +9,9 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
   public siesta = 'siemka';
+
+  dodaj() {
+    console.log('it works');
+  }
+
 }

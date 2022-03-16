@@ -1,23 +1,74 @@
 @import "src/app/styles/main";
 
 .background {
-  width: 100vw;
+  width: 99vw;
   height: 100vh;
-  background-image: url("../../../assets/images/dziefczynaZKsionszkom.png");
-  background-size: 110% 100%;
-  background-repeat: no-repeat;
+  background: $background-color;
+  @include respond-to('md') {
+    background-color: $white;
+    background-image: url("../../../assets/images/dziefczynaZKsionszkom.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+  }
 }
 
-
 .greeting {
-  &__h1 {
-    color: $white;
-    @include respond-to('md') {
-      font-size: map-get($font-size, '4xl');
+  margin: 0 10vw;
+
+  &__heading {
+    height: 60%;
+
+    &__h1 {
+      color: $white;
+      font-size: map-get($font-size, 'l');
+      @include respond-to('md') {
+        font-size: map-get($font-size, 'xxxl');
+      }
+
+      span {
+        color: $primary-color;
+      }
     }
+
+    &__h3 {
+      color: $white;
+      text-align: center;
+    }
+
   }
 
-  &__h3 {
-    color: $white;
+
+  &__buttonWrapper {
+    width: 250px;
+    height: 52px;
+    background-color: $primary-color;
+    display: flex;
+    border-radius: 10px;
+    justify-content: center;
+
+
+    &__input {
+      color: $white;
+      width: 200px;
+      background-color: $primary-color;
+      border-radius: 10px 0 0 10px;
+      padding-left: 20px;
+      border: none;
+
+      &::placeholder {
+        color: $white;
+      }
+    }
+
+    &__button {
+      width: 50px;
+      height: 52px;
+      border: none;
+      background-color: $primary-color;
+      border-radius: 0 10px 10px 0;
+      cursor: pointer;
+    }
   }
 }

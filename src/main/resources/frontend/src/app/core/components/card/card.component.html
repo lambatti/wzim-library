@@ -1,0 +1,9 @@
+<div nz-row nzJustify='center'>
+
+<nz-card nzHoverable class='card' [nzCover]='cover'>
+  <nz-card-meta [nzTitle]='title' [nzDescription]='description'></nz-card-meta>
+</nz-card>
+<ng-template #cover>
+  <img alt='example' [src]='coverImg' />
+</ng-template>
+</div>

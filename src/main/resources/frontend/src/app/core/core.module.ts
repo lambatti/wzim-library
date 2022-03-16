@@ -6,6 +6,9 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { CommonModule } from '@angular/common';
+import { CardComponent } from './components/card/card.component';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { PopularSectionComponent } from './components/popularSection/popularSection.component';
 
 
 @NgModule({
@@ -15,11 +18,12 @@ import { CommonModule } from '@angular/common';
     NzTypographyModule,
     NzListModule,
     NzButtonModule,
+    NzCardModule,
     CommonModule
 
   ],
-  declarations: [HeaderComponent],
-  exports: [HeaderComponent]
+  declarations: [HeaderComponent, CardComponent, PopularSectionComponent],
+  exports: [HeaderComponent, CardComponent, PopularSectionComponent]
 })
 export class CoreModule {
 }
