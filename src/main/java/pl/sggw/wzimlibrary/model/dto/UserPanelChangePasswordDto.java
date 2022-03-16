@@ -2,7 +2,7 @@ package pl.sggw.wzimlibrary.model.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import pl.sggw.wzimlibrary.model.ValidationLength;
+import pl.sggw.wzimlibrary.model.ValidationConstant;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -12,18 +12,18 @@ import javax.validation.constraints.Size;
 public class UserPanelChangePasswordDto {
 
     @NotEmpty
-    @Size(min = ValidationLength.PASSWORD_MIN_LENGTH,
-            max = ValidationLength.PASSWORD_MAX_LENGTH)
+    @Size(min = ValidationConstant.PASSWORD_MIN_LENGTH,
+            max = ValidationConstant.PASSWORD_MAX_LENGTH)
     private final String oldPassword;
 
     @NotEmpty
-    @Size(min = ValidationLength.PASSWORD_MIN_LENGTH,
-            max = ValidationLength.PASSWORD_MAX_LENGTH)
+    @Size(min = ValidationConstant.PASSWORD_MIN_LENGTH,
+            max = ValidationConstant.PASSWORD_MAX_LENGTH)
     private final String newPassword;
 
     @NotEmpty
-    @Size(min = ValidationLength.PASSWORD_MIN_LENGTH,
-            max = ValidationLength.PASSWORD_MAX_LENGTH)
+    @Size(min = ValidationConstant.PASSWORD_MIN_LENGTH,
+            max = ValidationConstant.PASSWORD_MAX_LENGTH)
     private final String newPasswordConfirmation;
 
 }

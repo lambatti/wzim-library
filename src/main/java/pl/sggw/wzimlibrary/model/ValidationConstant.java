@@ -1,6 +1,7 @@
 package pl.sggw.wzimlibrary.model;
 
-public final class ValidationLength {
+public final class ValidationConstant {
+    public final static String NAME_REGEXP = "/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u";
     public final static int FIRST_NAME_MAX_LENGTH = 20;
     public final static int LAST_NAME_MAX_LENGTH = 40;
     public final static int PASSWORD_MIN_LENGTH = 7;
