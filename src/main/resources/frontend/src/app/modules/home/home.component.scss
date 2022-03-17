@@ -16,6 +16,7 @@
 
 .greeting {
   margin: 0 10vw;
+  @include showTextAnimation();
 
   &__heading {
     height: 60%;
@@ -69,6 +70,33 @@
       background-color: $primary-color;
       border-radius: 0 10px 10px 0;
       cursor: pointer;
+    }
+  }
+}
+
+.check__section {
+  margin: 10vh 0 ;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  &__h1 {
+    font-size: map-get($font-size, 'm');
+    font-weight: bold;
+    margin-bottom: 5vh;
+    @include respond-to('md') {
+      font-size: map-get($font-size, 'l');
+    }
+  }
+
+  &__btn {
+    width: 50%;
+    height: 50px;
+    border-radius: 20px;
+    border: none;
+    background-color: $primary-color;
+    font-weight: bold;
+    @include respond-to('md') {
+      width: 20%;
     }
   }
 }

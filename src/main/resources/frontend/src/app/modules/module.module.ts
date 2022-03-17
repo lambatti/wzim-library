@@ -7,19 +7,21 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
   declarations: [HomeComponent],
-  imports: [
-    NzLayoutModule,
-    CoreModule,
-    NzTypographyModule,
-    NzGridModule,
-    NzButtonModule,
-    NzInputModule,
-    NzIconModule
-  ],
+    imports: [
+        NzLayoutModule,
+        CoreModule,
+        NzTypographyModule,
+        NzGridModule,
+        NzButtonModule,
+        NzInputModule,
+        NzIconModule,
+        CommonModule
+    ],
   exports: [HomeComponent]
 })
 export class ModuleModule {

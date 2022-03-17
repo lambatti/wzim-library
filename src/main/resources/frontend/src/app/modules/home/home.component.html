@@ -18,13 +18,14 @@
   </nz-content>
 </nz-layout>
 <nz-layout>
-  <app-popular-section heading='Bestsellery'>
+  <app-popular-section *ngFor='let item of shapes' [shape]='item' heading='Bestsellery' [cardList]='staticData'>
   </app-popular-section>
-  <app-popular-section heading='Nie wiem'>
-  </app-popular-section>
-  <app-popular-section heading='dsjkal'>
-  </app-popular-section>
+  <nz-content nz-col [nzXs]='24'>
+    <div class='check__section' nz-row nzJustify='center' nzAlign='middle'>
+      <h1 class='check__section__h1'>Sprawdź nasze pozostałe książki</h1>
+      <button class='check__section__btn'>Sprawdź</button>
+
+    </div>
+  </nz-content>
 </nz-layout>
-<nz-footer>
-  dfsauiku
-</nz-footer>
+<app-footer></app-footer>

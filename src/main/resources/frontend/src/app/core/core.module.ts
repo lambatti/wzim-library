@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { CardComponent } from './components/card/card.component';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { PopularSectionComponent } from './components/popularSection/popularSection.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
@@ -22,8 +23,8 @@ import { PopularSectionComponent } from './components/popularSection/popularSect
     CommonModule
 
   ],
-  declarations: [HeaderComponent, CardComponent, PopularSectionComponent],
-  exports: [HeaderComponent, CardComponent, PopularSectionComponent]
+  declarations: [HeaderComponent, CardComponent, PopularSectionComponent, FooterComponent],
+  exports: [HeaderComponent, CardComponent, PopularSectionComponent, FooterComponent]
 })
 export class CoreModule {
 }
