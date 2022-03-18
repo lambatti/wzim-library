@@ -2,6 +2,7 @@ package pl.sggw.wzimlibrary.service;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,6 +33,7 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Async
+    @Cacheable(value = "userCache", key = "#email")
     public CompletableFuture<Optional<User>> findByEmail(String email) {
         return CompletableFuture.completedFuture(userRepository.findByEmail(email));
     }
