@@ -86,6 +86,10 @@
     @include respond-to('md') {
       font-size: map-get($font-size, 'l');
     }
+    @include respond-to('xl') {
+      font-size: map-get($font-size, 'xxl');
+
+    }
   }
 
   &__btn {
@@ -97,6 +101,9 @@
     font-weight: bold;
     @include respond-to('md') {
       width: 20%;
+    }
+    @include respond-to('xl') {
+      width: 10%;
     }
   }
 }

@@ -8,21 +8,22 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { CommonModule } from '@angular/common';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
-  declarations: [HomeComponent],
-    imports: [
-        NzLayoutModule,
-        CoreModule,
-        NzTypographyModule,
-        NzGridModule,
-        NzButtonModule,
-        NzInputModule,
-        NzIconModule,
-        CommonModule
-    ],
-  exports: [HomeComponent]
+  imports: [
+    NzLayoutModule,
+    CoreModule,
+    NzTypographyModule,
+    NzGridModule,
+    NzButtonModule,
+    NzInputModule,
+    NzIconModule,
+    CommonModule
+  ],
+  declarations: [HomeComponent, RegisterComponent],
+  exports: [HomeComponent, RegisterComponent]
 })
 export class ModuleModule {
 }

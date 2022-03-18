@@ -10,6 +10,8 @@ import { CardComponent } from './components/card/card.component';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { PopularSectionComponent } from './components/popularSection/popularSection.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { FooterComponent } from './components/footer/footer.component';
     NzListModule,
     NzButtonModule,
     NzCardModule,
-    CommonModule
+    CommonModule,
+    NzIconModule,
+    RouterModule
 
   ],
   declarations: [HeaderComponent, CardComponent, PopularSectionComponent, FooterComponent],
