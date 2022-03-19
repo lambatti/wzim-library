@@ -8,7 +8,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { CommonModule } from '@angular/common';
-import { RegisterComponent } from './register/register.component';
+import { LoginTemplateComponent } from './loginTemplate/loginTemplate.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -20,10 +21,11 @@ import { RegisterComponent } from './register/register.component';
     NzButtonModule,
     NzInputModule,
     NzIconModule,
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
-  declarations: [HomeComponent, RegisterComponent],
-  exports: [HomeComponent, RegisterComponent]
+  declarations: [HomeComponent, LoginTemplateComponent],
+  exports: [HomeComponent, LoginTemplateComponent]
 })
 export class ModuleModule {
 }

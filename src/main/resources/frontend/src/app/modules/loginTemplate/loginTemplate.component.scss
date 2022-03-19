@@ -1,0 +1,23 @@
+@import "src/app/styles/main";
+
+.section {
+  display: grid;
+  grid-template-rows: 1fr 3fr;
+  @include respond-to('lg') {
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+  }
+
+  &__background {
+    @include background-center("../../../assets/images/bookImage.jpg");
+
+  }
+
+  &__form {
+    @include respond-to('lg') {
+      height: 100vh;
+    }
+  }
+}
+

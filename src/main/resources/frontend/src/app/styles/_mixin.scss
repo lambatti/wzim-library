@@ -5,6 +5,7 @@
     @content;
   }
 }
+
 @mixin font-header() {
   @include respond-to('md') {
     font-size: 20px;
@@ -15,4 +16,25 @@
 
 }
 
+@mixin background-center($image, $color: false) {
+  background-image: url($image);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  @if $color {
+    background-color: $white;
+
+  }
+}
+
+@mixin logo-text($className) {
+  .#{$className} {
+    color: #fff;
+    font-weight: 900;
+    margin: 0;
+    font-size: 12px;
+    @include font-header();
+    @content;
+  }
+}
 

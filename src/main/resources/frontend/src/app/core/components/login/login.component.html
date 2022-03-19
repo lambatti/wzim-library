@@ -1,0 +1,36 @@
+<nz-layout nz-col [nzXs]='24'>
+  <div class='template__container restHeight'>
+    <h1 nz-typography class='higherPadding'>Logowanie</h1>
+    <form nz-form nzLayout='vertical'>
+      <nz-form-item>
+        <nz-form-label nzRequired><span>Email</span></nz-form-label>
+        <nz-form-control>
+          <input nz-input nzSize='default' type='email' />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired><span>Hasło:</span></nz-form-label>
+        <nz-form-control>
+          <nz-input-group [nzSuffix]='passwordTemplate'>
+            <input
+              [type]="passwordVisible ? 'text' : 'password'"
+              nz-input
+            />
+          </nz-input-group>
+          <ng-template #passwordTemplate>
+            <i nz-icon [nzType]="!passwordVisible ? 'eye-invisible' : 'eye'"
+               (click)='passwordVisible = !passwordVisible'></i>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <div class='form__nav'>
+        <a routerLink='/register' class='form__nav__item'>Nie posiadasz konta, kliknij tutaj</a>
+        <a routerLink='/forgotPassword' class='form__nav__item'>Nie pamiętasz hasła, kliknij tutaj</a>
+        <a routerLink='/' class='form__nav__item'>Powrót do strony głównej</a>
+      </div>
+      <div nz-row nzJustify='end'>
+        <button type='submit' nz-button nzType='primary'>Zaloguj się</button>
+      </div>
+    </form>
+  </div>
+</nz-layout>

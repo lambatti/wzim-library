@@ -5,11 +5,7 @@
   height: 100vh;
   background: $background-color;
   @include respond-to('md') {
-    background-color: $white;
-    background-image: url("../../../assets/images/dziefczynaZKsionszkom.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
+    @include background-center("../../../assets/images/dziefczynaZKsionszkom.png", true);
 
   }
 }
@@ -75,10 +71,11 @@
 }
 
 .check__section {
-  margin: 10vh 0 ;
+  margin: 10vh 0;
   height: 20vh;
   display: flex;
   flex-direction: column;
+
   &__h1 {
     font-size: map-get($font-size, 'm');
     font-weight: bold;

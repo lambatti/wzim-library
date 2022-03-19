@@ -12,9 +12,26 @@ import { PopularSectionComponent } from './components/popularSection/popularSect
 import { FooterComponent } from './components/footer/footer.component';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { RouterModule } from '@angular/router';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { ForgotPasswordComponent } from './components/forgotPassword/forgotPassword.component';
+import { ChangeForgetPasswordComponent } from './components/changeForgetPassword/changeForgetPassword.component';
 
 
 @NgModule({
+  declarations: [
+    HeaderComponent,
+    CardComponent,
+    PopularSectionComponent,
+    FooterComponent,
+    RegisterComponent,
+    LoginComponent,
+    ForgotPasswordComponent,
+    ChangeForgetPasswordComponent
+  ],
   imports: [
     NzLayoutModule,
     NzGridModule,
@@ -24,11 +41,19 @@ import { RouterModule } from '@angular/router';
     NzCardModule,
     CommonModule,
     NzIconModule,
-    RouterModule
-
+    RouterModule,
+    NzFormModule,
+    NzInputModule,
+    NzSelectModule
   ],
-  declarations: [HeaderComponent, CardComponent, PopularSectionComponent, FooterComponent],
-  exports: [HeaderComponent, CardComponent, PopularSectionComponent, FooterComponent]
+  exports: [
+    HeaderComponent,
+    CardComponent,
+    PopularSectionComponent,
+    FooterComponent,
+    ForgotPasswordComponent,
+    ChangeForgetPasswordComponent
+  ]
 })
 export class CoreModule {
 }

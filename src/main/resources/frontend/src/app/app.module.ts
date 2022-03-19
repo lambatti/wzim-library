@@ -14,6 +14,7 @@ import { ModuleModule } from './modules/module.module';
 import { CoreModule } from './core/core.module';
 import { RouterModule } from '@angular/router';
 import { routing } from './app.routing';
+import { RegisterComponent } from './core/components/register/register.component';
 
 registerLocaleData(en);
 
@@ -33,7 +34,7 @@ registerLocaleData(en);
     routing
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, RegisterComponent]
 })
 export class AppModule {
 }

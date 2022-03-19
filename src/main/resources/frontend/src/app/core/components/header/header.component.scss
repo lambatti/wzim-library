@@ -5,17 +5,7 @@
   height: 10vh;
   padding: 0 5vw;
 
-  h5 {
-    margin: 0;
-  }
-  .logo {
-    color: #fff;
-    font-weight: 900;
-    margin: 0;
-    font-size: 12px;
-    @include font-header();
-
-  }
+  @include logo-text('logo');
 
   .list-none {
     padding: 0;
