@@ -7,7 +7,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pl.sggw.wzimlibrary.model.authentication.AuthenticationRequest;
-import pl.sggw.wzimlibrary.model.authentication.AuthenticationResponse;
 import pl.sggw.wzimlibrary.util.JwtUtil;
 
 import java.util.Optional;
@@ -20,7 +19,7 @@ public class LoginService {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    public Optional<AuthenticationResponse> generateToken(AuthenticationRequest authenticationRequest) {
+    public Optional<String> generateToken(AuthenticationRequest authenticationRequest) {
 
         try {
             authenticationManager.authenticate(
@@ -32,8 +31,8 @@ public class LoginService {
         }
 
         UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getEmail());
-        String jwt = jwtUtil.generateToken(userDetails);
-        return Optional.of(new AuthenticationResponse(jwt));
+        String jwt = "Bearer " + jwtUtil.generateToken(userDetails);
+        return Optional.of(jwt);
     }
 
 }

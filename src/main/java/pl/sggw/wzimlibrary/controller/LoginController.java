@@ -20,6 +20,8 @@ public class LoginController {
 
     @PostMapping("login")
     ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
-        return ResponseEntity.of(loginService.generateToken(authenticationRequest));
+        return loginService.generateToken(authenticationRequest).map(
+                token -> (ResponseEntity.ok().header("Authorization",
+                        token))).orElseGet(ResponseEntity::badRequest).build();
     }
 }
