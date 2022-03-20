@@ -60,15 +60,15 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
-    public User registerUser(UserRegistrationDto userRegistrationDto) throws ExecutionException, InterruptedException {
+    public Optional<User> registerUser(UserRegistrationDto userRegistrationDto) throws ExecutionException, InterruptedException {
 
         if (findByEmail(userRegistrationDto.getEmail()).get().isPresent()) {
-            return null;
+            return Optional.empty();
         }
 
         userRegistrationDto.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
 
-        return save(modelMapper.map(userRegistrationDto, User.class)).get();
+        return Optional.of(save(modelMapper.map(userRegistrationDto, User.class)).get());
     }
 
     @Override
