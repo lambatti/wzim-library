@@ -7,6 +7,7 @@ import pl.sggw.wzimlibrary.model.ValidationConstant;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @RequiredArgsConstructor
@@ -17,8 +18,7 @@ public class UserChangePasswordVerificationDto {
     @Email
     private final String email;
 
-    @NotEmpty
-    @Size(max = ValidationConstant.SECURITY_QUESTION_MAX_LENGTH)
+    @NotNull
     private final SecurityQuestion securityQuestion;
 
     @NotEmpty

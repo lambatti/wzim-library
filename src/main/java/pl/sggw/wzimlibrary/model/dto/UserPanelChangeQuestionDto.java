@@ -6,6 +6,7 @@ import pl.sggw.wzimlibrary.model.SecurityQuestion;
 import pl.sggw.wzimlibrary.model.ValidationConstant;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @RequiredArgsConstructor
@@ -17,8 +18,7 @@ public class UserPanelChangeQuestionDto {
             max = ValidationConstant.PASSWORD_MAX_LENGTH)
     private final String password;
 
-    @NotEmpty
-    @Size(max = ValidationConstant.SECURITY_QUESTION_MAX_LENGTH)
+    @NotNull
     private final SecurityQuestion securityQuestion;
 
     @NotEmpty
