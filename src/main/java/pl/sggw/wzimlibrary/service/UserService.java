@@ -2,7 +2,6 @@ package pl.sggw.wzimlibrary.service;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,10 +10,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.sggw.wzimlibrary.adapter.SqlUserRepository;
 import pl.sggw.wzimlibrary.model.Role;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
+import pl.sggw.wzimlibrary.service.cache.UserCacheService;
 import pl.sggw.wzimlibrary.util.JwtUtil;
 
 import java.util.ArrayList;
@@ -27,37 +26,29 @@ import java.util.concurrent.ExecutionException;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private final SqlUserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final UserCacheService userCacheService;
 
     @Async
-    @Cacheable(value = "userCache", key = "#email")
     public CompletableFuture<Optional<User>> findByEmail(String email) {
-        return CompletableFuture.completedFuture(userRepository.findByEmail(email));
+        return CompletableFuture.completedFuture(userCacheService.findByEmail(email));
     }
 
     @Async
     public CompletableFuture<List<User>> findAll() {
-        return CompletableFuture.completedFuture(userRepository.findAll());
+        return CompletableFuture.completedFuture(userCacheService.findAll());
     }
 
     @Async
     public CompletableFuture<User> save(User user) {
-        return CompletableFuture.completedFuture(userRepository.save(user));
+        return CompletableFuture.completedFuture(userCacheService.save(user));
     }
-
 
     private String extractEmailFromToken(String token) {
         token = jwtUtil.removeBearer(token);
         return jwtUtil.extractEmail(token);
-    }
-
-
-    public Optional<User> getUserByToken(String token) {
-        String email = extractEmailFromToken(token);
-        return userRepository.findByEmail(email);
     }
 
     public Optional<User> registerUser(UserRegistrationDto userRegistrationDto) throws ExecutionException, InterruptedException {
