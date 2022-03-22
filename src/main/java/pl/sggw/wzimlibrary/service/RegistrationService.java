@@ -17,12 +17,9 @@ public class RegistrationService {
     private final MailService mailService;
     private final ObjectMapper objectMapper;
 
-    public void sendRegistrationMail(UserRegistrationDto userRegistrationDto, String baseUrl) throws JsonProcessingException, MessagingException {
-        mailService.sendRegistrationMail(
-                userRegistrationDto.getEmail(),
-                baseUrl,
-                encryptUser(userRegistrationDto)
-        );
+    public void sendRegistrationMail(UserRegistrationDto userRegistrationDto, String baseUrl)
+            throws JsonProcessingException, MessagingException {
+        mailService.sendRegistrationMail(userRegistrationDto.getEmail(), baseUrl, encryptUser(userRegistrationDto));
     }
 
     public UserRegistrationDto getUserFromEncryptedMessage(String encryptedUser) throws IOException {

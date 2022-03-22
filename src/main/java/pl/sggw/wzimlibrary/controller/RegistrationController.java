@@ -24,28 +24,33 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping("sendRegistrationMail")
-    public ResponseEntity<?> sendRegistrationMail(@Valid @RequestBody UserRegistrationDto userRegistrationDto) throws MessagingException, JsonProcessingException {
+    public ResponseEntity<?> sendRegistrationMail(@Valid @RequestBody UserRegistrationDto userRegistrationDto)
+            throws MessagingException, JsonProcessingException {
+
         registrationService.sendRegistrationMail(userRegistrationDto,
-                ServletUriComponentsBuilder.fromCurrentRequest()
-                        .replacePath("/api")
-                        .build()
-                        .toUriString());
+                ServletUriComponentsBuilder.fromCurrentRequest().replacePath("/api").build().toUriString());
+
         return ResponseEntity.ok().build();
+
     }
 
     @GetMapping("activateAccount")
-    public ResponseEntity<?> activateAccount(@RequestParam String user) throws IOException, ExecutionException, InterruptedException {
+    public ResponseEntity<?> activateAccount(@RequestParam String user)
+            throws IOException, ExecutionException, InterruptedException {
+
         return registerUser(registrationService.getUserFromEncryptedMessage(user));
+
     }
 
     @PostMapping("register")
-    ResponseEntity<?> registerUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) throws ExecutionException, InterruptedException {
+    ResponseEntity<?> registerUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto)
+            throws ExecutionException, InterruptedException {
 
         return userService.registerUser(userRegistrationDto).map(
                         user -> ResponseEntity.created(
                                 URI.create(ServletUriComponentsBuilder.fromCurrentRequest().build() + "/" + user.getId())))
                 .orElseGet(ResponseEntity::badRequest).build();
-    }
 
+    }
 
 }
