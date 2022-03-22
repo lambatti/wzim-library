@@ -8,10 +8,7 @@ import pl.sggw.wzimlibrary.model.Role;
 import pl.sggw.wzimlibrary.model.SecurityQuestion;
 import pl.sggw.wzimlibrary.model.ValidationConstant;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @AllArgsConstructor
 @Getter
@@ -38,11 +35,10 @@ public class UserRegistrationDto {
             max = ValidationConstant.PASSWORD_MAX_LENGTH)
     private String password;
 
-    @NotEmpty
+    @NotNull
     private final Gender gender;
 
-    @NotEmpty
-    @Size(max = ValidationConstant.SECURITY_QUESTION_MAX_LENGTH)
+    @NotNull
     private final SecurityQuestion securityQuestion;
 
     @NotEmpty

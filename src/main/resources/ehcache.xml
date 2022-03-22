@@ -10,6 +10,7 @@ https://www.ehcache.org/schema/ehcache-core-3.0.xsd">
         <heap unit="entries">1000</heap>
     </cache-template>
 
-    <cache alias="userCache" uses-template="default"/>
+    <cache alias="userEmail" uses-template="default"/>
+    <cache alias="allUsers" uses-template="default"/>
 
 </config>
