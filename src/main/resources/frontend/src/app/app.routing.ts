@@ -5,6 +5,7 @@ import { RegisterComponent } from './core/components/register/register.component
 import { LoginComponent } from './core/components/login/login.component';
 import { ForgotPasswordComponent } from './core/components/forgotPassword/forgotPassword.component';
 import { ChangeForgetPasswordComponent } from './core/components/changeForgetPassword/changeForgetPassword.component';
+import { BookDetailsComponent } from './modules/bookDetails/bookDetails.component';
 
 
 const routes: Routes = [
@@ -18,7 +19,8 @@ const routes: Routes = [
       { path: 'forgotPassword', component: ForgotPasswordComponent },
       { path: 'changeForgotPassword', component: ChangeForgetPasswordComponent }
     ]
-  }
+  },
+  { path: ':category/:id', component: BookDetailsComponent }
 ];
 
 export const routing = RouterModule.forRoot(routes);

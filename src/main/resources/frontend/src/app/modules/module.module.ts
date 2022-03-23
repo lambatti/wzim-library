@@ -10,6 +10,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { CommonModule } from '@angular/common';
 import { LoginTemplateComponent } from './loginTemplate/loginTemplate.component';
 import { RouterModule } from '@angular/router';
+import { BookDetailsComponent } from './bookDetails/bookDetails.component';
 
 
 @NgModule({
@@ -24,8 +25,8 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     RouterModule
   ],
-  declarations: [HomeComponent, LoginTemplateComponent],
-  exports: [HomeComponent, LoginTemplateComponent]
+  declarations: [HomeComponent, LoginTemplateComponent, BookDetailsComponent],
+  exports: [HomeComponent, LoginTemplateComponent, BookDetailsComponent]
 })
 export class ModuleModule {
 }
