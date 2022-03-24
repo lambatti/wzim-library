@@ -12,4 +12,9 @@ https://www.ehcache.org/schema/ehcache-core-3.0.xsd">
 
     <cache alias="userCache" uses-template="default"/>
 
+    <cache alias="bookBySlug">
+        <expiry>
+            <ttl unit="days">30</ttl>
+        </expiry>
+    </cache>
 </config>
