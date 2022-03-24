@@ -38,3 +38,12 @@
   }
 }
 
+@mixin animations($name,$duration,$method, $times) {
+  animation: $name $duration $method $times;
+}
+@mixin keyframes($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}
+

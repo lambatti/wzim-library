@@ -18,21 +18,61 @@
   @include respond-to('lg') {
   }
 }
+
 .app-header {
   grid-column: 1/-1;
 }
-
 
 
 .section__content {
   border: 2px solid $primary-color;
   margin: 5vw;
   border-radius: 10px;
-  padding: 150px 5vw 5vw 5vw;
+  padding: 150px 5vw 0 5vw;
   height: 60vh;
   @include respond-to('lg') {
     margin: 10vh 5vw 0 0;
+    padding: 5vw 5vw 0 10vw;
+
+    @include keyframes(transformX) {
+      0% {
+        transform: translateX(-100%);
+        opacity: 0;
+
+      }
+      50% {
+        transform: translateX(-30%);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    @include animations(transformX, 2s, linear, 1);
+
+
   }
+
+  @include keyframes(transformY) {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+
+    }
+    50% {
+      transform: translateY(-30%);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @include animations(transformY, 2s, linear, 1);
+
 }
 
 
@@ -60,6 +100,16 @@
     align-self: center;
     position: absolute;
     top: 20vh;
+    z-index: 2;
+    @include keyframes(show) {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    @include animations(show, 1s, linear, 1);
     @include respond-to('lg') {
       max-width: 430px;
       width: 30vw;
@@ -88,16 +138,22 @@
         padding-left: 50%;
 
       }
+
       &:nth-child(2n-1) {
         font-weight: bold;
         color: $primary-color;
       }
+
       &:nth-child(2n) {
         justify-self: end;
       }
     }
 
   }
-
-
+}
+.btn__group {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-self: center;
 }
