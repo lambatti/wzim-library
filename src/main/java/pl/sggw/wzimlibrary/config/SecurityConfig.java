@@ -13,7 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.sggw.wzimlibrary.filter.JwtRequestFilter;
-import pl.sggw.wzimlibrary.model.Role;
+import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.service.UserService;
 
 @Configuration

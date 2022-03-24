@@ -2,6 +2,9 @@ package pl.sggw.wzimlibrary.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.sggw.wzimlibrary.model.constant.Gender;
+import pl.sggw.wzimlibrary.model.constant.Role;
+import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
 
 import javax.persistence.*;
 

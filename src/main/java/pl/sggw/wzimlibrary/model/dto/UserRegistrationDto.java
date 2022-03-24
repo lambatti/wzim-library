@@ -3,10 +3,10 @@ package pl.sggw.wzimlibrary.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import pl.sggw.wzimlibrary.model.Gender;
-import pl.sggw.wzimlibrary.model.Role;
-import pl.sggw.wzimlibrary.model.SecurityQuestion;
-import pl.sggw.wzimlibrary.model.ValidationConstant;
+import pl.sggw.wzimlibrary.model.constant.Gender;
+import pl.sggw.wzimlibrary.model.constant.Role;
+import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
+import pl.sggw.wzimlibrary.model.constant.ValidationConstant;
 
 import javax.validation.constraints.*;
 

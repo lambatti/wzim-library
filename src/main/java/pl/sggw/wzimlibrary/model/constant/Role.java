@@ -1,4 +1,4 @@
-package pl.sggw.wzimlibrary.model;
+package pl.sggw.wzimlibrary.model.constant;
 
 public enum Role {
     ADMIN,
