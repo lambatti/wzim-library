@@ -7,6 +7,8 @@ import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -33,5 +35,8 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookBorrow> bookBorrows = new ArrayList<>();
 
 }
