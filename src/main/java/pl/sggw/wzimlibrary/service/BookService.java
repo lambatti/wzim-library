@@ -1,39 +1,25 @@
 package pl.sggw.wzimlibrary.service;
 
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import pl.sggw.wzimlibrary.model.book.Book;
-import pl.sggw.wzimlibrary.model.book.BookURL;
+import pl.sggw.wzimlibrary.api.wolnelektury.model.BookWolnelektury;
+import pl.sggw.wzimlibrary.api.wolnelektury.service.AllBooksWolnelekturyService;
+import pl.sggw.wzimlibrary.model.Book;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BookService {
-    private final WebClient webClient;
-    private final BookURLService bookURLService;
+    private final ModelMapper modelMapper;
+    private final AllBooksWolnelekturyService allBooksWolnelekturyService;
 
-    public BookService(WebClient.Builder builder, BookURLService bookURLService) {
-        webClient = builder.baseUrl("https://wolnelektury.pl/")
-                .build();
-        this.bookURLService = bookURLService;
-    }
-
-    public List<Book> getBookList() {
-        List<BookURL> bookURLS = bookURLService.getBookURLList();
-        List<Book> bookList = new ArrayList<>();
-        for (BookURL url : bookURLS) {
-            bookList.add(getBookByUrl(url.getSlug()));
-        }
-        return bookList;
-    }
-
-    public Book getBookByUrl(String url) {
-        return webClient
-                .get()
-                .uri("/api/books/" + url + "/?format=json")
-                .retrieve()
-                .bodyToMono(Book.class)
-                .block();
+    public List<Book> getAllBooks() {
+        final List<BookWolnelektury> allBook = allBooksWolnelekturyService.getAllBook();
+        return modelMapper
+                .map(allBook, new TypeToken<List<Book>>() {
+                }.getType());
     }
 }
