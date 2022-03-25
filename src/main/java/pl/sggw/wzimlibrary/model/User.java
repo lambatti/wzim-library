@@ -7,7 +7,6 @@ import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,6 +17,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     private String firstName;
@@ -36,7 +36,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BookBorrow> bookBorrows = new ArrayList<>();
+    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookBorrow> bookBorrows;
+    
 
 }

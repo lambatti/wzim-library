@@ -1,12 +1,15 @@
-package pl.sggw.wzimlibrary.model;
+package pl.sggw.wzimlibrary.model.id;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import pl.sggw.wzimlibrary.model.User;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Embeddable
@@ -16,10 +19,11 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class BookBorrowId implements Serializable {
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "book_slug")
+    @Column(nullable = false, updatable = false)
     private String bookSlug;
 
 }

@@ -2,8 +2,11 @@ package pl.sggw.wzimlibrary.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.sggw.wzimlibrary.model.id.BookBorrowId;
 
-import javax.persistence.*;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
@@ -15,15 +18,24 @@ public class BookBorrow {
     @EmbeddedId
     private BookBorrowId id;
 
-    @ManyToOne
-    @MapsId("userId")
-    private User user;
-
-    /*
-    @MapsId("bookSlug")
-    private String bookSlug;
-    */
-
     private LocalDate borrowDate;
     private LocalDate returnDate;
+
+    // Additional getters and setters for composite primary key columns
+
+    public User getUser() {
+        return id.getUser();
+    }
+
+    public void setUser(User user) {
+        this.id.setUser(user);
+    }
+
+    public String getBookSlug() {
+        return id.getBookSlug();
+    }
+
+    public void setBookSlug(String bookSlug) {
+        this.id.setBookSlug(bookSlug);
+    }
 }
