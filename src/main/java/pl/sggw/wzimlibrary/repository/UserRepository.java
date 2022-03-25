@@ -12,4 +12,6 @@ public interface UserRepository {
     Optional<User> findByEmail(String email);
 
     <S extends User> S save(S s);
+
+    void setPassword(Integer id, String newPassword);
 }
