@@ -2,6 +2,10 @@ package pl.sggw.wzimlibrary.adapter;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.repository.UserRepository;
 
@@ -18,4 +22,10 @@ public interface SqlUserRepository extends UserRepository, JpaRepository<User, I
 
     @Override
     <S extends User> S save(S s);
+
+    @Override
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE users SET password=:newPassword WHERE id=:id")
+    void setPassword(@Param("id") Integer id, @Param("newPassword") String newPassword);
 }
