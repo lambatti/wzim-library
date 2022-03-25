@@ -1,9 +1,14 @@
 package pl.sggw.wzimlibrary.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.sggw.wzimlibrary.model.User;
+import pl.sggw.wzimlibrary.model.dto.UserChangePasswordDto;
+import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.UserService;
 
@@ -31,5 +36,13 @@ public class UserController {
                         user -> ResponseEntity.created(
                                 URI.create(ServletUriComponentsBuilder.fromCurrentRequest().build() + "/" + user.getId())))
                 .orElseGet(ResponseEntity::badRequest).build();
+    }
+
+    @PatchMapping("/user/changePassword")
+    ResponseEntity<?> changePassword(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody UserPanelChangePasswordDto userPanelChangePasswordDto) {
+        if (userService.changePassword(token, userPanelChangePasswordDto)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 }
