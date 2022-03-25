@@ -41,7 +41,7 @@ public class UserController {
     @PatchMapping("/user/changePassword")
     ResponseEntity<?> changePassword(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody UserPanelChangePasswordDto userPanelChangePasswordDto) throws ExecutionException, InterruptedException {
         if (userService.changePassword(token, userPanelChangePasswordDto)) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
     }
