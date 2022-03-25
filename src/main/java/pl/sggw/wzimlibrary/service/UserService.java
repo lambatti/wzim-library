@@ -10,8 +10,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.sggw.wzimlibrary.adapter.SqlUserRepository;
 import pl.sggw.wzimlibrary.model.Role;
 import pl.sggw.wzimlibrary.model.User;
+import pl.sggw.wzimlibrary.model.dto.UserChangePasswordDto;
+import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
 import pl.sggw.wzimlibrary.util.JwtUtil;
@@ -30,6 +33,7 @@ public class UserService implements UserDetailsService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserCacheService userCacheService;
+    private final SqlUserRepository userRepository;
 
     @Async
     public CompletableFuture<Optional<User>> findByEmail(String email) {
@@ -116,5 +120,34 @@ public class UserService implements UserDetailsService {
         }
 
         return authorities;
+    }
+
+    public boolean changePassword(String token, UserPanelChangePasswordDto userPanelChangePasswordDto) {
+        if (!userPanelChangePasswordDto.getNewPassword().equals(userPanelChangePasswordDto.getNewPasswordConfirmation())) {
+            return false;
+        }
+
+        Optional<User> user = getUserByToken(token);
+
+        if (user.isEmpty() || !doesThePasswordMatch(userPanelChangePasswordDto.getOldPassword(), user.get().getPassword())) {
+            return false;
+        }
+
+        setUserPassword(user.get(), userPanelChangePasswordDto.getNewPassword());
+        return true;
+    }
+
+    private void setUserPassword(User user, String newPassword) {
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        userRepository.setPassword(user.getId(), encodedPassword);
+    }
+
+    private boolean doesThePasswordMatch(String oldPassword, String newPassword) {
+        return passwordEncoder.matches(oldPassword, newPassword);
+    }
+
+    private Optional<User> getUserByToken(String token) {
+        String email = extractEmailFromToken(token);
+        return userRepository.findByEmail(email);
     }
 }
