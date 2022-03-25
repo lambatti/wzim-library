@@ -13,5 +13,5 @@ public interface UserRepository {
 
     <S extends User> S save(S s);
 
-    void setPassword(Integer id, String newPassword);
+    void setPassword(String email, String newPassword);
 }

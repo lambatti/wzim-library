@@ -33,7 +33,6 @@ public class UserService implements UserDetailsService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserCacheService userCacheService;
-    private final SqlUserRepository userRepository;
 
     @Async
     public CompletableFuture<Optional<User>> findByEmail(String email) {
@@ -122,7 +121,7 @@ public class UserService implements UserDetailsService {
         return authorities;
     }
 
-    public boolean changePassword(String token, UserPanelChangePasswordDto userPanelChangePasswordDto) {
+    public boolean changePassword(String token, UserPanelChangePasswordDto userPanelChangePasswordDto) throws ExecutionException, InterruptedException {
         if (!userPanelChangePasswordDto.getNewPassword().equals(userPanelChangePasswordDto.getNewPasswordConfirmation())) {
             return false;
         }
@@ -139,15 +138,15 @@ public class UserService implements UserDetailsService {
 
     private void setUserPassword(User user, String newPassword) {
         String encodedPassword = passwordEncoder.encode(newPassword);
-        userRepository.setPassword(user.getId(), encodedPassword);
+        userCacheService.setPassword(user.getEmail(), encodedPassword);
     }
 
     private boolean doesThePasswordMatch(String oldPassword, String newPassword) {
         return passwordEncoder.matches(oldPassword, newPassword);
     }
 
-    private Optional<User> getUserByToken(String token) {
+    private Optional<User> getUserByToken(String token) throws ExecutionException, InterruptedException {
         String email = extractEmailFromToken(token);
-        return userRepository.findByEmail(email);
+        return findByEmail(email).get();
     }
 }
