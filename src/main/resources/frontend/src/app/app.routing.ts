@@ -6,9 +6,13 @@ import { LoginComponent } from './core/components/login/login.component';
 import { ForgotPasswordComponent } from './core/components/forgotPassword/forgotPassword.component';
 import { ChangeForgetPasswordComponent } from './core/components/changeForgetPassword/changeForgetPassword.component';
 import { BookDetailsComponent } from './modules/bookDetails/bookDetails.component';
+import { BookCategoriesComponent } from './modules/bookCategories/bookCategories.component';
 
 
 const routes: Routes = [
+  { path: 'categories/:category/:id', component: BookDetailsComponent },
+  { path: 'categories/:category', component: BookCategoriesComponent },
+  { path: 'categories', component: BookCategoriesComponent },
   { path: '', component: HomeComponent },
   {
     path: '', component: LoginTemplateComponent, pathMatch: 'prefix', children: [
@@ -19,8 +23,8 @@ const routes: Routes = [
       { path: 'forgotPassword', component: ForgotPasswordComponent },
       { path: 'changeForgotPassword', component: ChangeForgetPasswordComponent }
     ]
-  },
-  { path: ':category/:id', component: BookDetailsComponent }
+  }
+
 ];
 
 export const routing = RouterModule.forRoot(routes);

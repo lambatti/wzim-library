@@ -82,6 +82,7 @@
     color: $white;
     align-self: center;
     justify-items: center;
+    font-weight: bold;
     @include respond-to('lg') {
       color: $gray-dark;
       position: relative;

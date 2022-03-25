@@ -96,6 +96,7 @@
     border: none;
     background-color: $primary-color;
     font-weight: bold;
+    cursor: pointer;
     @include respond-to('md') {
       width: 20%;
     }

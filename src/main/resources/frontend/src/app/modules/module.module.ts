@@ -11,6 +11,11 @@ import { CommonModule } from '@angular/common';
 import { LoginTemplateComponent } from './loginTemplate/loginTemplate.component';
 import { RouterModule } from '@angular/router';
 import { BookDetailsComponent } from './bookDetails/bookDetails.component';
+import { BookCategoriesComponent } from './bookCategories/bookCategories.component';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 
 @NgModule({
@@ -23,10 +28,14 @@ import { BookDetailsComponent } from './bookDetails/bookDetails.component';
     NzInputModule,
     NzIconModule,
     CommonModule,
-    RouterModule
+    RouterModule,
+    NzMenuModule,
+    NzDrawerModule,
+    NzDropDownModule,
+    NzPaginationModule
   ],
-  declarations: [HomeComponent, LoginTemplateComponent, BookDetailsComponent],
-  exports: [HomeComponent, LoginTemplateComponent, BookDetailsComponent]
+  declarations: [HomeComponent, LoginTemplateComponent, BookDetailsComponent, BookCategoriesComponent],
+  exports: [HomeComponent, LoginTemplateComponent, BookDetailsComponent, BookCategoriesComponent]
 })
 export class ModuleModule {
 }
