@@ -16,6 +16,9 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { ReadBookComponent } from './readBook/readBook.component';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -32,10 +35,12 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
     NzMenuModule,
     NzDrawerModule,
     NzDropDownModule,
-    NzPaginationModule
+    NzPaginationModule,
+    NzSwitchModule,
+    FormsModule
   ],
-  declarations: [HomeComponent, LoginTemplateComponent, BookDetailsComponent, BookCategoriesComponent],
-  exports: [HomeComponent, LoginTemplateComponent, BookDetailsComponent, BookCategoriesComponent]
+  declarations: [HomeComponent, LoginTemplateComponent, BookDetailsComponent, BookCategoriesComponent, ReadBookComponent],
+  exports: [HomeComponent, LoginTemplateComponent, BookDetailsComponent, BookCategoriesComponent, ReadBookComponent]
 })
 export class ModuleModule {
 }

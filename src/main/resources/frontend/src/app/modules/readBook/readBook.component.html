@@ -1,0 +1,28 @@
+<nz-layout [class.content__wrapper--darkMode]='darkMode'>
+  <div class='background'>
+    <app-header></app-header>
+    <h1 nz-typography class='sorted__value'>Lorem Ipsum</h1>
+  </div>
+  <nz-content class='content__wrapper' [class.content__wrapper--darkMode]='darkMode'>
+    <div class='darkMode__switcher'>
+      <span class='darkMode__switcher__description'>Tryb ciemny</span>
+      <nz-switch
+        [(ngModel)]='darkMode'
+        [nzCheckedChildren]="checkedTemplate"
+        [nzUnCheckedChildren]="unCheckedTemplate"
+      ></nz-switch>
+      <ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+      <ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>
+    </div>
+    <p class='text__wrapper'>
+      {{text}}
+    </p>
+    <div class='pagination__wrapper'>
+      <nz-pagination [nzPageIndex]='1' [nzTotal]='500'></nz-pagination>
+    </div>
+  </nz-content>
+  <app-footer></app-footer>
+</nz-layout>
+
+
+

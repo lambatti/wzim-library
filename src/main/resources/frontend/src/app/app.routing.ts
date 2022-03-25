@@ -7,9 +7,11 @@ import { ForgotPasswordComponent } from './core/components/forgotPassword/forgot
 import { ChangeForgetPasswordComponent } from './core/components/changeForgetPassword/changeForgetPassword.component';
 import { BookDetailsComponent } from './modules/bookDetails/bookDetails.component';
 import { BookCategoriesComponent } from './modules/bookCategories/bookCategories.component';
+import { ReadBookComponent } from './modules/readBook/readBook.component';
 
 
 const routes: Routes = [
+  { path: 'categories/:category/:id/read', component: ReadBookComponent },
   { path: 'categories/:category/:id', component: BookDetailsComponent },
   { path: 'categories/:category', component: BookCategoriesComponent },
   { path: 'categories', component: BookCategoriesComponent },
