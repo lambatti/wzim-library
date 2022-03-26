@@ -12,19 +12,19 @@ public class BookBorrowBase {
     @EmbeddedId
     protected BookBorrowId id;
 
-    protected User getUser() {
+    public User getUser() {
         return id.getUser();
     }
 
-    protected void setUser(User user) {
+    public void setUser(User user) {
         this.id.setUser(user);
     }
 
-    protected String getBookSlug() {
+    public String getBookSlug() {
         return id.getBookSlug();
     }
 
-    protected void setBookSlug(String bookSlug) {
+    public void setBookSlug(String bookSlug) {
         this.id.setBookSlug(bookSlug);
     }
 }
