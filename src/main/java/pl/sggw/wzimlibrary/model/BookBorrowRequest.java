@@ -6,15 +6,13 @@ import pl.sggw.wzimlibrary.model.base.BookBorrowBase;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.time.LocalDate;
 
 @Entity
-@Table(name = "book_borrows")
+@Table(name = "book_borrows_requests")
 @Getter
 @Setter
-public class BookBorrow extends BookBorrowBase {
+public class BookBorrowRequest extends BookBorrowBase {
 
-    private LocalDate borrowDate;
-    private LocalDate returnDate;
+    private String requestDate;
 
 }

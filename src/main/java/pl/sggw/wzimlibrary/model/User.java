@@ -7,7 +7,7 @@ import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -37,7 +37,12 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BookBorrow> bookBorrows;
-    
+    private Set<BookBorrow> bookBorrows;
+
+    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BookBorrowRequest> bookBorrowRequests;
+
+    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BookBorrowProlongationRequest> bookBorrowProlongationRequests;
 
 }
