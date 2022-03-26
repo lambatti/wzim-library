@@ -6,6 +6,7 @@ import pl.sggw.wzimlibrary.model.base.BookBorrowBase;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "book_borrows_requests")
@@ -13,6 +14,6 @@ import javax.persistence.Table;
 @Setter
 public class BookBorrowRequest extends BookBorrowBase {
 
-    private String requestDate;
+    private LocalDate requestDate;
 
 }
