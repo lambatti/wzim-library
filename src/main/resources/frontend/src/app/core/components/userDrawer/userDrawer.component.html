@@ -1,0 +1,29 @@
+<button class='open__drawer' nz-button nzType='primary' (click)='open()'><i nz-icon nzType='right'
+                                                                            nzTheme='outline'></i></button>
+<nz-drawer
+  [nzClosable]='false'
+  [nzVisible]='visible'
+  [nzPlacement]='placement'
+  [nzTitle]='"Witaj " + firstName'
+  (nzOnClose)='close()'
+>
+  <ng-container *nzDrawerContent>
+    <ul nz-menu nzMode='inline' class='flex-space-around'>
+      <a [routerLink]='["/user", firstName]'>
+        <li nz-menu-item>Zobacz swój profil</li>
+      </a>
+      <a routerLink='/changePassword'>
+        <li nz-menu-item>Zmień hasło</li>
+      </a>
+      <a routerLink='/changeVerification'>
+        <li nz-menu-item>Zmień weryfikację</li>
+      </a>
+      <a routerLink='/myBooks'>
+        <li nz-menu-item>Wypożyczone książki</li>
+      </a>
+      <a routerLink='/booksRead'>
+        <li nz-menu-item>Przeczytane książki</li>
+      </a>
+    </ul>
+  </ng-container>
+</nz-drawer>
