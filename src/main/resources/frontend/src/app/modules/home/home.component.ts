@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { BookCard } from '../../model/book.model';
-import { StaticData } from '../../model/staticData';
+import { HomeSection, IHomeSection } from '../../utils/homeSection';
 
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.component.html',
-  styleUrls: ['home.component.scss'],
+  styleUrls: ['home.component.scss']
 
 })
 export class HomeComponent {
@@ -16,11 +15,7 @@ export class HomeComponent {
     console.log('it works');
   }
 
-  get staticData(): BookCard[] {
-    return StaticData;
+  get homeSectionData(): IHomeSection[] {
+    return HomeSection;
   }
-
-  // TODO do przeniesienia i wywoływanie gdzieś nidziej
-  public shapes: string[] = ['../../../../assets/shapes/shape1.svg', '../../../../assets/shapes/shape2.svg', '../../../../assets/shapes/shape3.svg'];
-
 }
