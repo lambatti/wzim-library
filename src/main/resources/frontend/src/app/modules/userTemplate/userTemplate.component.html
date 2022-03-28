@@ -1,0 +1,43 @@
+<nz-layout>
+  <div class='background'>
+    <app-header></app-header>
+  </div>
+  <nz-layout>
+    <app-user-drawer class='drawer__show' [firstName]='"Kami"'></app-user-drawer>
+    <nz-sider class='sider__show'>
+      <ul nz-menu nzMode='inline' class='flex-space-around'>
+        <a [routerLink]='["/user", firstName]'>
+          <li nz-menu-item>Zobacz swój profil</li>
+        </a>
+        <a routerLink='/changePassword'>
+          <li nz-menu-item>Zmień hasło</li>
+        </a>
+        <a routerLink='/changeVerification'>
+          <li nz-menu-item>Zmień weryfikację</li>
+        </a>
+        <a routerLink='/myBooks'>
+          <li nz-menu-item>Wypożyczone książki</li>
+        </a>
+        <a routerLink='/booksRead'>
+          <li nz-menu-item>Przeczytane książki</li>
+        </a>
+      </ul>
+    </nz-sider>
+    <nz-content class='content'>
+      <div class='userStatistics'>
+        <div class='userStatistics__shape'><span class='userStatistics__shape__letter'>K</span></div>
+        <div class='userStatistics__details'>
+          <span class='userStatistics__details__icon'><i nz-icon nzType='check' nzTheme='outline'></i></span>
+          <div class='userStatistics__details__number'>{{readBook}}</div>
+          <p class='userStatistics__details__text'>Przeczytane</p>
+        </div>
+        <div class='userStatistics__details'>
+          <span class='userStatistics__details__icon'><i nz-icon nzType='file-text' nzTheme='outline'></i></span>
+          <div class='userStatistics__details__number'>{{borrowedBook}}</div>
+          <p class='userStatistics__details__text'>Wypożyczone</p>
+        </div>
+      </div>
+      <router-outlet nz-row></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

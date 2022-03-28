@@ -19,6 +19,10 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ForgotPasswordComponent } from './components/forgotPassword/forgotPassword.component';
 import { ChangeForgetPasswordComponent } from './components/changeForgetPassword/changeForgetPassword.component';
+import { UserDataComponent } from './components/userData/userData.component';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { UserDrawerComponent } from './components/userDrawer/userDrawer.component';
 
 
 @NgModule({
@@ -30,7 +34,9 @@ import { ChangeForgetPasswordComponent } from './components/changeForgetPassword
     RegisterComponent,
     LoginComponent,
     ForgotPasswordComponent,
-    ChangeForgetPasswordComponent
+    ChangeForgetPasswordComponent,
+    UserDataComponent,
+    UserDrawerComponent
   ],
   imports: [
     NzLayoutModule,
@@ -44,7 +50,9 @@ import { ChangeForgetPasswordComponent } from './components/changeForgetPassword
     RouterModule,
     NzFormModule,
     NzInputModule,
-    NzSelectModule
+    NzSelectModule,
+    NzDrawerModule,
+    NzMenuModule
   ],
   exports: [
     HeaderComponent,
@@ -52,7 +60,9 @@ import { ChangeForgetPasswordComponent } from './components/changeForgetPassword
     PopularSectionComponent,
     FooterComponent,
     ForgotPasswordComponent,
-    ChangeForgetPasswordComponent
+    ChangeForgetPasswordComponent,
+    UserDataComponent,
+    UserDrawerComponent
   ]
 })
 export class CoreModule {
