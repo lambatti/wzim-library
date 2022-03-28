@@ -8,8 +8,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pl.sggw.wzimlibrary.exception.dto.ApiErrorDto;
-import pl.sggw.wzimlibrary.exception.dto.ApiErrorWithPathDto;
+import pl.sggw.wzimlibrary.exception.dto.ApiError;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -40,36 +39,24 @@ public class GlobalExceptionHandler {
 
         message.delete(message.length() - 2, message.length());
 
-        return ResponseEntity.status(httpStatus).body(createApiErrorWithPath(httpStatus, message.toString(),
+        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message.toString(),
                 httpServletRequest.getRequestURI()));
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity<?> handleExpiredJwtToken(ExpiredJwtException ex) {
+    public ResponseEntity<?> handleExpiredJwtToken(ExpiredJwtException ex, HttpServletRequest httpServletRequest) {
 
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
 
-        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus,
-                "JWT token for the mail: " + ex.getClaims().getSubject() + " has expired."));
+        String message = "JWT token for the mail: " + ex.getClaims().getSubject() + " has expired.";
+
+        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
+                httpServletRequest.getRequestURI()));
     }
 
-    private ApiErrorDto createApiError(HttpStatus httpStatus, String message) {
-        return ApiErrorDto.builder()
-                .timestamp(new Timestamp(System.currentTimeMillis()).toString())
-                .status(httpStatus.value())
-                .error(httpStatus.name())
-                .message(message)
-                .build();
-    }
-
-    private ApiErrorWithPathDto createApiErrorWithPath(HttpStatus httpStatus, String message, String path) {
-        return ApiErrorWithPathDto.builder()
-                .timestamp(new Timestamp(System.currentTimeMillis()).toString())
-                .status(httpStatus.value())
-                .error(httpStatus.name())
-                .message(message)
-                .path(path)
-                .build();
+    private ApiError createApiError(HttpStatus httpStatus, String message, String path) {
+        return new ApiError(new Timestamp(System.currentTimeMillis()).toString(), httpStatus.value(),
+                httpStatus.name(), message, path);
     }
 
 }
