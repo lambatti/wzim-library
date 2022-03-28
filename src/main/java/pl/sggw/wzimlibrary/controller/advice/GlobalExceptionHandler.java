@@ -1,5 +1,9 @@
 package pl.sggw.wzimlibrary.controller.advice;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.io.JsonEOFException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +31,9 @@ public class GlobalExceptionHandler {
 
         List<String> errors = createErrorList(ex);
 
-        String message = createValidationErrorMessage(errors);
+        String message = "Validation failed due to errors: " + createStringFromErrorList(errors);
 
-        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
+        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message.toString(),
                 httpServletRequest));
     }
 
@@ -54,6 +58,18 @@ public class GlobalExceptionHandler {
                 httpServletRequest));
     }
 
+    @ExceptionHandler({JsonProcessingException.class, JsonMappingException.class,
+            JsonEOFException.class, JsonParseException.class})
+    public ResponseEntity<?> handleJsonExceptions(HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        String message = "There has been an error while processing the JSON. Check the JSON format.";
+
+        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
+                httpServletRequest));
+    }
+
 
     private ApiError createApiError(HttpStatus httpStatus, String message, HttpServletRequest request) {
         return new ApiError(new Timestamp(System.currentTimeMillis()).toString(), httpStatus.value(),
@@ -75,9 +91,9 @@ public class GlobalExceptionHandler {
         return errors;
     }
 
-    private String createValidationErrorMessage(List<String> errors) {
+    private String createStringFromErrorList(List<String> errors) {
 
-        StringBuilder message = new StringBuilder("Validation failed due to errors: ");
+        StringBuilder message = new StringBuilder();
 
         for (String error : errors) {
             message.append(error).append(", ");
