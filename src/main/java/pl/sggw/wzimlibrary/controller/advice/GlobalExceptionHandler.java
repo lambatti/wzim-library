@@ -9,8 +9,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sggw.wzimlibrary.exception.dto.ApiErrorDto;
-import pl.sggw.wzimlibrary.exception.dto.ApiErrorPathDto;
+import pl.sggw.wzimlibrary.exception.dto.ApiErrorWithPathDto;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest httpServletRequest) {
 
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
@@ -39,7 +40,8 @@ public class GlobalExceptionHandler {
 
         message.delete(message.length() - 2, message.length());
 
-        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message.toString()));
+        return ResponseEntity.status(httpStatus).body(createApiErrorWithPath(httpStatus, message.toString(),
+                httpServletRequest.getRequestURI()));
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
@@ -60,8 +62,8 @@ public class GlobalExceptionHandler {
                 .build();
     }
 
-    private ApiErrorPathDto createApiErrorPath(HttpStatus httpStatus, String message, String path) {
-        return ApiErrorPathDto.builder()
+    private ApiErrorWithPathDto createApiErrorWithPath(HttpStatus httpStatus, String message, String path) {
+        return ApiErrorWithPathDto.builder()
                 .timestamp(new Timestamp(System.currentTimeMillis()).toString())
                 .status(httpStatus.value())
                 .error(httpStatus.name())

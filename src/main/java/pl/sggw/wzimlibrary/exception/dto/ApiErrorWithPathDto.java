@@ -5,7 +5,7 @@ import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @Getter
-public class ApiErrorPathDto extends ApiErrorDto {
+public class ApiErrorWithPathDto extends ApiErrorDto {
 
     private final String path;
 
