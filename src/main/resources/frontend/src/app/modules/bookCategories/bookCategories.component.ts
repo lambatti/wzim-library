@@ -10,6 +10,7 @@ import { NzDrawerPlacement } from 'ng-zorro-antd/drawer';
 export class BookCategoriesComponent {
   visible = false;
   placement: NzDrawerPlacement = 'left';
+
   open(): void {
     this.visible = true;
   }

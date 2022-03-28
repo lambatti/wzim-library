@@ -13,6 +13,13 @@
     letter-spacing: 5px;
   }
 }
+.flex-space-around {
+   display: flex;
+   height: 100%;
+   flex-direction: column;
+   justify-content: space-around;
+ }
+
 
 .content__wrapper {
   margin: 5vh 5vw;
