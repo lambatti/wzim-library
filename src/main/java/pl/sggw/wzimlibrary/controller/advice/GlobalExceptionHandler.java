@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,6 +17,7 @@ import pl.sggw.wzimlibrary.exception.dto.ApiError;
 import pl.sggw.wzimlibrary.exception.dto.UserAlreadyExistsException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,7 @@ public class GlobalExceptionHandler {
 
         String message = "Validation failed due to errors: " + createStringFromErrorList(errors);
 
-        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message.toString(),
+        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
                 httpServletRequest));
     }
 
@@ -49,7 +51,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<?> handleUserArleadyExistsException(UserAlreadyExistsException ex,
+    public ResponseEntity<?> handleUserAlreadyExistsException(UserAlreadyExistsException ex,
                                                               HttpServletRequest httpServletRequest) {
 
         HttpStatus httpStatus = HttpStatus.CONFLICT;
@@ -59,7 +61,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({JsonProcessingException.class, JsonMappingException.class,
-            JsonEOFException.class, JsonParseException.class})
+            JsonEOFException.class, JsonParseException.class, IOException.class,
+            HttpMessageNotReadableException.class})
     public ResponseEntity<?> handleJsonExceptions(HttpServletRequest httpServletRequest) {
 
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
