@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.sggw.wzimlibrary.exception.dto.UserAlreadyExistsException;
+import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.RegistrationService;
 import pl.sggw.wzimlibrary.service.UserService;
@@ -36,7 +38,7 @@ public class RegistrationController {
 
     @GetMapping("activateAccount")
     public ResponseEntity<?> activateAccount(@RequestParam String user)
-            throws IOException, ExecutionException, InterruptedException {
+            throws IOException, ExecutionException, InterruptedException, UserAlreadyExistsException {
 
         return registerUser(registrationService.getUserFromEncryptedMessage(user));
 
@@ -44,12 +46,14 @@ public class RegistrationController {
 
     @PostMapping("register")
     ResponseEntity<?> registerUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto)
-            throws ExecutionException, InterruptedException {
+            throws ExecutionException, InterruptedException, UserAlreadyExistsException {
 
-        return userService.registerUser(userRegistrationDto).map(
-                        user -> ResponseEntity.created(
-                                URI.create(ServletUriComponentsBuilder.fromCurrentRequest().build() + "/" + user.getId())))
-                .orElseGet(ResponseEntity::badRequest).build();
+        User registeredUser = userService.registerUser(userRegistrationDto);
+
+        return ResponseEntity.created(URI.create(
+                        ServletUriComponentsBuilder.fromCurrentRequest().build() + "/" + registeredUser.getId()))
+                .build();
+
 
     }
 

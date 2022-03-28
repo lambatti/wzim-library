@@ -18,4 +18,7 @@ public interface SqlUserRepository extends UserRepository, JpaRepository<User, I
 
     @Override
     <S extends User> S save(S s);
+
+    @Override
+    boolean existsByEmail(String email);
 }

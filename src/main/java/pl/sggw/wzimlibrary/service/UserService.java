@@ -10,12 +10,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.sggw.wzimlibrary.exception.dto.UserAlreadyExistsException;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
 import pl.sggw.wzimlibrary.util.JwtUtil;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,20 +48,30 @@ public class UserService implements UserDetailsService {
         return CompletableFuture.completedFuture(userCacheService.save(user));
     }
 
+    @Async
+    public CompletableFuture<Boolean> existsByEmail(String email) {
+        return CompletableFuture.completedFuture(userCacheService.existsByEmail(email));
+    }
+
     private String extractEmailFromToken(String token) {
         token = jwtUtil.removeBearer(token);
         return jwtUtil.extractEmail(token);
     }
 
-    public Optional<User> registerUser(UserRegistrationDto userRegistrationDto) throws ExecutionException, InterruptedException {
+    @Transactional
+    public User registerUser(UserRegistrationDto userRegistrationDto)
+            throws ExecutionException, InterruptedException, UserAlreadyExistsException {
 
-        if (findByEmail(userRegistrationDto.getEmail()).get().isPresent()) {
-            return Optional.empty();
+        if (existsByEmail(userRegistrationDto.getEmail()).get()) {
+            throw new UserAlreadyExistsException(
+                    "User with the email: " + userRegistrationDto.getEmail() + " already exists");
         }
 
-        userRegistrationDto.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
+        String encodedPassword = passwordEncoder.encode(userRegistrationDto.getPassword());
 
-        return Optional.of(save(modelMapper.map(userRegistrationDto, User.class)).get());
+        userRegistrationDto.setPassword(encodedPassword);
+
+        return save(modelMapper.map(userRegistrationDto, User.class)).get();
     }
 
     @Override

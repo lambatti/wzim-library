@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sggw.wzimlibrary.exception.dto.ApiError;
+import pl.sggw.wzimlibrary.exception.dto.UserAlreadyExistsException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -19,28 +20,17 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex,
+                                                                   HttpServletRequest httpServletRequest) {
 
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        List<String> errors = new ArrayList<>();
-        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            errors.add(error.getField() + ": " + error.getDefaultMessage());
-        }
-        for (ObjectError error : ex.getBindingResult().getGlobalErrors()) {
-            errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
-        }
+        List<String> errors = createErrorList(ex);
 
-        StringBuilder message = new StringBuilder("Validation failed due to errors: ");
+        String message = createValidationErrorMessage(errors);
 
-        for (String error : errors) {
-            message.append(error).append(", ");
-        }
-
-        message.delete(message.length() - 2, message.length());
-
-        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message.toString(),
-                httpServletRequest.getRequestURI()));
+        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
+                httpServletRequest));
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
@@ -51,12 +41,51 @@ public class GlobalExceptionHandler {
         String message = "JWT token for the mail: " + ex.getClaims().getSubject() + " has expired.";
 
         return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
-                httpServletRequest.getRequestURI()));
+                httpServletRequest));
     }
 
-    private ApiError createApiError(HttpStatus httpStatus, String message, String path) {
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<?> handleUserArleadyExistsException(UserAlreadyExistsException ex,
+                                                              HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.CONFLICT;
+
+        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, ex.getMessage(),
+                httpServletRequest));
+    }
+
+
+    private ApiError createApiError(HttpStatus httpStatus, String message, HttpServletRequest request) {
         return new ApiError(new Timestamp(System.currentTimeMillis()).toString(), httpStatus.value(),
-                httpStatus.name(), message, path);
+                httpStatus.name(), message, request.getRequestURI());
+    }
+
+    private List<String> createErrorList(MethodArgumentNotValidException ex) {
+
+        List<String> errors = new ArrayList<>();
+
+        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+            errors.add(error.getField() + ": " + error.getDefaultMessage());
+        }
+
+        for (ObjectError error : ex.getBindingResult().getGlobalErrors()) {
+            errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
+        }
+
+        return errors;
+    }
+
+    private String createValidationErrorMessage(List<String> errors) {
+
+        StringBuilder message = new StringBuilder("Validation failed due to errors: ");
+
+        for (String error : errors) {
+            message.append(error).append(", ");
+        }
+
+        message.delete(message.length() - 2, message.length());
+
+        return message.toString();
     }
 
 }
