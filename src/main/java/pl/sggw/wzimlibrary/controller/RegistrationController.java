@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.sggw.wzimlibrary.exception.dto.UserAlreadyExistsException;
+import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.RegistrationService;

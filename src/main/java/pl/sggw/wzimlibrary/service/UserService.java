@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.sggw.wzimlibrary.exception.dto.UserAlreadyExistsException;
+import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
@@ -77,31 +77,24 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Optional<User> tempUser = getUserFromCompletableFuture(email);
+        Optional<User> tempUser = Optional.empty();
 
-        if (tempUser.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
-        } else {
-            User user = tempUser.get();
-
-            List<GrantedAuthority> authorities = generateAuthorities(user);
-
-            return new org.springframework.security.core.userdetails.User(
-                    user.getEmail(), user.getPassword(),
-                    authorities);
-        }
-    }
-
-    private Optional<User> getUserFromCompletableFuture(String email) {
-        Optional<User> user = Optional.empty();
         try {
-            user = findByEmail(email).get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+            tempUser = findByEmail(email).get();
+        } catch (InterruptedException | ExecutionException e) {
+            Thread.currentThread().interrupt();
         }
-        return user;
-    }
 
+        User user = tempUser.orElseThrow(() -> new UsernameNotFoundException(
+                "User with the email: " + email + " not found.")
+        );
+
+        List<GrantedAuthority> authorities = generateAuthorities(user);
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(), user.getPassword(),
+                authorities);
+    }
 
     private List<GrantedAuthority> generateAuthorities(User user) {
 
@@ -117,10 +110,6 @@ public class UserService implements UserDetailsService {
                 authorities.add(new SimpleGrantedAuthority(Role.WORKER.toString()));
             }
             case USER: {
-                authorities.add(new SimpleGrantedAuthority(Role.USER.toString()));
-                break;
-            }
-            default: {
                 authorities.add(new SimpleGrantedAuthority(Role.USER.toString()));
                 break;
             }
