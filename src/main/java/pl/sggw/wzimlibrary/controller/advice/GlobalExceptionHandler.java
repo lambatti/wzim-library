@@ -11,6 +11,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,6 +27,18 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<?> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex,
+                                                                          HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.METHOD_NOT_ALLOWED;
+
+        String message = ex.getMessage();
+
+        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
+                httpServletRequest));
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException ex,
                                                            HttpServletRequest httpServletRequest) {
@@ -34,7 +47,8 @@ public class GlobalExceptionHandler {
 
         String message = "Bad credentials.";
 
-        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message, httpServletRequest));
+        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
+                httpServletRequest));
 
     }
 
