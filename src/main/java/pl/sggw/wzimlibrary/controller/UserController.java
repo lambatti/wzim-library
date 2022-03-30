@@ -3,17 +3,8 @@ package pl.sggw.wzimlibrary.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.sggw.wzimlibrary.model.User;
-import pl.sggw.wzimlibrary.model.dto.UserChangePasswordDto;
 import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
-import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import pl.sggw.wzimlibrary.service.UserService;
 
 import java.util.concurrent.ExecutionException;
@@ -29,15 +20,6 @@ public class UserController {
     @GetMapping("users")
     ResponseEntity<?> getAllUsers() throws ExecutionException, InterruptedException {
         return ResponseEntity.ok(userService.findAll().get());
-    }
-
-    @PostMapping("user/register")
-    ResponseEntity<?> registerUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) throws ExecutionException, InterruptedException {
-
-        return userService.registerUser(userRegistrationDto).map(
-                        user -> ResponseEntity.created(
-                                URI.create(ServletUriComponentsBuilder.fromCurrentRequest().build() + "/" + user.getId())))
-                .orElseGet(ResponseEntity::badRequest).build();
     }
 
     @PatchMapping("/user/changePassword")

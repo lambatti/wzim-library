@@ -10,14 +10,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.sggw.wzimlibrary.adapter.SqlUserRepository;
-import pl.sggw.wzimlibrary.model.Role;
-import pl.sggw.wzimlibrary.model.User;
-import pl.sggw.wzimlibrary.model.dto.UserChangePasswordDto;
-import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
 import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.Role;
+import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
 import pl.sggw.wzimlibrary.util.JwtUtil;
@@ -61,7 +57,8 @@ public class UserService implements UserDetailsService {
         userCacheService.setPassword(email, encodedPassword);
         return null;
     }
-  
+
+    @Async
     public CompletableFuture<Boolean> existsByEmail(String email) {
         return CompletableFuture.completedFuture(userCacheService.existsByEmail(email));
     }
