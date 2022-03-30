@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/api/")
+@CrossOrigin
 @RequiredArgsConstructor
 public class RegistrationController {
 

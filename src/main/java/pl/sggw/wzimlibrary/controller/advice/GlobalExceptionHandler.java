@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
 
         HttpStatus httpStatus = HttpStatus.BAD_GATEWAY;
 
-        String message = "Failed to send registration email.";
+        String message = "Failed to send a registration email.";
 
         return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
                 httpServletRequest));
