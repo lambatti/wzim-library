@@ -1,4 +1,4 @@
-package pl.sggw.wzimlibrary.model;
+package pl.sggw.wzimlibrary.model.constant;
 
 public final class ValidationConstant {
     public final static String NAME_REGEXP = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$";
