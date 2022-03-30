@@ -50,6 +50,14 @@ public class UserService implements UserDetailsService {
         return CompletableFuture.completedFuture(userCacheService.save(user));
     }
 
+    @Async
+    public CompletableFuture<Void> setPassword(String email, String encodedPassword) {
+//        return CompletableFuture.completedFuture(userCacheService.setPassword(email, encodedPassword)).complete(null);
+//        return CompletableFuture.completedFuture(null);
+        userCacheService.setPassword(email, encodedPassword);
+        return null;
+    }
+
     private String extractEmailFromToken(String token) {
         token = jwtUtil.removeBearer(token);
         return jwtUtil.extractEmail(token);
@@ -138,7 +146,8 @@ public class UserService implements UserDetailsService {
 
     private void setUserPassword(User user, String newPassword) {
         String encodedPassword = passwordEncoder.encode(newPassword);
-        userCacheService.setPassword(user.getEmail(), encodedPassword);
+        //userCacheService.setPassword(user.getEmail(), encodedPassword);
+        setPassword(user.getEmail(), encodedPassword);
     }
 
     private boolean doesThePasswordMatch(String oldPassword, String newPassword) {
