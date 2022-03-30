@@ -15,10 +15,14 @@ import pl.sggw.wzimlibrary.model.Role;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.dto.UserChangePasswordDto;
 import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
+import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
+import pl.sggw.wzimlibrary.model.User;
+import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
 import pl.sggw.wzimlibrary.util.JwtUtil;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,51 +61,53 @@ public class UserService implements UserDetailsService {
         userCacheService.setPassword(email, encodedPassword);
         return null;
     }
+  
+    public CompletableFuture<Boolean> existsByEmail(String email) {
+        return CompletableFuture.completedFuture(userCacheService.existsByEmail(email));
+    }
 
     private String extractEmailFromToken(String token) {
         token = jwtUtil.removeBearer(token);
         return jwtUtil.extractEmail(token);
     }
 
-    public Optional<User> registerUser(UserRegistrationDto userRegistrationDto) throws ExecutionException, InterruptedException {
+    @Transactional
+    public User registerUser(UserRegistrationDto userRegistrationDto)
+            throws ExecutionException, InterruptedException, UserAlreadyExistsException {
 
-        if (findByEmail(userRegistrationDto.getEmail()).get().isPresent()) {
-            return Optional.empty();
+        if (existsByEmail(userRegistrationDto.getEmail()).get()) {
+            throw new UserAlreadyExistsException(
+                    "User with the email: " + userRegistrationDto.getEmail() + " already exists");
         }
 
-        userRegistrationDto.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
+        String encodedPassword = passwordEncoder.encode(userRegistrationDto.getPassword());
 
-        return Optional.of(save(modelMapper.map(userRegistrationDto, User.class)).get());
+        userRegistrationDto.setPassword(encodedPassword);
+
+        return save(modelMapper.map(userRegistrationDto, User.class)).get();
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Optional<User> tempUser = getUserFromCompletableFuture(email);
+        Optional<User> tempUser = Optional.empty();
 
-        if (tempUser.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
-        } else {
-            User user = tempUser.get();
-
-            List<GrantedAuthority> authorities = generateAuthorities(user);
-
-            return new org.springframework.security.core.userdetails.User(
-                    user.getEmail(), user.getPassword(),
-                    authorities);
-        }
-    }
-
-    private Optional<User> getUserFromCompletableFuture(String email) {
-        Optional<User> user = Optional.empty();
         try {
-            user = findByEmail(email).get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+            tempUser = findByEmail(email).get();
+        } catch (InterruptedException | ExecutionException e) {
+            Thread.currentThread().interrupt();
         }
-        return user;
-    }
 
+        User user = tempUser.orElseThrow(() -> new UsernameNotFoundException(
+                "User with the email: " + email + " not found.")
+        );
+
+        List<GrantedAuthority> authorities = generateAuthorities(user);
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(), user.getPassword(),
+                authorities);
+    }
 
     private List<GrantedAuthority> generateAuthorities(User user) {
 
@@ -117,10 +123,6 @@ public class UserService implements UserDetailsService {
                 authorities.add(new SimpleGrantedAuthority(Role.WORKER.toString()));
             }
             case USER: {
-                authorities.add(new SimpleGrantedAuthority(Role.USER.toString()));
-                break;
-            }
-            default: {
                 authorities.add(new SimpleGrantedAuthority(Role.USER.toString()));
                 break;
             }

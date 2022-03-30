@@ -42,4 +42,13 @@ public class UserCacheService {
         return userRepository.save(user);
     }
 
+    @Cacheable(value = "userExistsByEmail", key = "#email")
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    // when deleting
+    // @CacheEvict(value = "userExistsByEmail", key = "#email")
+    // @CacheEvict(value = "userEmail", key = "#user.email")
+    // @CacheEvict(value = "allUsers", allEntries = true)
 }

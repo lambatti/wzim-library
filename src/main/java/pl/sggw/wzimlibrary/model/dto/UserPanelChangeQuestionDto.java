@@ -2,8 +2,8 @@ package pl.sggw.wzimlibrary.model.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import pl.sggw.wzimlibrary.model.SecurityQuestion;
-import pl.sggw.wzimlibrary.model.ValidationConstant;
+import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
+import pl.sggw.wzimlibrary.model.constant.ValidationConstant;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

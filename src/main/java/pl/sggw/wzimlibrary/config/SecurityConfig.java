@@ -12,8 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pl.sggw.wzimlibrary.filter.ExceptionFilter;
 import pl.sggw.wzimlibrary.filter.JwtRequestFilter;
-import pl.sggw.wzimlibrary.model.Role;
+import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.service.UserService;
 
 @Configuration
@@ -23,6 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
     private final JwtRequestFilter jwtRequestFilter;
+    private final ExceptionFilter exceptionFilter;
     private final DefaultWebSecurityExpressionHandler expressionHandler;
 
     @Override
@@ -41,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+        http.addFilterBefore(exceptionFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

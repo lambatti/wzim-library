@@ -10,10 +10,12 @@ import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.dto.UserChangePasswordDto;
 import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pl.sggw.wzimlibrary.service.UserService;
 
-import javax.validation.Valid;
-import java.net.URI;
 import java.util.concurrent.ExecutionException;
 
 @RestController

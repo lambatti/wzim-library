@@ -3,7 +3,7 @@ package pl.sggw.wzimlibrary.model.authentication;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import pl.sggw.wzimlibrary.model.ValidationConstant;
+import pl.sggw.wzimlibrary.model.constant.ValidationConstant;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

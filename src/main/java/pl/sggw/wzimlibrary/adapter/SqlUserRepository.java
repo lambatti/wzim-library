@@ -28,4 +28,6 @@ public interface SqlUserRepository extends UserRepository, JpaRepository<User, I
     @Modifying
     @Query(nativeQuery = true, value = "UPDATE users SET password=:newPassword WHERE email=:email")
     void setPassword(@Param("email") String email, @Param("newPassword") String newPassword);
+
+    boolean existsByEmail(String email);
 }
