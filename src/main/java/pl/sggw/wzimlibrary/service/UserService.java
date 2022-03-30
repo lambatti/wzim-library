@@ -10,6 +10,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.sggw.wzimlibrary.adapter.SqlUserRepository;
+import pl.sggw.wzimlibrary.model.Role;
+import pl.sggw.wzimlibrary.model.User;
+import pl.sggw.wzimlibrary.model.dto.UserChangePasswordDto;
+import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
 import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.Role;
@@ -50,6 +55,13 @@ public class UserService implements UserDetailsService {
     }
 
     @Async
+    public CompletableFuture<Void> setPassword(String email, String encodedPassword) {
+//        return CompletableFuture.completedFuture(userCacheService.setPassword(email, encodedPassword)).complete(null);
+//        return CompletableFuture.completedFuture(null);
+        userCacheService.setPassword(email, encodedPassword);
+        return null;
+    }
+  
     public CompletableFuture<Boolean> existsByEmail(String email) {
         return CompletableFuture.completedFuture(userCacheService.existsByEmail(email));
     }
@@ -117,5 +129,35 @@ public class UserService implements UserDetailsService {
         }
 
         return authorities;
+    }
+
+    public boolean changePassword(String token, UserPanelChangePasswordDto userPanelChangePasswordDto) throws ExecutionException, InterruptedException {
+        if (!userPanelChangePasswordDto.getNewPassword().equals(userPanelChangePasswordDto.getNewPasswordConfirmation())) {
+            return false;
+        }
+
+        Optional<User> user = getUserByToken(token);
+
+        if (user.isEmpty() || !doesThePasswordMatch(userPanelChangePasswordDto.getOldPassword(), user.get().getPassword())) {
+            return false;
+        }
+
+        setUserPassword(user.get(), userPanelChangePasswordDto.getNewPassword());
+        return true;
+    }
+
+    private void setUserPassword(User user, String newPassword) {
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        //userCacheService.setPassword(user.getEmail(), encodedPassword);
+        setPassword(user.getEmail(), encodedPassword);
+    }
+
+    private boolean doesThePasswordMatch(String oldPassword, String newPassword) {
+        return passwordEncoder.matches(oldPassword, newPassword);
+    }
+
+    private Optional<User> getUserByToken(String token) throws ExecutionException, InterruptedException {
+        String email = extractEmailFromToken(token);
+        return findByEmail(email).get();
     }
 }
