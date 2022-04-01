@@ -16,6 +16,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
+import pl.sggw.wzimlibrary.exception.UserDecryptionException;
 import pl.sggw.wzimlibrary.exception.dto.ApiError;
 
 import javax.mail.MessagingException;
@@ -27,6 +28,18 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(UserDecryptionException.class)
+    public ResponseEntity<?> handleUserDecryptionException(UserDecryptionException ex,
+                                                           HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        String message = ex.getMessage();
+
+        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
+                httpServletRequest));
+    }
 
     @ExceptionHandler(MessagingException.class)
     public ResponseEntity<?> handleMessagingException(MessagingException ex, HttpServletRequest httpServletRequest) {
