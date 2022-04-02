@@ -36,7 +36,11 @@ const routes: Routes = [
       { path: 'forgotPassword', component: ForgotPasswordComponent },
       { path: 'changeForgotPassword', component: ChangeForgetPasswordComponent }
     ]
-  }
+  },
+  {
+    path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule)
+  },
+  { path: '**', redirectTo: '/' }
 ];
 
 export const routing = RouterModule.forRoot(routes);
