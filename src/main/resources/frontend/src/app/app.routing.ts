@@ -10,6 +10,8 @@ import { BookCategoriesComponent } from './modules/bookCategories/bookCategories
 import { ReadBookComponent } from './modules/readBook/readBook.component';
 import { UserTemplateComponent } from './modules/userTemplate/userTemplate.component';
 import { UserDataComponent } from './core/components/userData/userData.component';
+import { ChangePasswordComponent } from './core/components/changePassword/changePassword.component';
+import { ChangeQuestionComponent } from './core/components/changeQuestion/changeQuestion.component';
 
 
 const routes: Routes = [
@@ -19,6 +21,8 @@ const routes: Routes = [
   { path: 'categories', component: BookCategoriesComponent },
   {
     path: 'user', component: UserTemplateComponent, pathMatch: 'prefix', children: [
+      { path: 'changePassword', component: ChangePasswordComponent },
+      { path: 'changeQuestion', component: ChangeQuestionComponent },
       { path: ':name', component: UserDataComponent }
     ]
   },
@@ -33,7 +37,6 @@ const routes: Routes = [
       { path: 'changeForgotPassword', component: ChangeForgetPasswordComponent }
     ]
   }
-
 ];
 
 export const routing = RouterModule.forRoot(routes);

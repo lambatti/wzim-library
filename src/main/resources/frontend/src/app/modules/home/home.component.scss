@@ -97,6 +97,11 @@
     background-color: $primary-color;
     font-weight: bold;
     cursor: pointer;
+    color: $white;
+    &:hover {
+      box-shadow: 0 0  20px #818181;
+      border: 2px solid $primary-color;
+    }
     @include respond-to('md') {
       width: 20%;
     }

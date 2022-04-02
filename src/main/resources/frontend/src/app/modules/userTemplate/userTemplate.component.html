@@ -9,18 +9,20 @@
         <a [routerLink]='["/user", firstName]'>
           <li nz-menu-item>Zobacz swój profil</li>
         </a>
-        <a routerLink='/changePassword'>
-          <li nz-menu-item>Zmień hasło</li>
-        </a>
-        <a routerLink='/changeVerification'>
-          <li nz-menu-item>Zmień weryfikację</li>
-        </a>
-        <a routerLink='/myBooks'>
+        <a routerLink='/user/myBooks'>
           <li nz-menu-item>Wypożyczone książki</li>
         </a>
-        <a routerLink='/booksRead'>
-          <li nz-menu-item>Przeczytane książki</li>
+<!--        <a routerLink='/user/booksRead'>-->
+<!--          <li nz-menu-item>Przeczytane książki</li>-->
+<!--        </a>-->
+
+        <a routerLink='/user/changePassword'>
+          <li nz-menu-item>Zmień hasło</li>
         </a>
+        <a routerLink='/user/changeQuestion'>
+          <li nz-menu-item>Zmień weryfikację</li>
+        </a>
+
       </ul>
     </nz-sider>
     <nz-content class='content'>
@@ -37,7 +39,8 @@
           <p class='userStatistics__details__text'>Wypożyczone</p>
         </div>
       </div>
-      <router-outlet></router-outlet>
+
+      <router-outlet style='height: 80vh;'></router-outlet>
     </nz-content>
   </nz-layout>
 </nz-layout>

@@ -14,6 +14,15 @@
       (nzOnClose)='close()'
     >
       <ng-container *nzDrawerContent>
+        <div class='mb'>
+          <nz-input-group [nzSuffix]='suffixIconSearch'>
+            <input type='text' nz-input placeholder='Wyszukaj swoją książkę' />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <i nz-icon nzType='search'></i>
+          </ng-template>
+
+        </div>
         <ul nz-menu nzMode='inline'>
           <li nz-menu-item>Bestsellery</li>
           <li nz-submenu nzTitle='Gatunki'>
