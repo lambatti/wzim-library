@@ -1,0 +1,112 @@
+@import "src/app/styles/main";
+
+.background {
+  width: 99vw;
+  height: 100vh;
+  background: $background-color;
+  @include respond-to('md') {
+    @include background-center("../../../assets/images/dziefczynaZKsionszkom.png", true);
+
+  }
+}
+
+.greeting {
+  margin: 0 10vw;
+  @include showTextAnimation();
+
+  &__heading {
+    height: 60%;
+
+    &__h1 {
+      color: $white;
+      font-size: map-get($font-size, 'l');
+      @include respond-to('md') {
+        font-size: map-get($font-size, 'xxxl');
+      }
+
+      span {
+        color: $primary-color;
+      }
+    }
+
+    &__h3 {
+      color: $white;
+      text-align: center;
+    }
+
+  }
+
+
+  &__buttonWrapper {
+    width: 250px;
+    height: 52px;
+    background-color: $primary-color;
+    display: flex;
+    border-radius: 10px;
+    justify-content: center;
+
+
+    &__input {
+      color: $white;
+      width: 200px;
+      background-color: $primary-color;
+      border-radius: 10px 0 0 10px;
+      padding-left: 20px;
+      border: none;
+
+      &::placeholder {
+        color: $white;
+      }
+    }
+
+    &__button {
+      width: 50px;
+      height: 52px;
+      border: none;
+      background-color: $primary-color;
+      border-radius: 0 10px 10px 0;
+      cursor: pointer;
+    }
+  }
+}
+
+.check__section {
+  margin: 10vh 0;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+
+  &__h1 {
+    font-size: map-get($font-size, 'm');
+    font-weight: bold;
+    margin-bottom: 5vh;
+    @include respond-to('md') {
+      font-size: map-get($font-size, 'l');
+    }
+    @include respond-to('xl') {
+      font-size: map-get($font-size, 'xxl');
+
+    }
+  }
+
+  &__btn {
+    width: 50%;
+    height: 50px;
+    border-radius: 20px;
+    border: none;
+    background-color: $primary-color;
+    font-weight: bold;
+    cursor: pointer;
+    color: $white;
+    &:hover {
+      box-shadow: 0 0  20px #818181;
+      border: 2px solid $primary-color;
+    }
+    @include respond-to('md') {
+      width: 20%;
+    }
+    @include respond-to('xl') {
+      width: 10%;
+    }
+  }
+}

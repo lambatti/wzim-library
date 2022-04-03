@@ -1,0 +1,31 @@
+<nz-layout class='background'>
+  <app-header [isRegister]='false'></app-header>
+  <nz-content class='greeting' nz-col [nzXs]='24' [nzMd]='8'>
+    <div class='greeting__heading' nz-row nzAlign='middle' nzJustify='center'>
+      <h1 nz-typography class='greeting__heading__h1 '>Witaj w <span>wzim-library</span></h1>
+      <h3 nz-typography class='greeting__heading__h3'>
+        W naszej bibliotece jest ponad 6500 książek sprawdź czy znajdziesz coś dla siebie
+      </h3>
+    </div>
+    <div nz-row nzJustify='center'>
+      <div class='greeting__buttonWrapper'>
+        <input class='greeting__buttonWrapper__input' placeholder='Znajdź swoją książkę' />
+        <button class='greeting__buttonWrapper__button' (click)='dodaj()'>
+          <i nz-icon nzType='search' nzTheme='outline' style='color: #fff'></i>
+        </button>
+      </div>
+    </div>
+  </nz-content>
+</nz-layout>
+<nz-layout>
+  <app-popular-section *ngFor='let item of homeSectionData' [shape]='item.shape' [heading]='item.heading'
+                       [cardList]='item.bookCard'>
+  </app-popular-section>
+  <nz-content nz-col [nzXs]='24'>
+    <div class='check__section' nz-row nzJustify='center' nzAlign='middle'>
+      <h1 class='check__section__h1'>Sprawdź nasze pozostałe książki</h1>
+      <button class='check__section__btn' routerLink='categories'>Sprawdź</button>
+    </div>
+  </nz-content>
+</nz-layout>
+<app-footer></app-footer>

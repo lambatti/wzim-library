@@ -1,0 +1,49 @@
+@import "variables";
+
+@mixin respond-to($breakpoint) {
+  @media (min-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+@mixin font-header() {
+  @include respond-to('md') {
+    font-size: 20px;
+  }
+  @include respond-to('xl') {
+    font-size: 25px;
+  }
+
+}
+
+@mixin background-center($image, $color: false) {
+  background-image: url($image);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  @if $color {
+    background-color: $white;
+
+  }
+}
+
+@mixin logo-text($className) {
+  .#{$className} {
+    color: #fff;
+    font-weight: 900;
+    margin: 0;
+    font-size: 12px;
+    @include font-header();
+    @content;
+  }
+}
+
+@mixin animations($name,$duration,$method, $times) {
+  animation: $name $duration $method $times;
+}
+@mixin keyframes($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}
+

@@ -1,0 +1,21 @@
+<nz-layout>
+  <nz-header><a routerLink='/'>Moja książka</a></nz-header>
+    <h1 nz-row nzJustify='center' nz-typography>Logowanie do panelu admina</h1>
+  <nz-content style='height: 85vh;' nz-row nzJustify='center' nzAlign='middle'>
+    <form nz-form nzLayout='vertical' >
+      <nz-form-item>
+      <nz-form-label nzRequired>email</nz-form-label>
+        <nz-form-control>
+          <input nz-input name='email' type='email'/>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired>password</nz-form-label>
+        <nz-form-control>
+          <input  nz-input name='password' type='password'/>
+        </nz-form-control>
+      </nz-form-item>
+      <button nzType='primary' nz-button>Zaloguj się</button>
+    </form>
+  </nz-content>
+</nz-layout>

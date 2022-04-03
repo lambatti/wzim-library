@@ -1,0 +1,21 @@
+<nz-layout>
+  <nz-header nz-row nzJustify='space-between' nzAlign='middle'>
+    <a nz-button nzType='link' routerLink='/'>Moja książka</a>
+    <a nz-button nzType='link'>Wyloguj się</a>
+  </nz-header>
+  <nz-layout>
+    <button (click)='toggleCollapsed()' nz-button nzType='primary'><i nz-icon nzType='right'></i></button>
+    <div class='sider' *ngIf='isCollapsed'>
+      <ul nz-menu>
+        <a routerLink='/admin/workersSummary' ><li nz-menu-item>Zarządzaj pracownikami</li></a>
+        <a routerLink='/admin/addWorker' ><li nz-menu-item>Dodaj pracownika</li></a>
+        <a routerLink='/admin/deleteUser' ><li nz-menu-item>Usuń konto</li></a>
+        <a routerLink='/admin/borrowedBooks' ><li nz-menu-item>Zarządzaj wypożyczeniami</li></a>
+      </ul>
+    </div>
+    <nz-content class='content' nz-row nzJustify='center'>
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
+

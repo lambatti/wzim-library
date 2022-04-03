@@ -1,0 +1,94 @@
+@import "src/app/styles/main";
+
+
+.background {
+  height: 20vh;
+  @include background-center("../../../assets/images/background6.jpg");
+}
+.flex-space-around {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.drawer__show {
+  position: absolute;
+  @include respond-to('md') {
+    display: none;
+  }
+}
+.sider__show {
+  display: none;
+  @include respond-to('md') {
+    display: block;
+  }
+}
+
+.content {
+  height: 80vh;
+  margin: 5vh 2vw 2vw 0;
+}
+
+.userStatistics {
+  margin-left: 2vw;
+  height: 10vh;
+  background-color: $dark;
+  color: $white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 20px;
+
+  &__shape {
+    width: 37px;
+    height: 31px;
+    @include background-center("../../../assets/shapes/shape4.svg");
+    @include respond-to('md') {
+      width: 61px;
+      height: 50px;
+    }
+    &__letter {
+      position: relative;
+      font-size: map-get($font-size, 'm');
+      font-weight: bold;
+      text-transform: uppercase;
+      left: 30%;
+      @include respond-to('md') {
+        font-size: map-get($font-size, 'xl');
+      }
+    }
+  }
+
+  &__details {
+    display: flex;
+    align-items: center;
+
+    &__icon {
+      color: $primary-color;
+      padding-right: 5px;
+      font-size: 20px;
+      @include respond-to('md') {
+        font-size: 40px;
+      }
+    }
+
+    &__number {
+      padding-right: 5px;
+      font-weight: 600;
+      font-size: map-get($font-size, 's');
+      @include respond-to('md') {
+        font-size: map-get($font-size, 'l');
+      }
+
+    }
+
+    &__text {
+      margin: 0;
+      @include respond-to('md') {
+        font-size: map-get($font-size, 'm');
+      }
+    }
+  }
+
+}

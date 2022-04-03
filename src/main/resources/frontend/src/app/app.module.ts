@@ -10,6 +10,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { ModuleModule } from './modules/module.module';
+import { CoreModule } from './core/core.module';
+import { RouterModule } from '@angular/router';
+import { routing } from './app.routing';
 
 registerLocaleData(en);
 
@@ -23,6 +27,10 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule,
     NzWaveModule,
+    ModuleModule,
+    CoreModule,
+    RouterModule,
+    routing
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]

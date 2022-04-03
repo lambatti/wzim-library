@@ -28,6 +28,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/assets/images",
+              "src/assets/shapes",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",

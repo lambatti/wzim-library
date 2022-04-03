@@ -1,0 +1,58 @@
+@import "src/app/styles/main";
+
+
+.background {
+  height: 30vh;
+  @include background-center("../../../assets/images/background6.jpg");
+
+  .sorted__value {
+    color: $white;
+    text-transform: uppercase;
+    text-align: center;
+    font-family: 'Russo One', sans-serif;
+    letter-spacing: 5px;
+  }
+}
+.flex-space-around {
+   display: flex;
+   height: 100%;
+   flex-direction: column;
+   justify-content: space-around;
+ }
+
+
+.content__wrapper {
+  margin: 5vh 5vw;
+  @include respond-to('md') {
+    margin: 5vh 10vw;
+  }
+
+  .darkMode__switcher {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 5vh;
+    &__description {
+      align-self: center;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+
+  }
+
+  .text__wrapper {
+    text-align: justify;
+    line-height: 200%;
+  }
+
+}
+
+.pagination__wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 5vh 0;
+}
+.content__wrapper--darkMode {
+  background-color: $background-darkMode;
+  color: $white;
+}
+

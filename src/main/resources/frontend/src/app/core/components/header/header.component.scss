@@ -1,0 +1,31 @@
+@import "src/app/styles/main";
+
+.header {
+  background: none;
+  height: 10vh;
+  padding: 0 5vw;
+
+  @include logo-text('logo');
+
+  .list-none {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+
+    .navigation__link {
+      font-weight: 900;
+      font-size: 10px;
+      @include font-header();
+
+
+      &--dark {
+        color: $dark;
+      }
+
+    }
+  }
+}
+
+
+

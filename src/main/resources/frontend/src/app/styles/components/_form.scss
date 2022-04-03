@@ -1,0 +1,61 @@
+
+.template__container {
+  padding: 10vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  @include respond-to('sm') {
+    padding: 3vh 20vw;
+  }
+  @include respond-to('lg') {
+    padding: 5vh 10vw;
+    height: 100vh;
+  }
+  @include respond-to('xxl') {
+    padding: 5vh 15vw;
+    height: 100vh;
+
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  .form {
+    &__input {
+      border-color: $primary-color;
+    }
+
+    &__nav {
+      display: flex;
+      flex-direction: column;
+
+      &__item {
+        text-decoration: underline;
+        cursor: pointer;
+        color: #000;
+        margin: 10px 0;
+      }
+    }
+
+    .btn {
+      justify-self: flex-end;
+      display: block;
+      margin-right: 0;
+    }
+  }
+}
+
+.restHeight {
+  height: 3*(100vh/4);
+  @include respond-to('lg') {
+    height: 100vh;
+  }
+}
+.higherPadding {
+  padding-bottom: 10vh;
+}
+.leftMargin {
+  margin-left: 20px;
+}
+

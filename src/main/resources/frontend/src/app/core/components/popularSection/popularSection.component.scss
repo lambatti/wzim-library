@@ -1,0 +1,40 @@
+@import "src/app/styles/main";
+
+.section {
+  margin: 10vh 10vw;
+
+  .heading {
+    width: 100%;
+    margin-bottom: 10vh;
+    height: 15vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 150px;
+      z-index: 1;
+      @include respond-to('md'){
+        width: 200px;
+      }
+    }
+
+    &__text {
+      z-index: 2;
+      position: relative;
+      left: -70px;
+      font-weight: bold;
+      margin: 0;
+      font-size: map-get($font-size, 'l');
+      @include respond-to('md') {
+        font-size: map-get($font-size, 'xxl');
+
+      }
+    }
+  }
+  .cards {
+    width: 100%;
+    .card {
+      margin: 5vh 0;
+    }
+  }
+}

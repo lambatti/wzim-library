@@ -1,0 +1,75 @@
+<nz-layout>
+  <div class='background'>
+    <app-header></app-header>
+    <h1 nz-typography class='sorted__value'>BESTSELLERY</h1>
+  </div>
+  <nz-layout>
+    <button class='open__drawer' nz-button nzType='primary' (click)='open()'><i nz-icon nzType='right'
+                                                                                nzTheme='outline'></i></button>
+    <nz-drawer
+      [nzClosable]='false'
+      [nzVisible]='visible'
+      [nzPlacement]='placement'
+      nzTitle='Znajdź spowją książkę?'
+      (nzOnClose)='close()'
+    >
+      <ng-container *nzDrawerContent>
+        <div class='mb'>
+          <nz-input-group [nzSuffix]='suffixIconSearch'>
+            <input type='text' nz-input placeholder='Wyszukaj swoją książkę' />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <i nz-icon nzType='search'></i>
+          </ng-template>
+
+        </div>
+        <ul nz-menu nzMode='inline'>
+          <li nz-menu-item>Bestsellery</li>
+          <li nz-submenu nzTitle='Gatunki'>
+            <ul>
+              <li nz-menu-item>fkdsbj</li>
+              <li nz-menu-item>fkdsbj</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle='Epoki'>
+            <ul>
+              <li nz-menu-item>fkdsbj</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle='Rodzaje'>
+            <ul>
+              <li nz-menu-item>fkdsbj</li>
+            </ul>
+          </li>
+        </ul>
+      </ng-container>
+    </nz-drawer>
+
+    <nz-layout class='content'>
+
+      <nz-content nz-row [nzGutter]='{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 32 }'
+                  nzJustify='center' nzAlign='middle'>
+        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
+                  coverImg='https://picsum.photos/200/300'></app-card>
+        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
+                  coverImg='https://picsum.photos/200/300'></app-card>
+        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
+                  coverImg='https://picsum.photos/200/300'></app-card>
+        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
+                  coverImg='https://picsum.photos/200/300'></app-card>
+        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
+                  coverImg='https://picsum.photos/200/300'></app-card>
+        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
+                  coverImg='https://picsum.photos/200/300'></app-card>
+        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
+                  coverImg='https://picsum.photos/200/300'></app-card>
+        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
+                  coverImg='https://picsum.photos/200/300'></app-card>
+
+      </nz-content>
+    </nz-layout>
+    <nz-pagination nz-row nzJustify='center' class='pagination' [nzPageIndex]='1' nzTotal='21'
+                   [nzPageSize]='10'></nz-pagination>
+  </nz-layout>
+  <app-footer></app-footer>
+</nz-layout>
