@@ -1,0 +1,12 @@
+<nz-modal
+  [(nzVisible)]='isVisible'
+  nzTitle='Zwolnienie pracownika'
+  nzOkText='Zatwierdź'
+  nzCancelText='Wróć'
+  (nzOnOk)='handleOk()'
+  (nzOnCancel)='handleCancel()'
+>
+  <ng-container *nzModalContent>
+    <ng-content></ng-content>
+  </ng-container>
+</nz-modal>

@@ -1,0 +1,36 @@
+<h1>Usuń użytkownika</h1>
+<form  nz-form [nzLayout]="'horizontal'"  >
+  <nz-form-item>
+    <nz-form-label nzRequired>Podaj imię</nz-form-label>
+    <input nz-input />
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzRequired>Podaj nazwisko</nz-form-label>
+    <input nz-input />
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <button nz-button nzType='primary'>Znajdź</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+
+
+<nz-page-header [nzGhost]='false'>
+  <nz-page-header-title>{{user?.firstName}} {{user?.lastName}}</nz-page-header-title>
+  <nz-page-header-extra>
+    <button nz-button nzType='primary' (click)='showModal(1)'>Usuń</button>
+  </nz-page-header-extra>
+  <nz-page-header-content>
+    <nz-descriptions nzSize='small' [nzColumn]='1'>
+      <nz-descriptions-item nzTitle='Płeć' [nzSpan]='1'>{{user?.gender}}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle='Data utworzenia konta' [nzSpan]='1'>{{user?.creationDate}}</nz-descriptions-item>
+    </nz-descriptions>
+  </nz-page-header-content>
+</nz-page-header>
+
+<app-modal [handleCancel]='handleCancel' [isVisible]='isVisible' [handleOk]='handleOk'>
+  <p>Po zatwierdzeniu zmiany zostaną zapisane.</p>
+  <p>Czy na pewno chcesz zatwierdźć?</p>
+</app-modal>
+

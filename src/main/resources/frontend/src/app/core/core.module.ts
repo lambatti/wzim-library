@@ -25,6 +25,8 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { UserDrawerComponent } from './components/userDrawer/userDrawer.component';
 import { ChangePasswordComponent } from './components/changePassword/changePassword.component';
 import { ChangeQuestionComponent } from './components/changeQuestion/changeQuestion.component';
+import { ModalComponent } from './components/modal/modal.component';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 
 @NgModule({
@@ -40,7 +42,8 @@ import { ChangeQuestionComponent } from './components/changeQuestion/changeQuest
     UserDataComponent,
     UserDrawerComponent,
     ChangePasswordComponent,
-    ChangeQuestionComponent
+    ChangeQuestionComponent,
+    ModalComponent,
   ],
   imports: [
     NzLayoutModule,
@@ -56,7 +59,8 @@ import { ChangeQuestionComponent } from './components/changeQuestion/changeQuest
     NzInputModule,
     NzSelectModule,
     NzDrawerModule,
-    NzMenuModule
+    NzMenuModule,
+    NzModalModule
   ],
   exports: [
     HeaderComponent,
@@ -68,7 +72,8 @@ import { ChangeQuestionComponent } from './components/changeQuestion/changeQuest
     UserDataComponent,
     UserDrawerComponent,
     ChangePasswordComponent,
-    ChangeQuestionComponent
+    ChangeQuestionComponent,
+    ModalComponent,
   ]
 })
 export class CoreModule {

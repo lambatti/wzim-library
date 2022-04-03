@@ -5,3 +5,5 @@ export interface ShowedUserModel {
   gender: string,
   creationDate: string
 }
+
+

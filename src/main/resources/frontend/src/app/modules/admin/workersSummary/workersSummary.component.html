@@ -1,0 +1,20 @@
+
+<div nz-row   class='site-page-header-ghost-wrapper '>
+  <nz-page-header nz-col  [nzSm]='24' [nzMd]='16' [nzXl]='8'  class='border gutter-row' *ngFor='let worker of dataWorkers' [nzGhost]='false'>
+    <nz-page-header-title>{{worker.firstName}} {{worker.lastName}}</nz-page-header-title>
+    <nz-page-header-extra>
+      <button nz-button nzType='primary' (click)='showModal(worker.id)'>Zwolnij</button>
+    </nz-page-header-extra>
+    <nz-page-header-content>
+      <nz-descriptions nzSize='small' [nzColumn]='1'>
+        <nz-descriptions-item nzTitle='Płeć' [nzSpan]='1'>{{worker.gender}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle='Data zatrudnienia' [nzSpan]='1'>{{worker.employmentDate}}</nz-descriptions-item>
+      </nz-descriptions>
+    </nz-page-header-content>
+  </nz-page-header>
+</div>
+
+<app-modal [handleCancel]='handleCancel' [isVisible]='isVisible' [handleOk]='handleOk'>
+  <p>Po zatwierdzeniu zmiany zostaną zapisane.</p>
+  <p>Czy na pewno chcesz zatwierdźć?</p>
+</app-modal>
