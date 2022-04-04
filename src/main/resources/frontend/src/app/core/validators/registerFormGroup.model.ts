@@ -17,7 +17,10 @@ export class RegisterFormGroup extends FormGroup {
         Validators.minLength(2),
         Validators.maxLength(40)
       ])),
-      email: new CustomFormControl('Email', 'email', '', Validators.email),
+      email: new CustomFormControl('Email', 'email', '', Validators.compose([
+        Validators.required,
+        Validators.email
+      ])),
       password: new CustomFormControl('Hasło', 'password', '', Validators.compose([
         Validators.required,
         Validators.maxLength(30),

@@ -23,6 +23,9 @@ export class CustomFormControl extends FormControl {
           case 'pattern':
             messages.push(`Wprowadzone dane zawierają niedozwolone znaki.`);
             break;
+          case 'email':
+            messages.push(`Podany email jest niepoprawny`);
+            break;
         }
       }
     }

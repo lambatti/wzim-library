@@ -1,20 +1,22 @@
 <nz-layout nz-col [nzXs]='24'>
   <div class='template__container restHeight'>
     <h1 nz-typography class='higherPadding'>Logowanie</h1>
-    <form nz-form nzLayout='vertical'>
+    <form nz-form nzLayout='vertical' [formGroup]='formGroup' (ngSubmit)='submitForm()'>
       <nz-form-item>
         <nz-form-label nzRequired><span>Email</span></nz-form-label>
-        <nz-form-control>
-          <input nz-input nzSize='default' type='email' />
+        <nz-form-control [nzErrorTip]='formGroup.getValidationMessages("email")[0]'>
+          <input nz-input nzSize='default' type='email' formControlName='email' name='email' />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label nzRequired><span>Hasło:</span></nz-form-label>
-        <nz-form-control>
+        <nz-form-control [nzErrorTip]='formGroup.getValidationMessages("password")[0]'>
           <nz-input-group [nzSuffix]='passwordTemplate'>
             <input
               [type]="passwordVisible ? 'text' : 'password'"
               nz-input
+              formControlName='password'
+              name='password'
             />
           </nz-input-group>
           <ng-template #passwordTemplate>
