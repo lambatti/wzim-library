@@ -8,4 +8,5 @@ public final class ValidationConstant {
     public final static int PASSWORD_MAX_LENGTH = 30;
     public final static int SECURITY_QUESTION_MAX_LENGTH = 15;
     public final static int SECURITY_QUESTION_ANSWER_MAX_LENGTH = 30;
+    public final static int STRING_MIN_LENGTH = 2;
 }
