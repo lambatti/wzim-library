@@ -27,6 +27,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -43,21 +44,21 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     ChangePasswordComponent,
     ChangeQuestionComponent,
     ModalComponent],
-  imports: [NzLayoutModule,
-    NzGridModule,
-    NzTypographyModule,
-    NzListModule,
-    NzButtonModule,
-    NzCardModule,
-    CommonModule,
-    NzIconModule,
-    RouterModule,
-    NzFormModule,
-    NzInputModule,
-    NzSelectModule,
-    NzDrawerModule,
-    NzMenuModule,
-    NzModalModule],
+    imports: [NzLayoutModule,
+        NzGridModule,
+        NzTypographyModule,
+        NzListModule,
+        NzButtonModule,
+        NzCardModule,
+        CommonModule,
+        NzIconModule,
+        RouterModule,
+        NzFormModule,
+        NzInputModule,
+        NzSelectModule,
+        NzDrawerModule,
+        NzMenuModule,
+        NzModalModule, ReactiveFormsModule],
   exports: [HeaderComponent,
     CardComponent,
     PopularSectionComponent,

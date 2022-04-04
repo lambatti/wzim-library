@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  imports: [FormsModule,ReactiveFormsModule]
+  imports: [FormsModule, ReactiveFormsModule],
 })
-export class ValidatorsModule {}
+export class ValidatorsModule {
+}
