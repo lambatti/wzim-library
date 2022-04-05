@@ -4,7 +4,7 @@ import { LoginTemplateComponent } from './modules/loginTemplate/loginTemplate.co
 import { RegisterComponent } from './core/components/register/register.component';
 import { LoginComponent } from './core/components/login/login.component';
 import { ForgotPasswordComponent } from './core/components/forgotPassword/forgotPassword.component';
-import { ChangeForgetPasswordComponent } from './core/components/changeForgetPassword/changeForgetPassword.component';
+import { ChangeForgotPasswordComponent } from './core/components/changeForgotPassword/changeForgotPassword.component';
 import { BookDetailsComponent } from './modules/bookDetails/bookDetails.component';
 import { BookCategoriesComponent } from './modules/bookCategories/bookCategories.component';
 import { ReadBookComponent } from './modules/readBook/readBook.component';
@@ -34,7 +34,7 @@ const routes: Routes = [
         path: 'login', component: LoginComponent
       },
       { path: 'forgotPassword', component: ForgotPasswordComponent },
-      { path: 'changeForgotPassword', component: ChangeForgetPasswordComponent }
+      { path: 'changeForgotPassword', component: ChangeForgotPasswordComponent }
     ]
   },
   {

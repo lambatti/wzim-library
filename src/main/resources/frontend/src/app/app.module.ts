@@ -14,6 +14,7 @@ import { ModuleModule } from './modules/module.module';
 import { CoreModule } from './core/core.module';
 import { RouterModule } from '@angular/router';
 import { routing } from './app.routing';
+import { AuthorizationService } from './core/http/authorization.service';
 
 registerLocaleData(en);
 
@@ -32,7 +33,7 @@ registerLocaleData(en);
     RouterModule,
     routing
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [{ provide: NZ_I18N, useValue: en_US }, AuthorizationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

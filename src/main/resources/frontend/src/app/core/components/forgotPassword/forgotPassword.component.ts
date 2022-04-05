@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PasswordReminder } from '../../validators/passwordReminder.model';
 
 
 @Component({
@@ -7,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class ForgotPasswordComponent {
   passwordVisible: boolean = false;
+  formGroup: PasswordReminder = new PasswordReminder();
+
+
+
+
+  submitFrom():void {
+
+  }
+
 }

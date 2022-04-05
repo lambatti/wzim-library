@@ -1,32 +1,34 @@
 <nz-layout nz-col [nzXs]='24'>
   <div class='template__container'>
     <h1 nz-typography>Rejestracja</h1>
-    <form nz-form [nzLayout]='"vertical"'>
+    <form nz-form [nzLayout]='"vertical"' [formGroup]='formGroup' (ngSubmit)='submitForm()'>
       <nz-form-item>
         <nz-form-label nzRequired><span>Imię:</span></nz-form-label>
-        <nz-form-control>
-          <input nz-input nzSize='default' type='text' />
+        <nz-form-control [nzErrorTip]='formGroup.getValidationMessages("firstName")[0]'>
+          <input nz-input nzSize='default' type='text' formControlName='firstName' name='firstName' />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label nzRequired><span>Nazwisko:</span></nz-form-label>
-        <nz-form-control>
-          <input nz-input nzSize='default' type='text' />
+        <nz-form-control [nzErrorTip]='formGroup.getValidationMessages("lastName")[0]'>
+          <input nz-input nzSize='default' type='text' formControlName='lastName' name='lastName' />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label nzRequired><span>Email:</span></nz-form-label>
-        <nz-form-control>
-          <input nz-input nzSize='default' type='email' />
+        <nz-form-control [nzErrorTip]='formGroup.getValidationMessages("email")[0]'>
+          <input nz-input nzSize='default' type='email' formControlName='email' name='email' />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label nzRequired><span>Hasło:</span></nz-form-label>
-        <nz-form-control>
+        <nz-form-control [nzErrorTip]='formGroup.getValidationMessages("password")[0]'>
           <nz-input-group [nzSuffix]='passwordTemplate'>
             <input
               [type]="passwordVisible ? 'text' : 'password'"
               nz-input
+              formControlName='password'
+              name='password'
             />
           </nz-input-group>
           <ng-template #passwordTemplate>
@@ -37,39 +39,45 @@
       </nz-form-item>
       <nz-form-item>
         <nz-form-label nzRequired><span>Powtórz hasło:</span></nz-form-label>
-        <nz-form-control>
+        <nz-form-control [nzErrorTip]='formGroup.getValidationMessages("passwordConfirmation")[0]'>
           <nz-input-group [nzSuffix]='confirmTemplate'>
             <input
-              [type]="!confirmPasswordVisible ? 'text' : 'password'"
+              [type]="confirmPasswordVisible ? 'text' : 'password'"
               nz-input
+              formControlName='passwordConfirmation'
+              name='passwordConfirmation'
             />
           </nz-input-group>
           <ng-template #confirmTemplate>
-            <i nz-icon [nzType]="confirmPasswordVisible ? 'eye-invisible' : 'eye'"
+            <i nz-icon [nzType]="!confirmPasswordVisible ? 'eye-invisible' : 'eye'"
                (click)='confirmPasswordVisible = !confirmPasswordVisible'></i>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label nzRequired><span>Płeć:</span></nz-form-label>
-        <nz-select nzAllowClear>
-          <nz-option nzLabel='Nie podano' nzValue='N'></nz-option>
-          <nz-option nzLabel='Kobieta' nzValue='F'></nz-option>
-          <nz-option nzLabel='Mężczyzna' nzValue='M'></nz-option>
-        </nz-select>
+        <nz-form-control [nzErrorTip]='formGroup.getValidationMessages("gender")[0]'>
+          <nz-select nzAllowClear formControlName='gender'>
+            <nz-option nzLabel='Nie podano' nzValue='U'></nz-option>
+            <nz-option nzLabel='Kobieta' nzValue='F'></nz-option>
+            <nz-option nzLabel='Mężczyzna' nzValue='M'></nz-option>
+          </nz-select>
+        </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label nzRequired><span>Pytanie weryfikacyjne:</span></nz-form-label>
-        <nz-select nzServerSearch nzAllowClear>
-          <nz-option nzLabel='Czy coś tam działa?' nzValue='N'></nz-option>
-          <nz-option nzLabel='Jak się mają tomki?' nzValue='F'></nz-option>
-          <nz-option nzLabel='Co pije krowa?' nzValue='M'></nz-option>
-        </nz-select>
+        <nz-form-control [nzErrorTip]='formGroup.getValidationMessages("securityQuestion")[0]'>
+          <nz-select nzServerSearch nzAllowClear formControlName='securityQuestion'>
+            <nz-option nzLabel='Czy coś tam działa?' nzValue='N'></nz-option>
+            <nz-option nzLabel='Jak się mają tomki?' nzValue='F'></nz-option>
+            <nz-option nzLabel='Co pije krowa?' nzValue='M'></nz-option>
+          </nz-select>
+        </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label nzRequired><span>Odpowiedź:</span></nz-form-label>
-        <nz-form-control>
-          <input nz-input nzSize='default' type='text' />
+        <nz-form-control [nzErrorTip]='formGroup.getValidationMessages("securityQuestionAnswer")[0]'>
+          <input nz-input nzSize='default' type='text' formControlName='securityQuestionAnswer' />
         </nz-form-control>
       </nz-form-item>
       <div class='form__nav'>
