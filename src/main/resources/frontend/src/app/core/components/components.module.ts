@@ -6,7 +6,7 @@ import { FooterComponent } from './footer/footer.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgotPassword/forgotPassword.component';
-import { ChangeForgetPasswordComponent } from './changeForgetPassword/changeForgetPassword.component';
+import { ChangeForgotPasswordComponent } from './changeForgotPassword/changeForgotPassword.component';
 import { UserDataComponent } from './userData/userData.component';
 import { UserDrawerComponent } from './userDrawer/userDrawer.component';
 import { ChangePasswordComponent } from './changePassword/changePassword.component';
@@ -38,7 +38,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     RegisterComponent,
     LoginComponent,
     ForgotPasswordComponent,
-    ChangeForgetPasswordComponent,
+    ChangeForgotPasswordComponent,
     UserDataComponent,
     UserDrawerComponent,
     ChangePasswordComponent,
@@ -64,7 +64,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     PopularSectionComponent,
     FooterComponent,
     ForgotPasswordComponent,
-    ChangeForgetPasswordComponent,
+    ChangeForgotPasswordComponent,
     UserDataComponent,
     UserDrawerComponent,
     ChangePasswordComponent,

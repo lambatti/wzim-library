@@ -21,11 +21,9 @@ export class LoginComponent {
     this.formSubmitted = true;
     if (this.formGroup.valid) {
       this.newUser = new LoginUserModel();
-
       console.log('Submit');
       this.formGroup.reset();
       this.formSubmitted = false;
     }
   }
-
 }
