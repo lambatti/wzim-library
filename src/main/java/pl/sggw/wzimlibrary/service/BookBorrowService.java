@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.sggw.wzimlibrary.adapter.SqlBookBorrowProlongationRequestRepository;
 import pl.sggw.wzimlibrary.adapter.SqlBookBorrowRepository;
 import pl.sggw.wzimlibrary.adapter.SqlBookBorrowRequestRepository;
+import pl.sggw.wzimlibrary.exception.UserHasTheBookAlreadyException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
@@ -33,11 +34,26 @@ public class BookBorrowService {
     }
 
     public BookBorrowRequest addBookBorrowRequest(UserDetails userDetails, String slug)
-            throws UserNotFoundException, ExecutionException, InterruptedException {
+            throws UserNotFoundException, ExecutionException, InterruptedException, UserHasTheBookAlreadyException {
+
         User user = userService.getUserFromUserDetails(userDetails);
-        BookBorrowId bookBorrowId = new BookBorrowId(user, slug);
-        BookBorrowRequest bookBorrowRequest = new BookBorrowRequest(bookBorrowId, LocalDate.now());
+
+        checkIfTheUserHasTheBook(user, slug);
+
+        BookBorrowRequest bookBorrowRequest = new BookBorrowRequest(new BookBorrowId(user, slug), LocalDate.now());
+
         return save(bookBorrowRequest).get();
+
+    }
+
+    private void checkIfTheUserHasTheBook(User user, String slug) throws UserHasTheBookAlreadyException {
+
+        for (var request : user.getBookBorrowRequests()) {
+            if (request.getBookSlug().equals(slug)) {
+                throw new UserHasTheBookAlreadyException("User: " + user.getEmail()
+                        + " already has sent the request for the book: " + slug);
+            }
+        }
     }
 
 }

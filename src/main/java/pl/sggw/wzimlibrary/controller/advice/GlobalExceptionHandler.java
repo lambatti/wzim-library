@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
 import pl.sggw.wzimlibrary.exception.UserDecryptionException;
+import pl.sggw.wzimlibrary.exception.UserHasTheBookAlreadyException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.exception.dto.ApiError;
 
@@ -33,6 +34,17 @@ import java.util.List;
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(UserHasTheBookAlreadyException.class)
+    public ResponseEntity<?> handleUserHasTheBookAlreadyException(UserHasTheBookAlreadyException ex,
+                                                                  HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.CONFLICT;
+
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
+    }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex,

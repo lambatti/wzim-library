@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.sggw.wzimlibrary.exception.UserHasTheBookAlreadyException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.annotation.CurrentlyLoggedUser;
@@ -24,7 +25,7 @@ public class BookBorrowController {
     @PostMapping("/bookBorrowRequests")
     public ResponseEntity<?> addBorrowBookRequest(@RequestBody String bookSlug,
                                                   @CurrentlyLoggedUser UserDetails userDetails)
-            throws UserNotFoundException, ExecutionException, InterruptedException {
+            throws UserNotFoundException, ExecutionException, InterruptedException, UserHasTheBookAlreadyException {
 
         BookBorrowRequest bookBorrowRequest = bookBorrowService.addBookBorrowRequest(userDetails, bookSlug);
 

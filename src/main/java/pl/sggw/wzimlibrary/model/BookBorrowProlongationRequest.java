@@ -27,5 +27,7 @@ public class BookBorrowProlongationRequest extends BookBorrowBase {
 
     public BookBorrowProlongationRequest() {
         super(new BookBorrowId());
+        this.requestDate = LocalDate.now();
+        this.prolongationDate = LocalDate.now();
     }
 }
