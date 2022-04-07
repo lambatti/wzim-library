@@ -42,6 +42,10 @@ public class BookBorrowService {
 
         BookBorrowRequest bookBorrowRequest = new BookBorrowRequest(new BookBorrowId(user, slug), LocalDate.now());
 
+        user.getBookBorrowRequests().add(bookBorrowRequest);
+
+        userService.save(user);
+
         return save(bookBorrowRequest).get();
 
     }
