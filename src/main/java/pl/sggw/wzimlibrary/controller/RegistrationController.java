@@ -47,7 +47,7 @@ public class RegistrationController {
 
     }
 
-    @PostMapping("register")
+    @PostMapping("users")
     ResponseEntity<?> registerUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto)
             throws ExecutionException, InterruptedException, UserAlreadyExistsException {
 
