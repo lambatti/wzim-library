@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.io.JsonEOFException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
 import pl.sggw.wzimlibrary.exception.UserDecryptionException;
+import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.exception.dto.ApiError;
 
 import javax.mail.MessagingException;
@@ -32,8 +32,18 @@ import java.util.List;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
-@Slf4j
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex,
+                                                         HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
+    }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException ex,

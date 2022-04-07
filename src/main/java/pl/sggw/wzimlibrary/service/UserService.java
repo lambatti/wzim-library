@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
+import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
@@ -72,6 +73,29 @@ public class UserService implements UserDetailsService {
         userRegistrationDto.setPassword(encodedPassword);
 
         return save(modelMapper.map(userRegistrationDto, User.class)).get();
+    }
+
+    public User getUserFromUserDetails(UserDetails userDetails) throws UserNotFoundException {
+
+        String email = "";
+        Optional<User> user = Optional.empty();
+
+        try {
+            email = userDetails.getUsername();
+            user = findByEmail(email).get();
+
+        } catch (NullPointerException e) {
+            throw new UsernameNotFoundException("User not found.");
+
+        } catch (ExecutionException | InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        String finalEmail = email;
+
+        return Optional.ofNullable(user)
+                .orElseThrow(() -> new UserNotFoundException("User with the email " + finalEmail + " does not exist."))
+                .get();
     }
 
     @Override
