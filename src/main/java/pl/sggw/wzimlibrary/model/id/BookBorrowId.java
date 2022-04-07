@@ -1,9 +1,6 @@
 package pl.sggw.wzimlibrary.model.id;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.sggw.wzimlibrary.model.User;
 
 import javax.persistence.Column;
@@ -15,7 +12,8 @@ import java.io.Serializable;
 @Embeddable
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 public class BookBorrowId implements Serializable {
 
