@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { AuthService } from '../../authentication/auth.service';
 
 
 @Component({
@@ -9,9 +10,14 @@ import { Component, Input } from '@angular/core';
 
 export class HeaderComponent {
   @Input() isRegister: boolean = false;
-  public isAuth: boolean = false;
   public name: string = 'Tomek';
 
+  constructor(public _auth: AuthService) {
+  }
+
+  get isAuth(): boolean {
+    return this._auth.isAuthenticated();
+  }
 
 
 }

@@ -10,6 +10,15 @@
     </ul>
   </nav>
   <div *ngIf='isAuth && !isRegister' nz-col [nzXs]='12' [nzMd]='12'>
-    <h5 nz-typography class='user__greeting'>Witaj<span>{{name}}</span></h5>
+    <div nz-row nzJustify='end' nzAlign='middle'>
+      <h5 class='user'>Witaj<span class='user--dark'>{{name}}</span></h5>
+      <i class='user__dropdown' nz-dropdown nzTrigger='click' nzTheme="outline" [nzDropdownMenu]='menu' nz-icon nzType='setting'></i>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu nzSelectable>
+          <li nz-menu-item>Moje konto</li>
+          <li nz-menu-item>Wyloguj się</li>
+        </ul>
+      </nz-dropdown-menu>
+    </div>
   </div>
 </nz-header>
