@@ -28,6 +28,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MessageModule } from '../message/message.module';
 
 
 @NgModule({
@@ -58,7 +59,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     NzSelectModule,
     NzDrawerModule,
     NzMenuModule,
-    NzModalModule, ReactiveFormsModule],
+    NzModalModule, ReactiveFormsModule, MessageModule],
   exports: [HeaderComponent,
     CardComponent,
     PopularSectionComponent,

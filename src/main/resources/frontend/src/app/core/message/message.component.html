@@ -1,0 +1,8 @@
+<div *ngIf='lastMessage'>
+  <nz-modal [(nzVisible)]="isVisible" [nzCancelText]='null' [nzClosable]='null' (nzOnOk)='handleOk()'>
+    <ng-container *nzModalContent>
+      <nz-result [nzStatus]='"403"' nzTitle="Coś poszło nie tak" [nzSubTitle]="lastMessage.text">
+      </nz-result>
+    </ng-container>
+  </nz-modal>
+</div>

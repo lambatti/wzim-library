@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginFormGroup } from '../../validators/loginFormGroup.model';
 import { LoginUserModel } from '../../../model/loginUser.model';
-import { AuthorizationService } from '../../http/authorization.service';
+import { AuthenticationService } from '../../authentication/authentication.service';
 
 
 @Component({
@@ -11,11 +11,9 @@ import { AuthorizationService } from '../../http/authorization.service';
 })
 export class LoginComponent {
 
-  constructor(private _authorization: AuthorizationService) {
+  constructor( private _authentication: AuthenticationService) {
   }
-
   passwordVisible: boolean = false;
-
   formGroup: LoginFormGroup = new LoginFormGroup();
   newUser: LoginUserModel = new LoginUserModel();
   formSubmitted: boolean = false;
@@ -25,10 +23,13 @@ export class LoginComponent {
     Object.keys(this.formGroup.controls).forEach(c => this.newUser[c] = this.formGroup.controls[c].value);
     this.formSubmitted = true;
     if (this.formGroup.valid) {
-      this._authorization.login(this.newUser);
+      this._authentication
+        .login(this.newUser)
+        .subscribe();
       this.newUser = new LoginUserModel();
       this.formGroup.reset();
       this.formSubmitted = false;
     }
   }
 }
+// , private _notification: NotificationComponent    this._notification.createNotification('error');
