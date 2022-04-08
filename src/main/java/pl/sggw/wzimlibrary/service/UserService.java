@@ -10,15 +10,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
-import pl.sggw.wzimlibrary.util.JwtUtil;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +26,9 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService implements UserDetailsService {
 
-    private final JwtUtil jwtUtil;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserCacheService userCacheService;
@@ -52,11 +51,6 @@ public class UserService implements UserDetailsService {
     @Async
     public CompletableFuture<Boolean> existsByEmail(String email) {
         return CompletableFuture.completedFuture(userCacheService.existsByEmail(email));
-    }
-
-    private String extractEmailFromToken(String token) {
-        token = jwtUtil.removeBearer(token);
-        return jwtUtil.extractEmail(token);
     }
 
     @Transactional

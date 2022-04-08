@@ -18,9 +18,9 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import pl.sggw.wzimlibrary.exception.BookBorrowConflictException;
 import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
 import pl.sggw.wzimlibrary.exception.UserDecryptionException;
-import pl.sggw.wzimlibrary.exception.UserHasTheBookAlreadyException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.exception.dto.ApiError;
 
@@ -35,8 +35,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(UserHasTheBookAlreadyException.class)
-    public ResponseEntity<?> handleUserHasTheBookAlreadyException(UserHasTheBookAlreadyException ex,
+    @ExceptionHandler(BookBorrowConflictException.class)
+    public ResponseEntity<?> handleUserHasTheBookAlreadyException(BookBorrowConflictException ex,
                                                                   HttpServletRequest httpServletRequest) {
 
         HttpStatus httpStatus = HttpStatus.CONFLICT;

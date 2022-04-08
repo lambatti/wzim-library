@@ -1,10 +1,8 @@
 package pl.sggw.wzimlibrary.model;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import pl.sggw.wzimlibrary.model.base.BookBorrowBase;
-import pl.sggw.wzimlibrary.model.id.BookBorrowId;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -19,14 +17,14 @@ public class BookBorrow extends BookBorrowBase {
     private final LocalDate borrowDate;
     private final LocalDate returnDate;
 
-    public BookBorrow(@NonNull BookBorrowId id, LocalDate borrowDate, LocalDate returnDate) {
-        super(id);
+    public BookBorrow(User user, String bookSlug, LocalDate borrowDate, LocalDate returnDate) {
+        super(user, bookSlug);
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
     }
 
     public BookBorrow() {
-        super(new BookBorrowId());
+        super(new User(), "");
         this.borrowDate = LocalDate.now();
         this.returnDate = LocalDate.now().plusDays(30);
     }

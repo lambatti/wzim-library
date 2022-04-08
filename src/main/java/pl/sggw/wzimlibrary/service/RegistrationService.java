@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sggw.wzimlibrary.exception.UserDecryptionException;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
+import pl.sggw.wzimlibrary.util.MailUtil;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -16,12 +17,12 @@ import java.util.Base64;
 @RequiredArgsConstructor
 public class RegistrationService {
 
-    private final MailService mailService;
+    private final MailUtil mailUtil;
     private final ObjectMapper objectMapper;
 
     public void sendRegistrationMail(UserRegistrationDto userRegistrationDto, String baseUrl)
             throws JsonProcessingException, MessagingException {
-        mailService.sendRegistrationMail(userRegistrationDto.getEmail(), baseUrl, encryptUser(userRegistrationDto));
+        mailUtil.sendRegistrationMail(userRegistrationDto.getEmail(), baseUrl, encryptUser(userRegistrationDto));
     }
 
     public UserRegistrationDto getUserFromEncryptedMessage(String encryptedUser) throws IOException, UserDecryptionException {

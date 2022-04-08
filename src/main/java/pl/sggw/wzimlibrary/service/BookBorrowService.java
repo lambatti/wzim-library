@@ -4,14 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.sggw.wzimlibrary.adapter.SqlBookBorrowProlongationRequestRepository;
 import pl.sggw.wzimlibrary.adapter.SqlBookBorrowRepository;
 import pl.sggw.wzimlibrary.adapter.SqlBookBorrowRequestRepository;
-import pl.sggw.wzimlibrary.exception.UserHasTheBookAlreadyException;
+import pl.sggw.wzimlibrary.exception.BookBorrowConflictException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
+import pl.sggw.wzimlibrary.model.BookBorrow;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
-import pl.sggw.wzimlibrary.model.id.BookBorrowId;
 
 import java.time.LocalDate;
 import java.util.concurrent.CompletableFuture;
@@ -20,6 +21,7 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BookBorrowService {
 
     private final SqlBookBorrowRepository bookBorrowRepository;
@@ -33,14 +35,17 @@ public class BookBorrowService {
         return CompletableFuture.completedFuture(bookBorrowRequestRepository.save(bookBorrowRequest));
     }
 
-    public BookBorrowRequest addBookBorrowRequest(UserDetails userDetails, String slug)
-            throws UserNotFoundException, ExecutionException, InterruptedException, UserHasTheBookAlreadyException {
+    @Transactional
+    public BookBorrowRequest addBookBorrowRequest(UserDetails userDetails, String bookSlug)
+            throws UserNotFoundException, ExecutionException, InterruptedException, BookBorrowConflictException {
 
         User user = userService.getUserFromUserDetails(userDetails);
 
-        checkIfTheUserHasTheBook(user, slug);
+        checkIfUserSentTheRequest(user, bookSlug);
 
-        BookBorrowRequest bookBorrowRequest = new BookBorrowRequest(new BookBorrowId(user, slug), LocalDate.now());
+        checkIfUserHasTheBook(user, bookSlug);
+
+        BookBorrowRequest bookBorrowRequest = new BookBorrowRequest(user, bookSlug, LocalDate.now());
 
         user.getBookBorrowRequests().add(bookBorrowRequest);
 
@@ -50,14 +55,27 @@ public class BookBorrowService {
 
     }
 
-    private void checkIfTheUserHasTheBook(User user, String slug) throws UserHasTheBookAlreadyException {
+    public BookBorrow addBookBorrow(User user, String slug) throws Exception {
+        throw new Exception("Not implemented yet");
+    }
+
+    private void checkIfUserSentTheRequest(User user, String bookSlug) throws BookBorrowConflictException {
 
         for (var request : user.getBookBorrowRequests()) {
-            if (request.getBookSlug().equals(slug)) {
-                throw new UserHasTheBookAlreadyException("User: " + user.getEmail()
-                        + " already has sent the request for the book: " + slug);
+            if (request.getBookSlug().equals(bookSlug)) {
+                throw new BookBorrowConflictException("User: " + user.getEmail()
+                        + " already has sent the request for the book: " + bookSlug);
             }
         }
     }
 
+    private void checkIfUserHasTheBook(User user, String bookSlug) throws BookBorrowConflictException {
+
+        for (var request : user.getBookBorrows()) {
+            if (request.getBookSlug().equals(bookSlug)) {
+                throw new BookBorrowConflictException("User: " + user.getEmail()
+                        + " already has the book already: " + bookSlug);
+            }
+        }
+    }
 }
