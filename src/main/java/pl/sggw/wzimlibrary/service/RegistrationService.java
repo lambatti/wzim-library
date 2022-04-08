@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sggw.wzimlibrary.exception.UserDecryptionException;
-import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
+import pl.sggw.wzimlibrary.model.dto.user.UserRegistrationDto;
 import pl.sggw.wzimlibrary.util.MailUtil;
 
 import javax.mail.MessagingException;

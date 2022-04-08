@@ -1,4 +1,4 @@
-package pl.sggw.wzimlibrary.model.dto;
+package pl.sggw.wzimlibrary.model.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

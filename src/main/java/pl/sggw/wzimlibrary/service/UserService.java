@@ -15,7 +15,7 @@ import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.Role;
-import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
+import pl.sggw.wzimlibrary.model.dto.user.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
 
 import java.util.ArrayList;
