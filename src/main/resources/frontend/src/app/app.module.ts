@@ -16,6 +16,9 @@ import { RouterModule } from '@angular/router';
 import { routing } from './app.routing';
 import { AuthorizationService } from './core/http/authorization.service';
 import { AuthenticationService } from './core/authentication/authentication.service';
+import { AuthService } from './core/authentication/auth.service';
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
+import { AuthGuard } from './core/guards/authGuard.guard';
 
 registerLocaleData(en);
 
@@ -34,7 +37,13 @@ registerLocaleData(en);
     RouterModule,
     routing
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US },AuthorizationService ,AuthenticationService],
+  providers: [{
+    provide: NZ_I18N,
+    useValue: en_US
+  }, AuthorizationService, AuthenticationService, AuthService, JwtHelperService, {
+    provide: JWT_OPTIONS,
+    useValue: JWT_OPTIONS
+  }, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

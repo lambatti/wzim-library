@@ -7,7 +7,7 @@ import { MessageModule } from './message/message.module';
 @NgModule({
   declarations: [],
   imports: [ComponentsModule, ValidatorsModule, MessageModule],
-  exports: [ComponentsModule, MessageModule]
+  exports: [ComponentsModule, MessageModule],
 })
 export class CoreModule {
 }

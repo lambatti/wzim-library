@@ -29,6 +29,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MessageModule } from '../message/message.module';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 
 @NgModule({
@@ -45,21 +46,21 @@ import { MessageModule } from '../message/message.module';
     ChangePasswordComponent,
     ChangeQuestionComponent,
     ModalComponent],
-  imports: [NzLayoutModule,
-    NzGridModule,
-    NzTypographyModule,
-    NzListModule,
-    NzButtonModule,
-    NzCardModule,
-    CommonModule,
-    NzIconModule,
-    RouterModule,
-    NzFormModule,
-    NzInputModule,
-    NzSelectModule,
-    NzDrawerModule,
-    NzMenuModule,
-    NzModalModule, ReactiveFormsModule, MessageModule],
+    imports: [NzLayoutModule,
+        NzGridModule,
+        NzTypographyModule,
+        NzListModule,
+        NzButtonModule,
+        NzCardModule,
+        CommonModule,
+        NzIconModule,
+        RouterModule,
+        NzFormModule,
+        NzInputModule,
+        NzSelectModule,
+        NzDrawerModule,
+        NzMenuModule,
+        NzModalModule, ReactiveFormsModule, MessageModule, NzDropDownModule],
   exports: [HeaderComponent,
     CardComponent,
     PopularSectionComponent,

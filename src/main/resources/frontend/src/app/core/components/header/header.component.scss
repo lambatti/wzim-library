@@ -26,6 +26,22 @@
     }
   }
 }
+.user {
+  font-size: 10px;
+  @include font-header();
+  color: $primary-color;
+  margin: 0;
+  font-weight: bold;
+  &--dark {
+    color: $dark;
+    margin: 0 5px;
+  }
+  &__dropdown {
+    font-size: 25px;
+    cursor: pointer;
+    color: $primary-color;
+  }
+}
 
 
 

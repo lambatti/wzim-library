@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LoginFormGroup } from '../../validators/loginFormGroup.model';
 import { LoginUserModel } from '../../../model/loginUser.model';
 import { AuthenticationService } from '../../authentication/authentication.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,8 +12,9 @@ import { AuthenticationService } from '../../authentication/authentication.servi
 })
 export class LoginComponent {
 
-  constructor( private _authentication: AuthenticationService) {
+  constructor(private _authentication: AuthenticationService, private router: Router) {
   }
+
   passwordVisible: boolean = false;
   formGroup: LoginFormGroup = new LoginFormGroup();
   newUser: LoginUserModel = new LoginUserModel();
@@ -25,11 +27,13 @@ export class LoginComponent {
     if (this.formGroup.valid) {
       this._authentication
         .login(this.newUser)
-        .subscribe();
+        .subscribe( ({token})=> {
+          localStorage.setItem('token', token);
+          this.router.navigateByUrl('/');
+        });
       this.newUser = new LoginUserModel();
       this.formGroup.reset();
       this.formSubmitted = false;
     }
   }
 }
-// , private _notification: NotificationComponent    this._notification.createNotification('error');
