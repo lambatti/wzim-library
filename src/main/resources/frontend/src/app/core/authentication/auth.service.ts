@@ -16,8 +16,10 @@ export class AuthService {
     } else {
       localStorage.removeItem('token');
       return false;
-
     }
   }
 
+  logout(): void {
+    localStorage.removeItem('token');
+  }
 }
