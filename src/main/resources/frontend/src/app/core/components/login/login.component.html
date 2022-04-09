@@ -25,11 +25,17 @@
           </ng-template>
         </nz-form-control>
       </nz-form-item>
-      <div class='form__nav'>
-        <a routerLink='/register' class='form__nav__item'>Nie posiadasz konta, kliknij tutaj</a>
-        <a routerLink='/forgotPassword' class='form__nav__item'>Nie pamiętasz hasła, kliknij tutaj</a>
-        <a routerLink='/' class='form__nav__item'>Powrót do strony głównej</a>
-      </div>
+      <ul class='form__nav'>
+        <li class='form__nav__item'>
+          <a routerLink='/register' class='form__nav__item--a'>Nie posiadasz konta, kliknij tutaj</a>
+        </li>
+        <li class='form__nav__item'>
+          <a routerLink='/forgotPassword' class='form__nav__item--a'>Nie pamiętasz hasła, kliknij tutaj</a>
+        </li>
+        <li class='form__nav__item'>
+          <a routerLink='/' class='form__nav__item--a'>Powrót do strony głównej</a>
+        </li>
+      </ul>
       <div nz-row nzJustify='end'>
         <button type='submit' nz-button nzType='primary'>Zaloguj się</button>
       </div>

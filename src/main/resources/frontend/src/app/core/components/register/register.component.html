@@ -80,10 +80,14 @@
           <input nz-input nzSize='default' type='text' formControlName='securityQuestionAnswer' />
         </nz-form-control>
       </nz-form-item>
-      <div class='form__nav'>
-        <a routerLink='/login' class='form__nav__item'>Posiadasz już konto, kliknij tutaj</a>
-        <a routerLink='/' class='form__nav__item'>Powrót do strony głównej</a>
-      </div>
+      <ul class='form__nav'>
+        <li class='form__nav__item'>
+          <a routerLink='/login' class='form__nav__item--a'>Posiadasz już konto, kliknij tutaj</a>
+        </li>
+        <li class='form__nav__item'>
+          <a routerLink='/' class='form__nav__item--a'>Powrót do strony głównej</a>
+        </li>
+      </ul>
       <div nz-row nzJustify='end'>
         <button type='submit' nz-button nzType='primary'>Zarejestruj</button>
       </div>
