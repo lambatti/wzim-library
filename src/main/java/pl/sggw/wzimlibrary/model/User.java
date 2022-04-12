@@ -36,13 +36,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<BookBorrow> bookBorrows;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<BookBorrowRequest> bookBorrowRequests;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<BookBorrowProlongationRequest> bookBorrowProlongationRequests;
 
 }

@@ -1,35 +1,27 @@
 package pl.sggw.wzimlibrary.model.base;
 
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import pl.sggw.wzimlibrary.model.User;
-import pl.sggw.wzimlibrary.model.id.BookBorrowId;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 @MappedSuperclass
+@Getter
+@Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder
 public abstract class BookBorrowBase {
 
-    @EmbeddedId
-    protected final BookBorrowId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    public BookBorrowBase(User user, String bookSlug) {
-        this.id = new BookBorrowId(user, bookSlug);
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public User getUser() {
-        return id.getUser();
-    }
-
-    public void setUser(User user) {
-        this.id.setUser(user);
-    }
-
-    public String getBookSlug() {
-        return id.getBookSlug();
-    }
-
-    public void setBookSlug(String bookSlug) {
-        this.id.setBookSlug(bookSlug);
-    }
+    private String bookSlug;
 
 }
