@@ -16,7 +16,6 @@ import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowDto;
 import pl.sggw.wzimlibrary.service.cache.BookBorrowCacheService;
-import pl.sggw.wzimlibrary.service.cache.UserCacheService;
 
 import java.time.LocalDate;
 import java.util.concurrent.CompletableFuture;
@@ -37,7 +36,6 @@ public class BookBorrowService {
 
     private final BookBorrowCacheService bookBorrowCacheService;
 
-    private final UserCacheService userCacheService;
 
     @Async
     public CompletableFuture<BookBorrowRequest> save(BookBorrowRequest bookBorrowRequest) {
@@ -62,7 +60,7 @@ public class BookBorrowService {
 
     @Transactional
     public BookBorrowRequest addBookBorrowRequest(UserDetails userDetails, String bookSlug)
-            throws UserNotFoundException, ExecutionException, InterruptedException, BookBorrowConflictException {
+            throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
         User user = userService.getUserFromUserDetails(userDetails);
 
@@ -73,15 +71,19 @@ public class BookBorrowService {
         BookBorrowRequest bookBorrowRequest = BookBorrowRequest.builder()
                 .user(user).bookSlug(bookSlug).requestDate(LocalDate.now()).build();
 
-        userCacheService.addBookBorrowRequestToUser(user, bookBorrowRequest);
+        userService.addBookBorrowRequestToUser(user, bookBorrowRequest).get();
 
         return bookBorrowRequest;
 
     }
 
-    private void removeBookBorrowRequestFromUser(User user, BookBorrowRequest request) throws ExecutionException, InterruptedException {
+    @Transactional
+    public void rejectBookBorrowRequest(BookBorrowDto bookBorrowDto)
+            throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
-        userCacheService.removeBookBorrowRequestFromUser(user, request);
+        BookBorrowRequest request = getBookBorrowRequest(bookBorrowDto);
+
+        deleteBookBorrowRequest(request);
 
     }
 
@@ -105,15 +107,6 @@ public class BookBorrowService {
 
     }
 
-    @Transactional
-    public void rejectBookBorrowRequest(BookBorrowDto bookBorrowDto)
-            throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
-
-        BookBorrowRequest request = getBookBorrowRequest(bookBorrowDto);
-
-        deleteBookBorrowRequest(request);
-
-    }
 
     BookBorrowRequest getBookBorrowRequest(BookBorrowDto bookBorrowDto)
             throws UserNotFoundException, ExecutionException, InterruptedException, BookBorrowConflictException {
@@ -139,7 +132,7 @@ public class BookBorrowService {
 
         User user = bookBorrowRequest.getUser();
 
-        removeBookBorrowRequestFromUser(user, bookBorrowRequest);
+        userService.removeBookBorrowRequestFromUser(user, bookBorrowRequest).get();
 
     }
 

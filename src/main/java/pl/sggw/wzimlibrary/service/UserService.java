@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
+import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.dto.user.UserRegistrationDto;
@@ -51,6 +52,16 @@ public class UserService implements UserDetailsService {
     @Async
     public CompletableFuture<Boolean> existsByEmail(String email) {
         return CompletableFuture.completedFuture(userCacheService.existsByEmail(email));
+    }
+
+    @Async
+    public CompletableFuture<Void> addBookBorrowRequestToUser(User user, BookBorrowRequest request) {
+        return CompletableFuture.runAsync(() -> userCacheService.addBookBorrowRequestToUser(user, request));
+    }
+
+    @Async
+    public CompletableFuture<Void> removeBookBorrowRequestFromUser(User user, BookBorrowRequest request) {
+        return CompletableFuture.runAsync(() -> userCacheService.removeBookBorrowRequestFromUser(user, request));
     }
 
     @Transactional
