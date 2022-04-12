@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import pl.sggw.wzimlibrary.adapter.SqlUserRepository;
+import pl.sggw.wzimlibrary.model.BookBorrow;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
 
@@ -54,6 +55,16 @@ public class UserCacheService {
             @CacheEvict(value = "userEmail", key = "#user.email")
     })
     public void removeBookBorrowRequestFromUser(User user, BookBorrowRequest request) {
+        user.getBookBorrowRequests().remove(request);
+        userRepository.save(user);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "allUsers", allEntries = true),
+            @CacheEvict(value = "userEmail", key = "#user.email")
+    })
+    public void addBookBorrowToUser(User user, BookBorrowRequest request, BookBorrow bookBorrow) {
+        user.getBookBorrows().add(bookBorrow);
         user.getBookBorrowRequests().remove(request);
         userRepository.save(user);
     }

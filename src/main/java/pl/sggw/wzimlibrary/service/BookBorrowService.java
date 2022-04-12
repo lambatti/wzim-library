@@ -1,7 +1,6 @@
 package pl.sggw.wzimlibrary.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,6 @@ import java.util.concurrent.ExecutionException;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@Slf4j
 public class BookBorrowService {
 
     private final SqlBookBorrowRepository bookBorrowRepository;
@@ -57,7 +55,6 @@ public class BookBorrowService {
         return CompletableFuture.completedFuture(bookBorrowRequestRepository.getByUserEmailAndBookSlug(email, bookSlug));
     }
 
-
     @Transactional
     public BookBorrowRequest addBookBorrowRequest(UserDetails userDetails, String bookSlug)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
@@ -77,7 +74,6 @@ public class BookBorrowService {
 
     }
 
-    @Transactional
     public void rejectBookBorrowRequest(BookBorrowDto bookBorrowDto)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
@@ -87,27 +83,31 @@ public class BookBorrowService {
 
     }
 
-    @Transactional
     public void acceptBookBorrowRequest(BookBorrowDto bookBorrowDto)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
         BookBorrowRequest request = getBookBorrowRequest(bookBorrowDto);
 
-        deleteBookBorrowRequest(request);
+        User user = request.getUser();
 
-        BookBorrow bb = BookBorrow.builder().user(request.getUser())
-                .bookSlug("test")
+        BookBorrow bookBorrow = BookBorrow.builder().user(user)
+                .bookSlug(request.getBookSlug())
                 .borrowDate(LocalDate.now())
                 .returnDate((LocalDate.now().plusDays(30)))
                 .build();
 
-        log.info(bb.getUser().getEmail() + " " + bb.getBookSlug());
-
-        addBookBorrow(request.getUser(), request.getBookSlug());
+        addBookBorrowToUser(user, request, bookBorrow);
 
     }
 
+    @Transactional
+    void addBookBorrowToUser(User user, BookBorrowRequest request, BookBorrow bookBorrow)
+            throws ExecutionException, InterruptedException {
+        userService.addBookBorrowToUser(user, request, bookBorrow).get();
+    }
 
+
+    @Transactional
     BookBorrowRequest getBookBorrowRequest(BookBorrowDto bookBorrowDto)
             throws UserNotFoundException, ExecutionException, InterruptedException, BookBorrowConflictException {
 
@@ -133,23 +133,6 @@ public class BookBorrowService {
         User user = bookBorrowRequest.getUser();
 
         userService.removeBookBorrowRequestFromUser(user, bookBorrowRequest).get();
-
-    }
-
-    BookBorrow addBookBorrow(User user, String bookSlug) throws ExecutionException, InterruptedException {
-
-        log.info(user.getId().toString());
-
-        //BookBorrow bb = new BookBorrow(user, bookSlug, LocalDate.now(), LocalDate.now().plusDays(30));
-
-        BookBorrow bb = new BookBorrow();
-
-        log.info(bb.getUser().getEmail() + " " + bb.getBookSlug());
-
-        user.getBookBorrows().add(bb);
-        userService.save(user);
-        return save(bb).get();
-
 
     }
 
