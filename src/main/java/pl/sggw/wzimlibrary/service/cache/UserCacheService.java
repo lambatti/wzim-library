@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import pl.sggw.wzimlibrary.adapter.SqlUserRepository;
+import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
 
 import java.util.List;
@@ -36,6 +38,24 @@ public class UserCacheService {
     @Cacheable(value = "userExistsByEmail", key = "#email")
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "allUsers", allEntries = true),
+            @CacheEvict(value = "userEmail", key = "#user.email")
+    })
+    public void addBookBorrowRequestToUser(User user, BookBorrowRequest request) {
+        user.getBookBorrowRequests().add(request);
+        userRepository.save(user);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "allUsers", allEntries = true),
+            @CacheEvict(value = "userEmail", key = "#user.email")
+    })
+    public void removeBookBorrowRequestFromUser(User user, BookBorrowRequest request) {
+        user.getBookBorrowRequests().remove(request);
+        userRepository.save(user);
     }
 
     // when deleting
