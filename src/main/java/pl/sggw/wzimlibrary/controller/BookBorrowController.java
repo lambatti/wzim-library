@@ -9,6 +9,7 @@ import pl.sggw.wzimlibrary.exception.BookBorrowConflictException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.annotation.CurrentlyLoggedUser;
+import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowDto;
 import pl.sggw.wzimlibrary.service.BookBorrowService;
 
 import java.net.URI;
@@ -22,7 +23,7 @@ public class BookBorrowController {
 
     private final BookBorrowService bookBorrowService;
 
-    @PostMapping("/bookBorrowRequests")
+    @PostMapping("bookBorrowRequests")
     public ResponseEntity<?> addBorrowBookRequest(@RequestBody String bookSlug,
                                                   @CurrentlyLoggedUser UserDetails userDetails)
             throws UserNotFoundException, ExecutionException, InterruptedException, BookBorrowConflictException {
@@ -35,4 +36,22 @@ public class BookBorrowController {
                 .build();
     }
 
+    @PostMapping("bookBorrowRequests/accept")
+    public ResponseEntity<?> acceptBookBorrowRequest(@RequestBody BookBorrowDto bookBorrowDto)
+            throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
+
+        bookBorrowService.acceptBookBorrowRequest(bookBorrowDto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("bookBorrowRequests/reject")
+    public ResponseEntity<?> rejectBookBorrowRequest(@RequestBody BookBorrowDto bookBorrowDto)
+            throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
+
+        bookBorrowService.rejectBookBorrowRequest(bookBorrowDto);
+
+        return ResponseEntity.ok().build();
+    }
 }
+
