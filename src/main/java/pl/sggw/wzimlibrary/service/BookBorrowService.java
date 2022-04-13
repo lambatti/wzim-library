@@ -1,7 +1,9 @@
 package pl.sggw.wzimlibrary.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +16,12 @@ import pl.sggw.wzimlibrary.model.BookBorrow;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.BookBorrowConstant;
+import pl.sggw.wzimlibrary.model.constant.SchedulingConstant;
 import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowDto;
 import pl.sggw.wzimlibrary.service.cache.BookBorrowCacheService;
 
+import java.sql.Date;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -24,6 +29,7 @@ import java.util.concurrent.ExecutionException;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class BookBorrowService {
 
     private final SqlBookBorrowRepository bookBorrowRepository;
@@ -53,6 +59,11 @@ public class BookBorrowService {
     @Async
     public CompletableFuture<BookBorrowRequest> getByUserIdAndBookSlug(Integer userId, String bookSlug) {
         return CompletableFuture.completedFuture(bookBorrowRequestRepository.getByUser_IdAndBookSlug(userId, bookSlug));
+    }
+
+    @Async
+    public CompletableFuture<Integer> deleteBookBorrowsFromUserByReturnDate(Integer userId, Date currentDate) {
+        return CompletableFuture.completedFuture(bookBorrowRepository.deleteAllFromUserByReturnDate(userId, currentDate));
     }
 
     @Transactional
@@ -156,4 +167,20 @@ public class BookBorrowService {
         }
     }
 
+    @Scheduled(cron = SchedulingConstant.EVERY_DAY_AT_MIDNIGHT, zone = SchedulingConstant.TIMEZONE)
+    @Transactional
+    public void returnBooksFromAllUsers() throws ExecutionException, InterruptedException {
+
+        List<User> allUsers = userService.findAll().get();
+
+        Date currentDate = Date.valueOf(BookBorrowConstant.CURRENT_DATE);
+
+        for (User user : allUsers) {
+            int readBooks = deleteBookBorrowsFromUserByReturnDate(user.getId(), currentDate).get();
+
+            log.info(String.valueOf(readBooks));
+
+            userService.updateReadBooksByUser(user, readBooks).get();
+        }
+    }
 }

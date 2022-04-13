@@ -11,7 +11,6 @@ import pl.sggw.wzimlibrary.adapter.SqlUserRepository;
 import pl.sggw.wzimlibrary.model.BookBorrow;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
-import pl.sggw.wzimlibrary.model.UserBorrowStatistics;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +34,7 @@ public class UserCacheService {
 
     @CacheEvict(value = "allUsers", allEntries = true)
     @CachePut(value = "userEmail", key = "#user.email")
-    public User save(User user, UserBorrowStatistics userBorrowStatistics) {
-        userBorrowStatisticsRepository.save(userBorrowStatistics);
+    public User save(User user) {
         return userRepository.save(user);
     }
 
@@ -71,6 +69,15 @@ public class UserCacheService {
         user.getBookBorrows().add(bookBorrow);
         user.getBookBorrowRequests().remove(request);
         user.getBorrowStatistics().setBorrowedBooks(user.getBorrowStatistics().getBorrowedBooks() + 1);
+        userRepository.save(user);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "allUsers", allEntries = true),
+            @CacheEvict(value = "userEmail", key = "#user.email")
+    })
+    public void updateReadBooksByUser(User user, int booksCount) {
+        user.getBorrowStatistics().setReadBooks(user.getBorrowStatistics().getReadBooks() + booksCount);
         userRepository.save(user);
     }
 

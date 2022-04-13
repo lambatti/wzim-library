@@ -47,8 +47,8 @@ public class UserService implements UserDetailsService {
     }
 
     @Async
-    public CompletableFuture<User> save(User user, UserBorrowStatistics userBorrowStatistics) {
-        return CompletableFuture.completedFuture(userCacheService.save(user, userBorrowStatistics));
+    public CompletableFuture<User> save(User user) {
+        return CompletableFuture.completedFuture(userCacheService.save(user));
     }
 
     @Async
@@ -71,6 +71,11 @@ public class UserService implements UserDetailsService {
         return CompletableFuture.runAsync(() -> userCacheService.removeBookBorrowRequestFromUser(user, request));
     }
 
+    @Async
+    public CompletableFuture<Void> updateReadBooksByUser(User user, int booksCount) {
+        return CompletableFuture.runAsync(() -> userCacheService.updateReadBooksByUser(user, booksCount));
+    }
+
     @Transactional
     public User registerUser(UserRegistrationDto userRegistrationDto)
             throws ExecutionException, InterruptedException, UserAlreadyExistsException {
@@ -86,7 +91,9 @@ public class UserService implements UserDetailsService {
 
         User createdUser = modelMapper.map(userRegistrationDto, User.class);
 
-        return save(createdUser, createUserBorrowStatistics(createdUser)).get();
+        createdUser.setBorrowStatistics(createUserBorrowStatistics(createdUser));
+
+        return save(createdUser).get();
     }
 
     public User getUserFromUserDetails(UserDetails userDetails) throws UserNotFoundException {
