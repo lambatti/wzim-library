@@ -46,13 +46,13 @@ public class BookBorrowService {
     }
 
     @Async
-    public CompletableFuture<Boolean> existsByEmailAndBookSlug(String email, String bookSlug) {
-        return CompletableFuture.completedFuture(bookBorrowRequestRepository.existsByUserEmailAndBookSlug(email, bookSlug));
+    public CompletableFuture<Boolean> existsByUserIdAndBookSlug(Integer userId, String bookSlug) {
+        return CompletableFuture.completedFuture(bookBorrowRequestRepository.existsByUserIdAndBookSlug(userId, bookSlug));
     }
 
     @Async
-    public CompletableFuture<BookBorrowRequest> getByEmailAndBookSlug(String email, String bookSlug) {
-        return CompletableFuture.completedFuture(bookBorrowRequestRepository.getByUserEmailAndBookSlug(email, bookSlug));
+    public CompletableFuture<BookBorrowRequest> getByUserIdAndBookSlug(Integer userId, String bookSlug) {
+        return CompletableFuture.completedFuture(bookBorrowRequestRepository.getByUserIdAndBookSlug(userId, bookSlug));
     }
 
     @Transactional
@@ -114,18 +114,18 @@ public class BookBorrowService {
         String email = bookBorrowDto.getEmail();
         String bookSlug = bookBorrowDto.getBookSlug();
 
-        if (!userService.existsByEmail(email).get()) {
-            throw new UserNotFoundException("User with email: " + bookBorrowDto.getEmail() + " not found");
-        }
+        User user = userService.findByEmail(email).get().orElseThrow(() -> new UserNotFoundException("User with email: " + bookBorrowDto.getEmail() + " not found"));
 
         // TODO: 08.04.2022 check if the book exists
 
-        if (!existsByEmailAndBookSlug(email, bookSlug).get()) {
+        Integer userId = user.getId();
+
+        if (!existsByUserIdAndBookSlug(userId, bookSlug).get()) {
             throw new BookBorrowConflictException("There is no such request with the email: "
                     + email + " and the book: " + bookSlug);
         }
 
-        return getByEmailAndBookSlug(email, bookSlug).get();
+        return getByUserIdAndBookSlug(userId, bookSlug).get();
     }
 
     void deleteBookBorrowRequest(BookBorrowRequest bookBorrowRequest) throws ExecutionException, InterruptedException {

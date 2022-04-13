@@ -15,15 +15,13 @@ public interface SqlBookBorrowRequestRepository extends BookBorrowRequestReposit
 
     @Override
     @Query(nativeQuery = true, value = "SELECT CASE WHEN COUNT(1) THEN 'true' ELSE 'false' END FROM book_borrows_requests" +
-            " INNER JOIN users ON book_borrows_requests.user_id=users.id" +
-            " WHERE users.email = :email AND book_slug = :bookSlug ")
-    boolean existsByUserEmailAndBookSlug(@Param("email") String email, @Param("bookSlug") String bookSlug);
+            " WHERE user_id = :userId AND book_slug = :bookSlug ")
+    boolean existsByUserIdAndBookSlug(@Param("userId") Integer userId, @Param("bookSlug") String bookSlug);
 
     @Override
     @Query(nativeQuery = true, value = "SELECT * FROM book_borrows_requests" +
-            " INNER JOIN users ON book_borrows_requests.user_id=users.id" +
-            " WHERE users.email = :email AND book_slug = :bookSlug ")
-    BookBorrowRequest getByUserEmailAndBookSlug(@Param("email") String email, @Param("bookSlug") String bookSlug);
+            " WHERE user_id = :userId AND book_slug = :bookSlug ")
+    BookBorrowRequest getByUserIdAndBookSlug(@Param("userId") Integer userId, @Param("bookSlug") String bookSlug);
 
     @Override
     @Modifying

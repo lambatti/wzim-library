@@ -6,9 +6,9 @@ public interface BookBorrowRequestRepository {
 
     <S extends BookBorrowRequest> S save(S s);
 
-    boolean existsByUserEmailAndBookSlug(String email, String bookSlug);
+    boolean existsByUserIdAndBookSlug(Integer userId, String bookSlug);
 
-    BookBorrowRequest getByUserEmailAndBookSlug(String email, String bookSlug);
+    BookBorrowRequest getByUserIdAndBookSlug(Integer userId, String bookSlug);
 
     void deleteByUserAndBookSlug(Integer userId, String bookSlug);
 
