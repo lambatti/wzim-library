@@ -47,12 +47,12 @@ public class BookBorrowService {
 
     @Async
     public CompletableFuture<Boolean> existsByUserIdAndBookSlug(Integer userId, String bookSlug) {
-        return CompletableFuture.completedFuture(bookBorrowRequestRepository.existsByUserIdAndBookSlug(userId, bookSlug));
+        return CompletableFuture.completedFuture(bookBorrowRequestRepository.existsByUser_IdAndBookSlug(userId, bookSlug));
     }
 
     @Async
     public CompletableFuture<BookBorrowRequest> getByUserIdAndBookSlug(Integer userId, String bookSlug) {
-        return CompletableFuture.completedFuture(bookBorrowRequestRepository.getByUserIdAndBookSlug(userId, bookSlug));
+        return CompletableFuture.completedFuture(bookBorrowRequestRepository.getByUser_IdAndBookSlug(userId, bookSlug));
     }
 
     @Transactional
