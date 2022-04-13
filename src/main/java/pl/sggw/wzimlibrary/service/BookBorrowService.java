@@ -13,10 +13,10 @@ import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.BookBorrow;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
+import pl.sggw.wzimlibrary.model.constant.BookBorrowConstant;
 import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowDto;
 import pl.sggw.wzimlibrary.service.cache.BookBorrowCacheService;
 
-import java.time.LocalDate;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -66,7 +66,7 @@ public class BookBorrowService {
         checkIfUserHasTheBook(user, bookSlug);
 
         BookBorrowRequest bookBorrowRequest = BookBorrowRequest.builder()
-                .user(user).bookSlug(bookSlug).requestDate(LocalDate.now()).build();
+                .user(user).bookSlug(bookSlug).requestDate(BookBorrowConstant.CURRENT_DATE).build();
 
         userService.addBookBorrowRequestToUser(user, bookBorrowRequest).get();
 
@@ -92,8 +92,8 @@ public class BookBorrowService {
 
         BookBorrow bookBorrow = BookBorrow.builder().user(user)
                 .bookSlug(request.getBookSlug())
-                .borrowDate(LocalDate.now())
-                .returnDate((LocalDate.now().plusDays(30)))
+                .borrowDate(BookBorrowConstant.CURRENT_DATE)
+                .returnDate(BookBorrowConstant.RETURN_DATE)
                 .build();
 
         addBookBorrowToUser(user, request, bookBorrow);
@@ -151,7 +151,7 @@ public class BookBorrowService {
         for (var request : user.getBookBorrows()) {
             if (request.getBookSlug().equals(bookSlug)) {
                 throw new BookBorrowConflictException("User: " + user.getEmail()
-                        + " already has the book already: " + bookSlug);
+                        + " has the book already: " + bookSlug);
             }
         }
     }
