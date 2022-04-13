@@ -6,10 +6,12 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
+import pl.sggw.wzimlibrary.adapter.SqlUserBorrowStatisticsRepository;
 import pl.sggw.wzimlibrary.adapter.SqlUserRepository;
 import pl.sggw.wzimlibrary.model.BookBorrow;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
+import pl.sggw.wzimlibrary.model.UserBorrowStatistics;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class UserCacheService {
 
     private final SqlUserRepository userRepository;
+    private final SqlUserBorrowStatisticsRepository userBorrowStatisticsRepository;
 
     @Cacheable(value = "userEmail", key = "#email")
     public Optional<User> findByEmail(String email) {
@@ -32,7 +35,8 @@ public class UserCacheService {
 
     @CacheEvict(value = "allUsers", allEntries = true)
     @CachePut(value = "userEmail", key = "#user.email")
-    public User save(User user) {
+    public User save(User user, UserBorrowStatistics userBorrowStatistics) {
+        userBorrowStatisticsRepository.save(userBorrowStatistics);
         return userRepository.save(user);
     }
 
@@ -66,6 +70,7 @@ public class UserCacheService {
     public void addBookBorrowToUser(User user, BookBorrowRequest request, BookBorrow bookBorrow) {
         user.getBookBorrows().add(bookBorrow);
         user.getBookBorrowRequests().remove(request);
+        user.getBorrowStatistics().setBorrowedBooks(user.getBorrowStatistics().getBorrowedBooks() + 1);
         userRepository.save(user);
     }
 

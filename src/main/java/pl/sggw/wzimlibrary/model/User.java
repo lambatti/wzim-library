@@ -7,6 +7,7 @@ import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -36,13 +37,17 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BookBorrow> bookBorrows;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private UserBorrowStatistics borrowStatistics;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BookBorrowRequest> bookBorrowRequests;
+    private Set<BookBorrow> bookBorrows = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BookBorrowProlongationRequest> bookBorrowProlongationRequests;
+    private Set<BookBorrowRequest> bookBorrowRequests = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BookBorrowProlongationRequest> bookBorrowProlongationRequests = new HashSet<>();
 
 }

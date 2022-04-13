@@ -16,6 +16,7 @@ import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.BookBorrow;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
+import pl.sggw.wzimlibrary.model.UserBorrowStatistics;
 import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.dto.user.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
@@ -46,8 +47,8 @@ public class UserService implements UserDetailsService {
     }
 
     @Async
-    public CompletableFuture<User> save(User user) {
-        return CompletableFuture.completedFuture(userCacheService.save(user));
+    public CompletableFuture<User> save(User user, UserBorrowStatistics userBorrowStatistics) {
+        return CompletableFuture.completedFuture(userCacheService.save(user, userBorrowStatistics));
     }
 
     @Async
@@ -83,7 +84,9 @@ public class UserService implements UserDetailsService {
 
         userRegistrationDto.setPassword(encodedPassword);
 
-        return save(modelMapper.map(userRegistrationDto, User.class)).get();
+        User createdUser = modelMapper.map(userRegistrationDto, User.class);
+
+        return save(createdUser, createUserBorrowStatistics(createdUser)).get();
     }
 
     public User getUserFromUserDetails(UserDetails userDetails) throws UserNotFoundException {
@@ -107,6 +110,10 @@ public class UserService implements UserDetailsService {
         return Optional.ofNullable(user)
                 .orElseThrow(() -> new UserNotFoundException("User with the email " + finalEmail + " does not exist."))
                 .get();
+    }
+
+    private UserBorrowStatistics createUserBorrowStatistics(User user) {
+        return new UserBorrowStatistics(user.getId(), user, 0, 0);
     }
 
     @Override
