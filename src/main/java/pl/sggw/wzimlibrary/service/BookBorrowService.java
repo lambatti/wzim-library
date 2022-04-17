@@ -13,6 +13,7 @@ import pl.sggw.wzimlibrary.adapter.SqlBookBorrowRequestRepository;
 import pl.sggw.wzimlibrary.exception.BookBorrowConflictException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.BookBorrow;
+import pl.sggw.wzimlibrary.model.BookBorrowProlongationRequest;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.BookBorrowConstant;
@@ -22,6 +23,7 @@ import pl.sggw.wzimlibrary.service.cache.BookBorrowCacheService;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -52,13 +54,18 @@ public class BookBorrowService {
     }
 
     @Async
-    public CompletableFuture<Boolean> existsByUserIdAndBookSlug(Integer userId, String bookSlug) {
+    public CompletableFuture<Boolean> requestExistsByUserIdAndBookSlug(Integer userId, String bookSlug) {
         return CompletableFuture.completedFuture(bookBorrowRequestRepository.existsByUser_IdAndBookSlug(userId, bookSlug));
     }
 
     @Async
     public CompletableFuture<BookBorrowRequest> getByUserIdAndBookSlug(Integer userId, String bookSlug) {
         return CompletableFuture.completedFuture(bookBorrowRequestRepository.getByUser_IdAndBookSlug(userId, bookSlug));
+    }
+
+    @Async
+    public CompletableFuture<Boolean> prolongationRequestExistsByUserIdAndBookSlug(Integer userId, String bookSlug) {
+        return CompletableFuture.completedFuture(bookBorrowProlongationRequestRepository.existsByUser_IdAndBookSlug(userId, bookSlug));
     }
 
     @Async
@@ -70,11 +77,14 @@ public class BookBorrowService {
     public BookBorrowRequest addBookBorrowRequest(UserDetails userDetails, String bookSlug)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
-        User user = userService.getUserFromUserDetails(userDetails);
+        User user = getUserFromUserDetails(userDetails);
 
         checkIfUserSentTheRequest(user, bookSlug);
 
-        checkIfUserHasTheBook(user, bookSlug);
+        if (getBookBorrowByBookSlug(user, bookSlug).isPresent()) {
+            throw new BookBorrowConflictException("User: " + user.getEmail()
+                    + " has the book already: " + bookSlug);
+        }
 
         BookBorrowRequest bookBorrowRequest = BookBorrowRequest.builder()
                 .user(user).bookSlug(bookSlug).requestDate(BookBorrowConstant.CURRENT_DATE).build();
@@ -112,6 +122,35 @@ public class BookBorrowService {
     }
 
     @Transactional
+    public BookBorrowProlongationRequest addBookBorrowProlongationRequest(UserDetails userDetails, String bookSlug)
+            throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
+
+        User user = getUserFromUserDetails(userDetails);
+
+        if (prolongationRequestExistsByUserIdAndBookSlug(user.getId(), bookSlug).get()) {
+            throw new BookBorrowConflictException("User: " + user.getEmail() + " has already sent a prolongation " +
+                    "request for the book: " + bookSlug);
+        }
+
+        Optional<BookBorrow> bookBorrow = getBookBorrowByBookSlug(user, bookSlug);
+
+        if (bookBorrow.isEmpty()) {
+            throw new BookBorrowConflictException("User: " + user.getEmail() + " has not borrowed the book: " + bookSlug);
+        }
+
+        // TODO: 17.04.2022 check if the book exists
+
+        BookBorrowProlongationRequest request = BookBorrowProlongationRequest.builder()
+                .user(user).bookSlug(bookSlug).requestDate(BookBorrowConstant.CURRENT_DATE)
+                .prolongationDate(bookBorrow.get().getReturnDate().plusDays(BookBorrowConstant.BOOK_BORROW_DAYS))
+                .build();
+
+        userService.addBookBorrowProlongationRequestToUser(user, request).get();
+
+        return request;
+    }
+
+    @Transactional
     void addBookBorrowToUser(User user, BookBorrowRequest request, BookBorrow bookBorrow)
             throws ExecutionException, InterruptedException {
         userService.addBookBorrowToUser(user, request, bookBorrow).get();
@@ -131,7 +170,7 @@ public class BookBorrowService {
 
         Integer userId = user.getId();
 
-        if (!existsByUserIdAndBookSlug(userId, bookSlug).get()) {
+        if (!requestExistsByUserIdAndBookSlug(userId, bookSlug).get()) {
             throw new BookBorrowConflictException("There is no such request with the email: "
                     + email + " and the book: " + bookSlug);
         }
@@ -157,14 +196,9 @@ public class BookBorrowService {
         }
     }
 
-    private void checkIfUserHasTheBook(User user, String bookSlug) throws BookBorrowConflictException {
+    private Optional<BookBorrow> getBookBorrowByBookSlug(User user, String bookSlug) {
 
-        for (var request : user.getBookBorrows()) {
-            if (request.getBookSlug().equals(bookSlug)) {
-                throw new BookBorrowConflictException("User: " + user.getEmail()
-                        + " has the book already: " + bookSlug);
-            }
-        }
+        return user.getBookBorrows().stream().filter(bookBorrow -> bookBorrow.getBookSlug().equals(bookSlug)).findAny();
     }
 
     @Scheduled(cron = SchedulingConstant.EVERY_DAY_AT_MIDNIGHT, zone = SchedulingConstant.TIMEZONE)
@@ -182,5 +216,9 @@ public class BookBorrowService {
 
             userService.updateReadBooksByUser(user, readBooks).get();
         }
+    }
+
+    private User getUserFromUserDetails(UserDetails userDetails) throws UserNotFoundException {
+        return userService.getUserFromUserDetails(userDetails);
     }
 }

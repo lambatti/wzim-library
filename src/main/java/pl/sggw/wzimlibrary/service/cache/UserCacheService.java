@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pl.sggw.wzimlibrary.adapter.SqlUserBorrowStatisticsRepository;
 import pl.sggw.wzimlibrary.adapter.SqlUserRepository;
 import pl.sggw.wzimlibrary.model.BookBorrow;
+import pl.sggw.wzimlibrary.model.BookBorrowProlongationRequest;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
 
@@ -49,6 +50,15 @@ public class UserCacheService {
     })
     public void addBookBorrowRequestToUser(User user, BookBorrowRequest request) {
         user.getBookBorrowRequests().add(request);
+        userRepository.save(user);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "allUsers", allEntries = true),
+            @CacheEvict(value = "userEmail", key = "#user.email")
+    })
+    public void addBookBorrowProlongationRequestToUser(User user, BookBorrowProlongationRequest request) {
+        user.getBookBorrowProlongationRequests().add(request);
         userRepository.save(user);
     }
 

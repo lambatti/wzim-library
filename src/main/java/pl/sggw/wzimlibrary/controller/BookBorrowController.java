@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.sggw.wzimlibrary.exception.BookBorrowConflictException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
+import pl.sggw.wzimlibrary.model.BookBorrowProlongationRequest;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.annotation.CurrentlyLoggedUser;
 import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowDto;
@@ -53,5 +54,18 @@ public class BookBorrowController {
 
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("bookBorrowProlongationRequests")
+    public ResponseEntity<?> addBookBorrowProlongationRequest(@RequestBody String bookSlug,
+                                                              @CurrentlyLoggedUser UserDetails userDetails)
+            throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
+        BookBorrowProlongationRequest request = bookBorrowService.addBookBorrowProlongationRequest(userDetails, bookSlug);
+
+        return ResponseEntity.created(URI.create(
+                        ServletUriComponentsBuilder.fromCurrentRequest().build() + "/user/"
+                                + request.getUser().getId() + "/bookSlug/" + request.getBookSlug()))
+                .build();
+    }
+
 }
 
