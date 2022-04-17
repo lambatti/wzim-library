@@ -35,7 +35,7 @@ public class RegistrationService {
     }
 
     private String decryptUser(String encryptedUser) throws UserDecryptionException {
-        String decryptedUser = null;
+        String decryptedUser;
         try {
             decryptedUser = Arrays.toString(Base64.getDecoder().decode(encryptedUser));
         } catch (IllegalArgumentException e) {

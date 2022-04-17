@@ -1,7 +1,6 @@
 package pl.sggw.wzimlibrary.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +29,6 @@ import java.util.concurrent.ExecutionException;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@Slf4j
 public class BookBorrowService {
 
     private final SqlBookBorrowRepository bookBorrowRepository;
@@ -207,8 +205,6 @@ public class BookBorrowService {
 
         for (User user : allUsers) {
             int readBooks = deleteBookBorrowsFromUserByReturnDate(user.getId(), currentDate).get();
-
-            log.info(String.valueOf(readBooks));
 
             userService.updateReadBooksByUser(user, readBooks).get();
         }
