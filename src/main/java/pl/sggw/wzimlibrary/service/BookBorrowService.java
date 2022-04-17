@@ -19,7 +19,6 @@ import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.BookBorrowConstant;
 import pl.sggw.wzimlibrary.model.constant.SchedulingConstant;
 import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowDto;
-import pl.sggw.wzimlibrary.service.cache.BookBorrowCacheService;
 
 import java.sql.Date;
 import java.util.List;
@@ -39,9 +38,6 @@ public class BookBorrowService {
     private final SqlBookBorrowProlongationRequestRepository bookBorrowProlongationRequestRepository;
 
     private final UserService userService;
-
-    private final BookBorrowCacheService bookBorrowCacheService;
-
 
     @Async
     public CompletableFuture<BookBorrowRequest> save(BookBorrowRequest bookBorrowRequest) {
