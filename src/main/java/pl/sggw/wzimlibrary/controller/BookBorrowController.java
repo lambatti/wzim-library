@@ -11,7 +11,7 @@ import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.BookBorrowProlongationRequest;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.annotation.CurrentlyLoggedUser;
-import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowDto;
+import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowActionDto;
 import pl.sggw.wzimlibrary.service.BookBorrowService;
 
 import java.net.URI;
@@ -74,19 +74,19 @@ public class BookBorrowController {
     }
 
     @PostMapping("bookBorrowRequests/accept")
-    public ResponseEntity<?> acceptBookBorrowRequest(@RequestBody BookBorrowDto bookBorrowDto)
+    public ResponseEntity<?> acceptBookBorrowRequest(@RequestBody BookBorrowActionDto bookBorrowActionDto)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
-        bookBorrowService.acceptBookBorrowRequest(bookBorrowDto);
+        bookBorrowService.acceptBookBorrowRequest(bookBorrowActionDto);
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("bookBorrowRequests/reject")
-    public ResponseEntity<?> rejectBookBorrowRequest(@RequestBody BookBorrowDto bookBorrowDto)
+    public ResponseEntity<?> rejectBookBorrowRequest(@RequestBody BookBorrowActionDto bookBorrowActionDto)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
-        bookBorrowService.rejectBookBorrowRequest(bookBorrowDto);
+        bookBorrowService.rejectBookBorrowRequest(bookBorrowActionDto);
 
         return ResponseEntity.ok().build();
     }
@@ -121,19 +121,19 @@ public class BookBorrowController {
     }
 
     @PostMapping("bookBorrowProlongationRequests/accept")
-    public ResponseEntity<?> acceptBookBorrowProlongationRequest(@RequestBody BookBorrowDto bookBorrowDto)
+    public ResponseEntity<?> acceptBookBorrowProlongationRequest(@RequestBody BookBorrowActionDto bookBorrowActionDto)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
-        bookBorrowService.acceptBookBorrowProlongationRequest(bookBorrowDto);
+        bookBorrowService.acceptBookBorrowProlongationRequest(bookBorrowActionDto);
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("bookBorrowProlongationRequests/reject")
-    public ResponseEntity<?> rejectBookBorrowProlongationRequest(@RequestBody BookBorrowDto bookBorrowDto)
+    public ResponseEntity<?> rejectBookBorrowProlongationRequest(@RequestBody BookBorrowActionDto bookBorrowActionDto)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
-        bookBorrowService.rejectBookBorrowProlongationRequest(bookBorrowDto);
+        bookBorrowService.rejectBookBorrowProlongationRequest(bookBorrowActionDto);
 
         return ResponseEntity.ok().build();
     }

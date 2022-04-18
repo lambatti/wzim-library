@@ -18,7 +18,7 @@ import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.BookBorrowConstant;
 import pl.sggw.wzimlibrary.model.constant.SchedulingConstant;
-import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowDto;
+import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowActionDto;
 
 import java.sql.Date;
 import java.util.List;
@@ -183,19 +183,19 @@ public class BookBorrowService {
         return request;
     }
 
-    public void rejectBookBorrowRequest(BookBorrowDto bookBorrowDto)
+    public void rejectBookBorrowRequest(BookBorrowActionDto bookBorrowActionDto)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
-        BookBorrowRequest request = getBookBorrowRequest(bookBorrowDto);
+        BookBorrowRequest request = getBookBorrowRequest(bookBorrowActionDto);
 
         deleteBookBorrowRequest(request);
 
     }
 
-    public void acceptBookBorrowRequest(BookBorrowDto bookBorrowDto)
+    public void acceptBookBorrowRequest(BookBorrowActionDto bookBorrowActionDto)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
-        BookBorrowRequest request = getBookBorrowRequest(bookBorrowDto);
+        BookBorrowRequest request = getBookBorrowRequest(bookBorrowActionDto);
 
         User user = request.getUser();
 
@@ -209,24 +209,24 @@ public class BookBorrowService {
 
     }
 
-    public void rejectBookBorrowProlongationRequest(BookBorrowDto bookBorrowDto)
+    public void rejectBookBorrowProlongationRequest(BookBorrowActionDto bookBorrowActionDto)
             throws ExecutionException, InterruptedException, UserNotFoundException, BookBorrowConflictException {
 
-        BookBorrowProlongationRequest request = getBookBorrowProlongationRequest(bookBorrowDto);
+        BookBorrowProlongationRequest request = getBookBorrowProlongationRequest(bookBorrowActionDto);
 
         deleteBookBorrowProlongationRequest(request);
 
     }
 
-    public void acceptBookBorrowProlongationRequest(BookBorrowDto bookBorrowDto)
+    public void acceptBookBorrowProlongationRequest(BookBorrowActionDto bookBorrowActionDto)
             throws ExecutionException, InterruptedException, UserNotFoundException, BookBorrowConflictException {
 
-        BookBorrowProlongationRequest request = getBookBorrowProlongationRequest(bookBorrowDto);
+        BookBorrowProlongationRequest request = getBookBorrowProlongationRequest(bookBorrowActionDto);
 
         deleteBookBorrowProlongationRequest(request);
 
-        String email = bookBorrowDto.getEmail();
-        String bookSlug = bookBorrowDto.getBookSlug();
+        String email = bookBorrowActionDto.getEmail();
+        String bookSlug = bookBorrowActionDto.getBookSlug();
 
         User user = userService.findByEmail(email).get()
                 .orElseThrow(() -> new UserNotFoundException("User with the email: " + email + " not found."));
@@ -251,15 +251,15 @@ public class BookBorrowService {
 
 
     @Transactional
-    BookBorrowRequest getBookBorrowRequest(BookBorrowDto bookBorrowDto)
+    BookBorrowRequest getBookBorrowRequest(BookBorrowActionDto bookBorrowActionDto)
             throws UserNotFoundException, ExecutionException, InterruptedException, BookBorrowConflictException {
 
-        String email = bookBorrowDto.getEmail();
-        String bookSlug = bookBorrowDto.getBookSlug();
+        String email = bookBorrowActionDto.getEmail();
+        String bookSlug = bookBorrowActionDto.getBookSlug();
 
         User user = userService.findByEmail(email).get()
                 .orElseThrow(() -> new UserNotFoundException("User with email: "
-                        + bookBorrowDto.getEmail() + " not found"));
+                        + bookBorrowActionDto.getEmail() + " not found"));
 
         // TODO: 08.04.2022 check if the book exists
 
@@ -269,15 +269,15 @@ public class BookBorrowService {
     }
 
     @Transactional
-    BookBorrowProlongationRequest getBookBorrowProlongationRequest(BookBorrowDto bookBorrowDto)
+    BookBorrowProlongationRequest getBookBorrowProlongationRequest(BookBorrowActionDto bookBorrowActionDto)
             throws ExecutionException, InterruptedException, UserNotFoundException, BookBorrowConflictException {
 
-        String email = bookBorrowDto.getEmail();
-        String bookSlug = bookBorrowDto.getBookSlug();
+        String email = bookBorrowActionDto.getEmail();
+        String bookSlug = bookBorrowActionDto.getBookSlug();
 
         User user = userService.findByEmail(email).get()
                 .orElseThrow(() -> new UserNotFoundException("User with email: "
-                        + bookBorrowDto.getEmail() + " not found"));
+                        + bookBorrowActionDto.getEmail() + " not found"));
 
         // TODO: 08.04.2022 check if the book exists
 

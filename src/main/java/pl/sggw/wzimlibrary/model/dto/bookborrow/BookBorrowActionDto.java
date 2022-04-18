@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 
 @RequiredArgsConstructor
 @Getter
-public class BookBorrowDto {
+public class BookBorrowActionDto {
 
     @NotEmpty
     @Email
