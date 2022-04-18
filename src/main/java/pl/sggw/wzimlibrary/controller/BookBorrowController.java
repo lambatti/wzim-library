@@ -37,7 +37,7 @@ public class BookBorrowController {
                 .build();
     }
 
-    @PatchMapping("bookBorrowRequests/accept")
+    @PostMapping("bookBorrowRequests/accept")
     public ResponseEntity<?> acceptBookBorrowRequest(@RequestBody BookBorrowDto bookBorrowDto)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
@@ -46,7 +46,7 @@ public class BookBorrowController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("bookBorrowRequests/reject")
+    @PostMapping("bookBorrowRequests/reject")
     public ResponseEntity<?> rejectBookBorrowRequest(@RequestBody BookBorrowDto bookBorrowDto)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
@@ -67,7 +67,7 @@ public class BookBorrowController {
                 .build();
     }
 
-    @PatchMapping("bookBorrowProlongationRequests/accept")
+    @PostMapping("bookBorrowProlongationRequests/accept")
     public ResponseEntity<?> acceptBookBorrowProlongationRequest(@RequestBody BookBorrowDto bookBorrowDto)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
@@ -76,7 +76,7 @@ public class BookBorrowController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("bookBorrowProlongationRequests/reject")
+    @PostMapping("bookBorrowProlongationRequests/reject")
     public ResponseEntity<?> rejectBookBorrowProlongationRequest(@RequestBody BookBorrowDto bookBorrowDto)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
 
