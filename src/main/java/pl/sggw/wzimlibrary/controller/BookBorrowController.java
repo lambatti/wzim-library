@@ -27,12 +27,12 @@ public class BookBorrowController {
 
     @GetMapping("bookBorrows")
     public ResponseEntity<?> getBookBorrows() throws ExecutionException, InterruptedException {
-        return ResponseEntity.ok(bookBorrowService.findAllBookBorrows().get());
+        return ResponseEntity.ok(bookBorrowService.getAllBookBorrows());
     }
 
     @GetMapping("bookBorrows/user/{userId}")
     public ResponseEntity<?> getBookBorrows(@PathVariable Integer userId) throws ExecutionException, InterruptedException {
-        return ResponseEntity.ok(bookBorrowService.findAllBookBorrowsByUserId(userId).get());
+        return ResponseEntity.ok(bookBorrowService.getAllBookBorrowsByUserId(userId));
     }
 
     @GetMapping("bookBorrows/user/{userId}/bookSlug/{bookSlug}")

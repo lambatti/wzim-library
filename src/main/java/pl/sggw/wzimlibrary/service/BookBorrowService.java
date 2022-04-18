@@ -1,6 +1,7 @@
 package pl.sggw.wzimlibrary.service;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,12 +20,14 @@ import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.BookBorrowConstant;
 import pl.sggw.wzimlibrary.model.constant.SchedulingConstant;
 import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowActionDto;
+import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowDto;
 
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -37,6 +40,8 @@ public class BookBorrowService {
     private final SqlBookBorrowProlongationRequestRepository bookBorrowProlongationRequestRepository;
 
     private final UserService userService;
+
+    private final ModelMapper modelMapper;
 
     @Async
     public CompletableFuture<List<BookBorrow>> findAllBookBorrows() {
@@ -109,6 +114,31 @@ public class BookBorrowService {
         return CompletableFuture.completedFuture(bookBorrowRepository.deleteAllFromUserByReturnDate(userId, currentDate));
     }
 
+    public List<BookBorrowDto> getAllBookBorrows() throws ExecutionException, InterruptedException {
+        return convertBookBorrowListToDto(findAllBookBorrows().get());
+    }
+
+    public List<BookBorrowDto> getAllBookBorrowsByUserId(Integer userId) throws ExecutionException, InterruptedException {
+        return convertBookBorrowListToDto(findAllBookBorrowsByUserId(userId).get());
+    }
+
+
+    public BookBorrowDto getBookBorrowByUserIdAndBookSlug(Integer userId, String bookSlug)
+            throws ExecutionException, InterruptedException, BookBorrowNotFoundException {
+        BookBorrow bookBorrow = findBookBorrowByUserIdAndBookSlug(userId, bookSlug).get()
+                .orElseThrow(() -> new BookBorrowNotFoundException("User with the id: " + userId
+                        + " has not borrowed the book: " + bookSlug));
+        return convertBookBorrowToDto(bookBorrow);
+    }
+
+
+    private List<BookBorrowDto> convertBookBorrowListToDto(List<BookBorrow> bookBorrowList) {
+        return bookBorrowList.stream().map(this::convertBookBorrowToDto).collect(Collectors.toList());
+    }
+
+    private BookBorrowDto convertBookBorrowToDto(BookBorrow bookBorrow) {
+        return modelMapper.map(bookBorrow, BookBorrowDto.class);
+    }
 
     public BookBorrowRequest getRequestByUserIdAndBookSlug(Integer userId, String bookSlug)
             throws ExecutionException, InterruptedException, BookBorrowNotFoundException {
@@ -122,13 +152,6 @@ public class BookBorrowService {
         return findProlongationRequestByUserIdAndBookSlug(userId, bookSlug).get()
                 .orElseThrow(() -> new BookBorrowNotFoundException("User with the id: " + userId
                         + " has not sent a prolongation request for the book: " + bookSlug));
-    }
-
-    public BookBorrow getBookBorrowByUserIdAndBookSlug(Integer userId, String bookSlug)
-            throws ExecutionException, InterruptedException, BookBorrowNotFoundException {
-        return findBookBorrowByUserIdAndBookSlug(userId, bookSlug).get()
-                .orElseThrow(() -> new BookBorrowNotFoundException("User with the id: " + userId
-                        + " has not borrowed the book: " + bookSlug));
     }
 
     @Transactional
