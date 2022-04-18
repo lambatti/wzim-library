@@ -74,6 +74,16 @@ public class UserService implements UserDetailsService {
     }
 
     @Async
+    public CompletableFuture<Void> removeBookBorrowProlongationRequestFromUser(User user, BookBorrowProlongationRequest request) {
+        return CompletableFuture.runAsync(() -> userCacheService.removeBookBorrowProlongationRequestFromUser(user, request));
+    }
+
+    @Async
+    public CompletableFuture<Void> updateBookBorrowReturnDate(BookBorrow bookBorrow) {
+        return CompletableFuture.runAsync(() -> userCacheService.updateBookBorrowReturnDate(bookBorrow.getUser(), bookBorrow));
+    }
+
+    @Async
     public CompletableFuture<Void> updateReadBooksByUser(User user, int booksCount) {
         return CompletableFuture.runAsync(() -> userCacheService.updateReadBooksByUser(user, booksCount));
     }

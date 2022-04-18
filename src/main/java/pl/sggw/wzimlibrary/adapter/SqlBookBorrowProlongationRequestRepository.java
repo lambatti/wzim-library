@@ -12,4 +12,7 @@ public interface SqlBookBorrowProlongationRequestRepository extends
 
     @Override
     boolean existsByUser_IdAndBookSlug(Integer userId, String bookSlug);
+
+    @Override
+    BookBorrowProlongationRequest getByUser_IdAndBookSlug(Integer userId, String bookSlug);
 }

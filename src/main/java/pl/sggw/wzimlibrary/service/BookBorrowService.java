@@ -53,8 +53,13 @@ public class BookBorrowService {
     }
 
     @Async
-    public CompletableFuture<BookBorrowRequest> getByUserIdAndBookSlug(Integer userId, String bookSlug) {
+    public CompletableFuture<BookBorrowRequest> requestGetByUserIdAndBookSlug(Integer userId, String bookSlug) {
         return CompletableFuture.completedFuture(bookBorrowRequestRepository.getByUser_IdAndBookSlug(userId, bookSlug));
+    }
+
+    @Async
+    public CompletableFuture<BookBorrowProlongationRequest> prolongationRequestGetByUserIdAndBookSlug(Integer userId, String bookSlug) {
+        return CompletableFuture.completedFuture(bookBorrowProlongationRequestRepository.getByUser_IdAndBookSlug(userId, bookSlug));
     }
 
     @Async
@@ -89,32 +94,6 @@ public class BookBorrowService {
 
     }
 
-    public void rejectBookBorrowRequest(BookBorrowDto bookBorrowDto)
-            throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
-
-        BookBorrowRequest request = getBookBorrowRequest(bookBorrowDto);
-
-        deleteBookBorrowRequest(request);
-
-    }
-
-    public void acceptBookBorrowRequest(BookBorrowDto bookBorrowDto)
-            throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
-
-        BookBorrowRequest request = getBookBorrowRequest(bookBorrowDto);
-
-        User user = request.getUser();
-
-        BookBorrow bookBorrow = BookBorrow.builder().user(user)
-                .bookSlug(request.getBookSlug())
-                .borrowDate(BookBorrowConstant.CURRENT_DATE)
-                .returnDate(BookBorrowConstant.RETURN_DATE)
-                .build();
-
-        addBookBorrowToUser(user, request, bookBorrow);
-
-    }
-
     @Transactional
     public BookBorrowProlongationRequest addBookBorrowProlongationRequest(UserDetails userDetails, String bookSlug)
             throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
@@ -144,10 +123,62 @@ public class BookBorrowService {
         return request;
     }
 
+    public void rejectBookBorrowRequest(BookBorrowDto bookBorrowDto)
+            throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
+
+        BookBorrowRequest request = getBookBorrowRequest(bookBorrowDto);
+
+        deleteBookBorrowRequest(request);
+
+    }
+
+    public void acceptBookBorrowRequest(BookBorrowDto bookBorrowDto)
+            throws UserNotFoundException, BookBorrowConflictException, ExecutionException, InterruptedException {
+
+        BookBorrowRequest request = getBookBorrowRequest(bookBorrowDto);
+
+        User user = request.getUser();
+
+        BookBorrow bookBorrow = BookBorrow.builder().user(user)
+                .bookSlug(request.getBookSlug())
+                .borrowDate(BookBorrowConstant.CURRENT_DATE)
+                .returnDate(BookBorrowConstant.RETURN_DATE)
+                .build();
+
+        addBookBorrowToUser(user, request, bookBorrow);
+
+    }
+
+    public void rejectBookBorrowProlongationRequest(BookBorrowDto bookBorrowDto)
+            throws ExecutionException, InterruptedException, UserNotFoundException, BookBorrowConflictException {
+
+        BookBorrowProlongationRequest request = getBookBorrowProlongationRequest(bookBorrowDto);
+
+        deleteBookBorrowProlongationRequest(request);
+
+    }
+
+    public void acceptBookBorrowProlongationRequest(BookBorrowDto bookBorrowDto)
+            throws ExecutionException, InterruptedException, UserNotFoundException, BookBorrowConflictException {
+
+        BookBorrowProlongationRequest request = getBookBorrowProlongationRequest(bookBorrowDto);
+
+        deleteBookBorrowProlongationRequest(request);
+
+        BookBorrow bookBorrow = getBookBorrowByBookSlug(userService.findByEmail(bookBorrowDto.getEmail()).get().get(), bookBorrowDto.getBookSlug()).get();
+
+        updateBookBorrowReturnDate(bookBorrow);
+    }
+
     @Transactional
     void addBookBorrowToUser(User user, BookBorrowRequest request, BookBorrow bookBorrow)
             throws ExecutionException, InterruptedException {
         userService.addBookBorrowToUser(user, request, bookBorrow).get();
+    }
+
+    @Transactional
+    void updateBookBorrowReturnDate(BookBorrow bookBorrow) throws ExecutionException, InterruptedException {
+        userService.updateBookBorrowReturnDate(bookBorrow).get();
     }
 
 
@@ -169,7 +200,27 @@ public class BookBorrowService {
                     + email + " and the book: " + bookSlug);
         }
 
-        return getByUserIdAndBookSlug(userId, bookSlug).get();
+        return requestGetByUserIdAndBookSlug(userId, bookSlug).get();
+    }
+
+    @Transactional
+    BookBorrowProlongationRequest getBookBorrowProlongationRequest(BookBorrowDto bookBorrowDto) throws ExecutionException, InterruptedException, UserNotFoundException, BookBorrowConflictException {
+
+        String email = bookBorrowDto.getEmail();
+        String bookSlug = bookBorrowDto.getBookSlug();
+
+        User user = userService.findByEmail(email).get().orElseThrow(() -> new UserNotFoundException("User with email: " + bookBorrowDto.getEmail() + " not found"));
+
+        // TODO: 08.04.2022 check if the book exists
+
+        Integer userId = user.getId();
+
+        if (!prolongationRequestExistsByUserIdAndBookSlug(userId, bookSlug).get()) {
+            throw new BookBorrowConflictException("There is no such prolongation request with the email: "
+                    + email + " and the book: " + bookSlug);
+        }
+
+        return prolongationRequestGetByUserIdAndBookSlug(userId, bookSlug).get();
     }
 
     void deleteBookBorrowRequest(BookBorrowRequest bookBorrowRequest) throws ExecutionException, InterruptedException {
@@ -177,6 +228,14 @@ public class BookBorrowService {
         User user = bookBorrowRequest.getUser();
 
         userService.removeBookBorrowRequestFromUser(user, bookBorrowRequest).get();
+
+    }
+
+    void deleteBookBorrowProlongationRequest(BookBorrowProlongationRequest request)
+            throws ExecutionException, InterruptedException {
+
+        User user = request.getUser();
+        userService.removeBookBorrowProlongationRequestFromUser(user, request).get();
 
     }
 

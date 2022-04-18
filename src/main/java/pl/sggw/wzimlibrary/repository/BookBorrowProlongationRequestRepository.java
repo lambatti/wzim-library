@@ -7,5 +7,7 @@ public interface BookBorrowProlongationRequestRepository {
     <S extends BookBorrowProlongationRequest> S save(S s);
 
     boolean existsByUser_IdAndBookSlug(Integer userId, String bookSlug);
-    
+
+    BookBorrowProlongationRequest getByUser_IdAndBookSlug(Integer userId, String bookSlug);
+
 }

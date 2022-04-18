@@ -12,6 +12,7 @@ import pl.sggw.wzimlibrary.model.BookBorrow;
 import pl.sggw.wzimlibrary.model.BookBorrowProlongationRequest;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
+import pl.sggw.wzimlibrary.model.constant.BookBorrowConstant;
 
 import java.util.List;
 import java.util.Optional;
@@ -75,6 +76,15 @@ public class UserCacheService {
             @CacheEvict(value = "allUsers", allEntries = true),
             @CacheEvict(value = "userEmail", key = "#user.email")
     })
+    public void removeBookBorrowProlongationRequestFromUser(User user, BookBorrowProlongationRequest request) {
+        user.getBookBorrowProlongationRequests().remove(request);
+        userRepository.save(user);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "allUsers", allEntries = true),
+            @CacheEvict(value = "userEmail", key = "#user.email")
+    })
     public void addBookBorrowToUser(User user, BookBorrowRequest request, BookBorrow bookBorrow) {
         user.getBookBorrows().add(bookBorrow);
         user.getBookBorrowRequests().remove(request);
@@ -88,6 +98,15 @@ public class UserCacheService {
     })
     public void updateReadBooksByUser(User user, int booksCount) {
         user.getBorrowStatistics().setReadBooks(user.getBorrowStatistics().getReadBooks() + booksCount);
+        userRepository.save(user);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "allUsers", allEntries = true),
+            @CacheEvict(value = "userEmail", key = "#user.email")
+    })
+    public void updateBookBorrowReturnDate(User user, BookBorrow bookBorrow) {
+        bookBorrow.setReturnDate(BookBorrowConstant.addBookBorrowDays(bookBorrow.getReturnDate()));
         userRepository.save(user);
     }
 
