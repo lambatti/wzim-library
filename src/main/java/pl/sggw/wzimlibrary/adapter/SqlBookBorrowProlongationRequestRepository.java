@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pl.sggw.wzimlibrary.model.BookBorrowProlongationRequest;
 import pl.sggw.wzimlibrary.repository.BookBorrowProlongationRequestRepository;
 
+import java.util.Optional;
+
 public interface SqlBookBorrowProlongationRequestRepository extends
         BookBorrowProlongationRequestRepository, JpaRepository<BookBorrowProlongationRequest, Integer> {
 
@@ -14,5 +16,5 @@ public interface SqlBookBorrowProlongationRequestRepository extends
     boolean existsByUser_IdAndBookSlug(Integer userId, String bookSlug);
 
     @Override
-    BookBorrowProlongationRequest getByUser_IdAndBookSlug(Integer userId, String bookSlug);
+    Optional<BookBorrowProlongationRequest> findByUser_IdAndBookSlug(Integer userId, String bookSlug);
 }

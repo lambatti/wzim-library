@@ -53,13 +53,14 @@ public class BookBorrowService {
     }
 
     @Async
-    public CompletableFuture<BookBorrowRequest> requestGetByUserIdAndBookSlug(Integer userId, String bookSlug) {
-        return CompletableFuture.completedFuture(bookBorrowRequestRepository.getByUser_IdAndBookSlug(userId, bookSlug));
+    public CompletableFuture<Optional<BookBorrowRequest>> requestFindByUserIdAndBookSlug(Integer userId, String bookSlug) {
+        return CompletableFuture.completedFuture(bookBorrowRequestRepository.findByUser_IdAndBookSlug(userId, bookSlug));
     }
 
+
     @Async
-    public CompletableFuture<BookBorrowProlongationRequest> prolongationRequestGetByUserIdAndBookSlug(Integer userId, String bookSlug) {
-        return CompletableFuture.completedFuture(bookBorrowProlongationRequestRepository.getByUser_IdAndBookSlug(userId, bookSlug));
+    public CompletableFuture<Optional<BookBorrowProlongationRequest>> prolongationRequestFindByUserIdAndBookSlug(Integer userId, String bookSlug) {
+        return CompletableFuture.completedFuture(bookBorrowProlongationRequestRepository.findByUser_IdAndBookSlug(userId, bookSlug));
     }
 
     @Async
@@ -68,7 +69,7 @@ public class BookBorrowService {
     }
 
     @Async
-    public CompletableFuture<Integer> deleteBookBorrowsFromUserByReturnDate(Integer userId, Date currentDate) {
+    public CompletableFuture<Integer> borrowDeleteFromUserByReturnDate(Integer userId, Date currentDate) {
         return CompletableFuture.completedFuture(bookBorrowRepository.deleteAllFromUserByReturnDate(userId, currentDate));
     }
 
@@ -78,7 +79,10 @@ public class BookBorrowService {
 
         User user = getUserFromUserDetails(userDetails);
 
-        checkIfUserSentTheRequest(user, bookSlug);
+        if (requestExistsByUserIdAndBookSlug(user.getId(), bookSlug).get()) {
+            throw new BookBorrowConflictException("User: " + user.getEmail()
+                    + " already has sent the request for the book: " + bookSlug);
+        }
 
         if (getBookBorrowByBookSlug(user, bookSlug).isPresent()) {
             throw new BookBorrowConflictException("User: " + user.getEmail()
@@ -105,17 +109,15 @@ public class BookBorrowService {
                     "request for the book: " + bookSlug);
         }
 
-        Optional<BookBorrow> bookBorrow = getBookBorrowByBookSlug(user, bookSlug);
-
-        if (bookBorrow.isEmpty()) {
-            throw new BookBorrowConflictException("User: " + user.getEmail() + " has not borrowed the book: " + bookSlug);
-        }
+        BookBorrow bookBorrow = getBookBorrowByBookSlug(user, bookSlug)
+                .orElseThrow(() -> new BookBorrowConflictException("User: " + user.getEmail()
+                        + " has not borrowed the book: " + bookSlug));
 
         // TODO: 17.04.2022 check if the book exists
 
         BookBorrowProlongationRequest request = BookBorrowProlongationRequest.builder()
                 .user(user).bookSlug(bookSlug).requestDate(BookBorrowConstant.CURRENT_DATE)
-                .prolongationDate(bookBorrow.get().getReturnDate().plusDays(BookBorrowConstant.BOOK_BORROW_DAYS))
+                .prolongationDate(bookBorrow.getReturnDate().plusDays(BookBorrowConstant.BOOK_BORROW_DAYS))
                 .build();
 
         userService.addBookBorrowProlongationRequestToUser(user, request).get();
@@ -165,7 +167,15 @@ public class BookBorrowService {
 
         deleteBookBorrowProlongationRequest(request);
 
-        BookBorrow bookBorrow = getBookBorrowByBookSlug(userService.findByEmail(bookBorrowDto.getEmail()).get().get(), bookBorrowDto.getBookSlug()).get();
+        String email = bookBorrowDto.getEmail();
+        String bookSlug = bookBorrowDto.getBookSlug();
+
+        User user = userService.findByEmail(email).get()
+                .orElseThrow(() -> new UserNotFoundException("User with the email: " + email + " not found."));
+
+        BookBorrow bookBorrow = getBookBorrowByBookSlug(user, bookSlug)
+                .orElseThrow(() -> new BookBorrowConflictException("There is no such book borrow with the user: "
+                        + email + " and the book: " + bookSlug));
 
         updateBookBorrowReturnDate(bookBorrow);
     }
@@ -189,38 +199,33 @@ public class BookBorrowService {
         String email = bookBorrowDto.getEmail();
         String bookSlug = bookBorrowDto.getBookSlug();
 
-        User user = userService.findByEmail(email).get().orElseThrow(() -> new UserNotFoundException("User with email: " + bookBorrowDto.getEmail() + " not found"));
+        User user = userService.findByEmail(email).get()
+                .orElseThrow(() -> new UserNotFoundException("User with email: "
+                        + bookBorrowDto.getEmail() + " not found"));
 
         // TODO: 08.04.2022 check if the book exists
 
-        Integer userId = user.getId();
-
-        if (!requestExistsByUserIdAndBookSlug(userId, bookSlug).get()) {
-            throw new BookBorrowConflictException("There is no such request with the email: "
-                    + email + " and the book: " + bookSlug);
-        }
-
-        return requestGetByUserIdAndBookSlug(userId, bookSlug).get();
+        return requestFindByUserIdAndBookSlug(user.getId(), bookSlug).get()
+                .orElseThrow(() -> new BookBorrowConflictException("There is no such request with the email: "
+                        + email + " and the book: " + bookSlug));
     }
 
     @Transactional
-    BookBorrowProlongationRequest getBookBorrowProlongationRequest(BookBorrowDto bookBorrowDto) throws ExecutionException, InterruptedException, UserNotFoundException, BookBorrowConflictException {
+    BookBorrowProlongationRequest getBookBorrowProlongationRequest(BookBorrowDto bookBorrowDto)
+            throws ExecutionException, InterruptedException, UserNotFoundException, BookBorrowConflictException {
 
         String email = bookBorrowDto.getEmail();
         String bookSlug = bookBorrowDto.getBookSlug();
 
-        User user = userService.findByEmail(email).get().orElseThrow(() -> new UserNotFoundException("User with email: " + bookBorrowDto.getEmail() + " not found"));
+        User user = userService.findByEmail(email).get()
+                .orElseThrow(() -> new UserNotFoundException("User with email: "
+                        + bookBorrowDto.getEmail() + " not found"));
 
         // TODO: 08.04.2022 check if the book exists
 
-        Integer userId = user.getId();
-
-        if (!prolongationRequestExistsByUserIdAndBookSlug(userId, bookSlug).get()) {
-            throw new BookBorrowConflictException("There is no such prolongation request with the email: "
-                    + email + " and the book: " + bookSlug);
-        }
-
-        return prolongationRequestGetByUserIdAndBookSlug(userId, bookSlug).get();
+        return prolongationRequestFindByUserIdAndBookSlug(user.getId(), bookSlug).get()
+                .orElseThrow(() -> new BookBorrowConflictException("There is no such prolongation request with the email: "
+                        + email + " and the book: " + bookSlug));
     }
 
     void deleteBookBorrowRequest(BookBorrowRequest bookBorrowRequest) throws ExecutionException, InterruptedException {
@@ -239,19 +244,13 @@ public class BookBorrowService {
 
     }
 
-    private void checkIfUserSentTheRequest(User user, String bookSlug) throws BookBorrowConflictException {
-
-        for (var request : user.getBookBorrowRequests()) {
-            if (request.getBookSlug().equals(bookSlug)) {
-                throw new BookBorrowConflictException("User: " + user.getEmail()
-                        + " already has sent the request for the book: " + bookSlug);
-            }
-        }
-    }
-
     private Optional<BookBorrow> getBookBorrowByBookSlug(User user, String bookSlug) {
 
         return user.getBookBorrows().stream().filter(bookBorrow -> bookBorrow.getBookSlug().equals(bookSlug)).findAny();
+    }
+
+    private User getUserFromUserDetails(UserDetails userDetails) throws UserNotFoundException {
+        return userService.getUserFromUserDetails(userDetails);
     }
 
     @Scheduled(cron = SchedulingConstant.EVERY_DAY_AT_MIDNIGHT, zone = SchedulingConstant.TIMEZONE)
@@ -263,13 +262,9 @@ public class BookBorrowService {
         Date currentDate = Date.valueOf(BookBorrowConstant.CURRENT_DATE);
 
         for (User user : allUsers) {
-            int readBooks = deleteBookBorrowsFromUserByReturnDate(user.getId(), currentDate).get();
+            int readBooks = borrowDeleteFromUserByReturnDate(user.getId(), currentDate).get();
 
             userService.updateReadBooksByUser(user, readBooks).get();
         }
-    }
-
-    private User getUserFromUserDetails(UserDetails userDetails) throws UserNotFoundException {
-        return userService.getUserFromUserDetails(userDetails);
     }
 }
