@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pl.sggw.wzimlibrary.model.BookBorrowProlongationRequest;
 import pl.sggw.wzimlibrary.repository.BookBorrowProlongationRequestRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface SqlBookBorrowProlongationRequestRepository extends
@@ -17,4 +18,10 @@ public interface SqlBookBorrowProlongationRequestRepository extends
 
     @Override
     Optional<BookBorrowProlongationRequest> findByUser_IdAndBookSlug(Integer userId, String bookSlug);
+
+    @Override
+    List<BookBorrowProlongationRequest> findAll();
+
+    @Override
+    List<BookBorrowProlongationRequest> findAllByUser_Id(Integer userId);
 }

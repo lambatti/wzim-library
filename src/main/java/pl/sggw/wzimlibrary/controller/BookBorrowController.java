@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.sggw.wzimlibrary.exception.BookBorrowConflictException;
+import pl.sggw.wzimlibrary.exception.BookBorrowNotFoundException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.BookBorrowProlongationRequest;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
@@ -23,6 +24,41 @@ import java.util.concurrent.ExecutionException;
 public class BookBorrowController {
 
     private final BookBorrowService bookBorrowService;
+
+    @GetMapping("bookBorrows")
+    public ResponseEntity<?> getBookBorrows() throws ExecutionException, InterruptedException {
+        return ResponseEntity.ok(bookBorrowService.findAllBookBorrows().get());
+    }
+
+    @GetMapping("bookBorrows/user/{userId}")
+    public ResponseEntity<?> getBookBorrows(@PathVariable Integer userId) throws ExecutionException, InterruptedException {
+        return ResponseEntity.ok(bookBorrowService.findAllBookBorrowsByUserId(userId).get());
+    }
+
+    @GetMapping("bookBorrows/user/{userId}/bookSlug/{bookSlug}")
+    public ResponseEntity<?> getBookBorrow(@PathVariable Integer userId, @PathVariable String bookSlug)
+            throws ExecutionException, InterruptedException, BookBorrowNotFoundException {
+        return ResponseEntity.ok(bookBorrowService.getBookBorrowByUserIdAndBookSlug(userId, bookSlug));
+
+    }
+
+    @GetMapping("bookBorrowRequests")
+    public ResponseEntity<?> getBookBorrowRequests() throws ExecutionException, InterruptedException {
+        return ResponseEntity.ok(bookBorrowService.findAllRequests().get());
+    }
+
+    @GetMapping("bookBorrowRequests/user/{userId}")
+    public ResponseEntity<?> getBookBorrowRequests(@PathVariable Integer userId) throws ExecutionException, InterruptedException {
+        return ResponseEntity.ok(bookBorrowService.findAllRequestsByUserId(userId).get());
+    }
+
+    @GetMapping("bookBorrowRequests/user/{userId}/bookSlug/{bookSlug}")
+    public ResponseEntity<?> getBookBorrowRequest(@PathVariable Integer userId, @PathVariable String bookSlug)
+            throws ExecutionException, InterruptedException, BookBorrowNotFoundException {
+        return ResponseEntity.ok(bookBorrowService.getRequestByUserIdAndBookSlug(userId, bookSlug));
+
+    }
+
 
     @PostMapping("bookBorrowRequests")
     public ResponseEntity<?> addBorrowBookRequest(@RequestBody String bookSlug,
@@ -53,6 +89,23 @@ public class BookBorrowController {
         bookBorrowService.rejectBookBorrowRequest(bookBorrowDto);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("bookBorrowProlongationRequests")
+    public ResponseEntity<?> getBookBorrowProlongationRequests() throws ExecutionException, InterruptedException {
+        return ResponseEntity.ok(bookBorrowService.findAllProlongationRequests().get());
+    }
+
+    @GetMapping("bookBorrowProlongationRequests/user/{userId}")
+    public ResponseEntity<?> getBookBorrowProlongationRequests(@PathVariable Integer userId) throws ExecutionException, InterruptedException {
+        return ResponseEntity.ok(bookBorrowService.findAllProlongationRequestsByUserId(userId).get());
+    }
+
+    @GetMapping("bookBorrowProlongationRequests/user/{userId}/bookSlug/{bookSlug}")
+    public ResponseEntity<?> getBookBorrowProlongationRequest(@PathVariable Integer userId, @PathVariable String bookSlug)
+            throws ExecutionException, InterruptedException, BookBorrowNotFoundException {
+        return ResponseEntity.ok(bookBorrowService.getProlongationRequestByUserIdAndBookSlug(userId, bookSlug));
+
     }
 
     @PostMapping("bookBorrowProlongationRequests")

@@ -10,6 +10,7 @@ import pl.sggw.wzimlibrary.adapter.SqlBookBorrowProlongationRequestRepository;
 import pl.sggw.wzimlibrary.adapter.SqlBookBorrowRepository;
 import pl.sggw.wzimlibrary.adapter.SqlBookBorrowRequestRepository;
 import pl.sggw.wzimlibrary.exception.BookBorrowConflictException;
+import pl.sggw.wzimlibrary.exception.BookBorrowNotFoundException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.BookBorrow;
 import pl.sggw.wzimlibrary.model.BookBorrowProlongationRequest;
@@ -38,6 +39,52 @@ public class BookBorrowService {
     private final UserService userService;
 
     @Async
+    public CompletableFuture<List<BookBorrow>> findAllBookBorrows() {
+        return CompletableFuture.completedFuture(bookBorrowRepository.findAll());
+    }
+
+    @Async
+    public CompletableFuture<List<BookBorrow>> findAllBookBorrowsByUserId(Integer userId) {
+        return CompletableFuture.completedFuture(bookBorrowRepository.findAllByUser_Id(userId));
+    }
+
+    @Async
+    public CompletableFuture<Optional<BookBorrow>> findBookBorrowByUserIdAndBookSlug(Integer userId, String bookSlug) {
+        return CompletableFuture.completedFuture(bookBorrowRepository.findByUser_IdAndBookSlug(userId, bookSlug));
+    }
+
+    @Async
+    public CompletableFuture<List<BookBorrowRequest>> findAllRequests() {
+        return CompletableFuture.completedFuture(bookBorrowRequestRepository.findAll());
+    }
+
+    @Async
+    public CompletableFuture<List<BookBorrowRequest>> findAllRequestsByUserId(Integer userId) {
+        return CompletableFuture.completedFuture(bookBorrowRequestRepository.findAllByUser_Id(userId));
+    }
+
+    @Async
+    public CompletableFuture<Optional<BookBorrowRequest>> findRequestByUserIdAndBookSlug(Integer userId, String bookSlug) {
+        return CompletableFuture.completedFuture(bookBorrowRequestRepository.findByUser_IdAndBookSlug(userId, bookSlug));
+    }
+
+    @Async
+    public CompletableFuture<List<BookBorrowProlongationRequest>> findAllProlongationRequests() {
+        return CompletableFuture.completedFuture(bookBorrowProlongationRequestRepository.findAll());
+    }
+
+    @Async
+    public CompletableFuture<List<BookBorrowProlongationRequest>> findAllProlongationRequestsByUserId(Integer userId) {
+        return CompletableFuture.completedFuture(bookBorrowProlongationRequestRepository.findAllByUser_Id(userId));
+    }
+
+
+    @Async
+    public CompletableFuture<Optional<BookBorrowProlongationRequest>> findProlongationRequestByUserIdAndBookSlug(Integer userId, String bookSlug) {
+        return CompletableFuture.completedFuture(bookBorrowProlongationRequestRepository.findByUser_IdAndBookSlug(userId, bookSlug));
+    }
+
+    @Async
     public CompletableFuture<BookBorrowRequest> save(BookBorrowRequest bookBorrowRequest) {
         return CompletableFuture.completedFuture(bookBorrowRequestRepository.save(bookBorrowRequest));
     }
@@ -53,17 +100,6 @@ public class BookBorrowService {
     }
 
     @Async
-    public CompletableFuture<Optional<BookBorrowRequest>> requestFindByUserIdAndBookSlug(Integer userId, String bookSlug) {
-        return CompletableFuture.completedFuture(bookBorrowRequestRepository.findByUser_IdAndBookSlug(userId, bookSlug));
-    }
-
-
-    @Async
-    public CompletableFuture<Optional<BookBorrowProlongationRequest>> prolongationRequestFindByUserIdAndBookSlug(Integer userId, String bookSlug) {
-        return CompletableFuture.completedFuture(bookBorrowProlongationRequestRepository.findByUser_IdAndBookSlug(userId, bookSlug));
-    }
-
-    @Async
     public CompletableFuture<Boolean> prolongationRequestExistsByUserIdAndBookSlug(Integer userId, String bookSlug) {
         return CompletableFuture.completedFuture(bookBorrowProlongationRequestRepository.existsByUser_IdAndBookSlug(userId, bookSlug));
     }
@@ -71,6 +107,28 @@ public class BookBorrowService {
     @Async
     public CompletableFuture<Integer> borrowDeleteFromUserByReturnDate(Integer userId, Date currentDate) {
         return CompletableFuture.completedFuture(bookBorrowRepository.deleteAllFromUserByReturnDate(userId, currentDate));
+    }
+
+
+    public BookBorrowRequest getRequestByUserIdAndBookSlug(Integer userId, String bookSlug)
+            throws ExecutionException, InterruptedException, BookBorrowNotFoundException {
+        return findRequestByUserIdAndBookSlug(userId, bookSlug).get()
+                .orElseThrow(() -> new BookBorrowNotFoundException("User with the id: " + userId
+                        + " has not sent a request for the book: " + bookSlug));
+    }
+
+    public BookBorrowProlongationRequest getProlongationRequestByUserIdAndBookSlug(Integer userId, String bookSlug)
+            throws ExecutionException, InterruptedException, BookBorrowNotFoundException {
+        return findProlongationRequestByUserIdAndBookSlug(userId, bookSlug).get()
+                .orElseThrow(() -> new BookBorrowNotFoundException("User with the id: " + userId
+                        + " has not sent a prolongation request for the book: " + bookSlug));
+    }
+
+    public BookBorrow getBookBorrowByUserIdAndBookSlug(Integer userId, String bookSlug)
+            throws ExecutionException, InterruptedException, BookBorrowNotFoundException {
+        return findBookBorrowByUserIdAndBookSlug(userId, bookSlug).get()
+                .orElseThrow(() -> new BookBorrowNotFoundException("User with the id: " + userId
+                        + " has not borrowed the book: " + bookSlug));
     }
 
     @Transactional
@@ -205,7 +263,7 @@ public class BookBorrowService {
 
         // TODO: 08.04.2022 check if the book exists
 
-        return requestFindByUserIdAndBookSlug(user.getId(), bookSlug).get()
+        return findRequestByUserIdAndBookSlug(user.getId(), bookSlug).get()
                 .orElseThrow(() -> new BookBorrowConflictException("There is no such request with the email: "
                         + email + " and the book: " + bookSlug));
     }
@@ -223,7 +281,7 @@ public class BookBorrowService {
 
         // TODO: 08.04.2022 check if the book exists
 
-        return prolongationRequestFindByUserIdAndBookSlug(user.getId(), bookSlug).get()
+        return findProlongationRequestByUserIdAndBookSlug(user.getId(), bookSlug).get()
                 .orElseThrow(() -> new BookBorrowConflictException("There is no such prolongation request with the email: "
                         + email + " and the book: " + bookSlug));
     }

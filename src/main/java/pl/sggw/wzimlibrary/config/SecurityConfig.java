@@ -3,7 +3,6 @@ package pl.sggw.wzimlibrary.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,10 +37,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/api/users").hasAuthority(Role.ADMIN.toString())
-                .antMatchers("/api/bookBorrowRequests/**").hasAuthority(Role.WORKER.toString())
-                .antMatchers("/api/bookBorrowProlongationRequests/**").hasAuthority(Role.WORKER.toString())
-                .antMatchers(HttpMethod.POST, "/api/bookBorrowRequests").hasAuthority(Role.USER.toString())
-                .antMatchers(HttpMethod.POST, "/api/bookBorrowProlongationRequests").hasAuthority(Role.USER.toString())
+                .antMatchers("/api/bookBorrowRequests/accept").hasAuthority(Role.WORKER.toString())
+                .antMatchers("/api/bookBorrowRequests/reject").hasAuthority(Role.WORKER.toString())
+                .antMatchers("/api/bookBorrowProlongationRequests/accept").hasAuthority(Role.WORKER.toString())
+                .antMatchers("/api/bookBorrowProlongationRequests/reject").hasAuthority(Role.WORKER.toString())
+                .antMatchers("/api/bookBorrows/**").hasAuthority(Role.USER.toString())
+                .antMatchers("/api/bookBorrowRequests/**").hasAuthority(Role.USER.toString())
+                .antMatchers("/api/bookBorrowProlongationRequests/**").hasAuthority(Role.USER.toString())
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
