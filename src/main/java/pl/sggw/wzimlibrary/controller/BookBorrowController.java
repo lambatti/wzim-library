@@ -42,14 +42,15 @@ public class BookBorrowController {
 
     }
 
+
     @GetMapping("bookBorrowRequests")
     public ResponseEntity<?> getBookBorrowRequests() throws ExecutionException, InterruptedException {
-        return ResponseEntity.ok(bookBorrowService.findAllRequests().get());
+        return ResponseEntity.ok(bookBorrowService.getAllRequests());
     }
 
     @GetMapping("bookBorrowRequests/user/{userId}")
     public ResponseEntity<?> getBookBorrowRequests(@PathVariable Integer userId) throws ExecutionException, InterruptedException {
-        return ResponseEntity.ok(bookBorrowService.findAllRequestsByUserId(userId).get());
+        return ResponseEntity.ok(bookBorrowService.getAllRequestsByUserId(userId));
     }
 
     @GetMapping("bookBorrowRequests/user/{userId}/bookSlug/{bookSlug}")
@@ -58,7 +59,6 @@ public class BookBorrowController {
         return ResponseEntity.ok(bookBorrowService.getRequestByUserIdAndBookSlug(userId, bookSlug));
 
     }
-
 
     @PostMapping("bookBorrowRequests")
     public ResponseEntity<?> addBorrowBookRequest(@RequestBody String bookSlug,
@@ -91,14 +91,15 @@ public class BookBorrowController {
         return ResponseEntity.ok().build();
     }
 
+
     @GetMapping("bookBorrowProlongationRequests")
     public ResponseEntity<?> getBookBorrowProlongationRequests() throws ExecutionException, InterruptedException {
-        return ResponseEntity.ok(bookBorrowService.findAllProlongationRequests().get());
+        return ResponseEntity.ok(bookBorrowService.getAllProlongationRequests());
     }
 
     @GetMapping("bookBorrowProlongationRequests/user/{userId}")
     public ResponseEntity<?> getBookBorrowProlongationRequests(@PathVariable Integer userId) throws ExecutionException, InterruptedException {
-        return ResponseEntity.ok(bookBorrowService.findAllProlongationRequestsByUserId(userId).get());
+        return ResponseEntity.ok(bookBorrowService.getAllProlongationRequestsByUserId(userId));
     }
 
     @GetMapping("bookBorrowProlongationRequests/user/{userId}/bookSlug/{bookSlug}")
