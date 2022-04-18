@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.sggw.wzimlibrary.filter.ExceptionFilter;
 import pl.sggw.wzimlibrary.filter.JwtRequestFilter;
@@ -26,7 +25,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final JwtRequestFilter jwtRequestFilter;
     private final ExceptionFilter exceptionFilter;
-    private final DefaultWebSecurityExpressionHandler expressionHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -38,10 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable();
 
-        http.authorizeRequests().expressionHandler(expressionHandler)
+        http.authorizeRequests()
                 .antMatchers("/api/users").hasAuthority(Role.ADMIN.toString())
-                .antMatchers("/api/bookBorowRequests/**").hasAuthority(Role.WORKER.toString())
-                .antMatchers("/api/bookProlongationBorrowRequests/**").hasAuthority(Role.WORKER.toString())
+                .antMatchers("/api/bookBorrowRequests/**").hasAuthority(Role.WORKER.toString())
+                .antMatchers("/api/bookBorrowProlongationRequests/**").hasAuthority(Role.WORKER.toString())
                 .antMatchers(HttpMethod.POST, "/api/bookBorrowRequests").hasAuthority(Role.USER.toString())
                 .antMatchers(HttpMethod.POST, "/api/bookBorrowProlongationRequests").hasAuthority(Role.USER.toString())
                 .antMatchers("/**").permitAll()
@@ -53,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/h2-console/**");
     }
 
