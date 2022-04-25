@@ -27,8 +27,8 @@ let routing = RouterModule.forChild([
     path: '', component: AdminPanelComponent, children: [
       { path: 'workersSummary', component: WorkersSummaryComponent },
       { path: 'addWorker', component: AddWorkerComponent },
-      { path: 'deleteUser', component: DeleteUserComponent },
-    //  { path: 'borrowedBooks', component: WorkersSummaryComponent },
+      { path: 'deleteUser', component: DeleteUserComponent }
+      //  { path: 'borrowedBooks', component: WorkersSummaryComponent },
 
     ]
   },

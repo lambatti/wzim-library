@@ -27,14 +27,14 @@
     }
 
     &__nav {
-      display: flex;
-      flex-direction: column;
 
       &__item {
+        margin: 10px 0;
+      &--a {
         text-decoration: underline;
         cursor: pointer;
         color: #000;
-        margin: 10px 0;
+      }
       }
     }
 

@@ -19,6 +19,7 @@ import { AuthenticationService } from './core/authentication/authentication.serv
 import { AuthService } from './core/authentication/auth.service';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { AuthGuard } from './core/guards/authGuard.guard';
+import { BookService } from './core/http/book.service';
 
 registerLocaleData(en);
 
@@ -43,7 +44,7 @@ registerLocaleData(en);
   }, AuthorizationService, AuthenticationService, AuthService, JwtHelperService, {
     provide: JWT_OPTIONS,
     useValue: JWT_OPTIONS
-  }, AuthGuard],
+  }, AuthGuard, BookService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
