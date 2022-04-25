@@ -14,11 +14,11 @@ export class AuthorizationService {
 
   login(user: LoginUserModel): Observable<TokenModel> {
     return this.http
-      .post<TokenModel>(`${environment.url}/api/login`, user);
+      .post<TokenModel>(`${environment.url}/login`, user);
   }
 
   register(newUser: RegisterUserModel): Observable<Object> {
-    return this.http.post(`${environment.url}/api/register`, newUser);
+    return this.http.post(`${environment.url}/register`, newUser);
   }
 
 }

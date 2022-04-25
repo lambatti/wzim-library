@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserBookStatus } from '../../model/book.model';
 
 
 @Component({
@@ -7,7 +8,15 @@ import { Component } from '@angular/core';
   styleUrls: ['userTemplate.component.scss']
 })
 export class UserTemplateComponent {
-  readBook: number = 2131;
-  borrowedBook: number = 321;
+
+
+
+
+  booksStatus: UserBookStatus = {
+    booksRead: 2131,
+    borrowedBooks: 321
+  };
+
+
   firstName: any;
 }

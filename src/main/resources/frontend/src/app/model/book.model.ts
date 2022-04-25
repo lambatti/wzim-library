@@ -1,6 +1,3 @@
-
-
-
 export interface Book {
   title: string,
   language: string,
@@ -12,11 +9,18 @@ export interface Book {
   cover: string
 }
 
-export interface BookWithText extends Book{
-  text: string
+export interface BookWithText extends Book {
+  text: string;
 }
+
 export interface BookCard {
   title: string,
   genres: string,
   cover: string,
+}
+
+
+export interface UserBookStatus {
+  borrowedBooks: number,
+  booksRead: number,
 }
