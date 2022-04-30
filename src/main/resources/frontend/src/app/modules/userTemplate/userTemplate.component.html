@@ -30,12 +30,12 @@
         <div class='userStatistics__shape'><span class='userStatistics__shape__letter'>K</span></div>
         <div class='userStatistics__details'>
           <span class='userStatistics__details__icon'><i nz-icon nzType='check' nzTheme='outline'></i></span>
-          <div class='userStatistics__details__number'>{{booksStatus.booksRead}}</div>
+          <div class='userStatistics__details__number'>{{booksStatus?.booksRead}}</div>
           <p class='userStatistics__details__text'>Przeczytane</p>
         </div>
         <div class='userStatistics__details'>
           <span class='userStatistics__details__icon'><i nz-icon nzType='file-text' nzTheme='outline'></i></span>
-          <div class='userStatistics__details__number'>{{booksStatus.borrowedBooks}}</div>
+          <div class='userStatistics__details__number'>{{booksStatus?.borrowedBooks}}</div>
           <p class='userStatistics__details__text'>Wypożyczone</p>
         </div>
       </div>

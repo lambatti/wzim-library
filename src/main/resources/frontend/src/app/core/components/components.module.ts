@@ -6,7 +6,6 @@ import { FooterComponent } from './footer/footer.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgotPassword/forgotPassword.component';
-import { ChangeForgotPasswordComponent } from './changeForgotPassword/changeForgotPassword.component';
 import { UserDataComponent } from './userData/userData.component';
 import { UserDrawerComponent } from './userDrawer/userDrawer.component';
 import { ChangePasswordComponent } from './changePassword/changePassword.component';
@@ -40,7 +39,6 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
     RegisterComponent,
     LoginComponent,
     ForgotPasswordComponent,
-    ChangeForgotPasswordComponent,
     UserDataComponent,
     UserDrawerComponent,
     ChangePasswordComponent,
@@ -65,8 +63,6 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
     CardComponent,
     PopularSectionComponent,
     FooterComponent,
-    ForgotPasswordComponent,
-    ChangeForgotPasswordComponent,
     UserDataComponent,
     UserDrawerComponent,
     ChangePasswordComponent,

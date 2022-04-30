@@ -93,7 +93,7 @@
   }
 
   &__cover {
-    @include background-center("https://scontent-frt3-1.xx.fbcdn.net/v/t1.6435-9/144740837_266854271470156_7290584107668733863_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=Ru3D8bfLKTAAX_hvVc_&_nc_ht=scontent-frt3-1.xx&oh=00_AT-buREPhqc208t04IlwEegs_HbYehHSAOu-Hd--Uoft0g&oe=62628F01");
+    @include background-center("../../../assets/images/image_3.png");
     border-radius: 10px;
     min-width: 250px;
     height: 300px;

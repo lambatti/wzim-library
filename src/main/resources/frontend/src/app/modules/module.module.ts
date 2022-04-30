@@ -38,7 +38,7 @@ import { UserTemplateComponent } from './userTemplate/userTemplate.component';
     NzDropDownModule,
     NzPaginationModule,
     NzSwitchModule,
-    FormsModule
+    FormsModule,
   ],
   declarations: [HomeComponent, LoginTemplateComponent, UserTemplateComponent, BookDetailsComponent, BookCategoriesComponent, ReadBookComponent],
   exports: [HomeComponent, LoginTemplateComponent, UserTemplateComponent, BookDetailsComponent, BookCategoriesComponent, ReadBookComponent]

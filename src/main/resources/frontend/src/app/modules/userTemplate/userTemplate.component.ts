@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserBookStatus } from '../../model/book.model';
+import { UserRepository } from '../../core/services/user.repository';
 
 
 @Component({
@@ -7,16 +8,20 @@ import { UserBookStatus } from '../../model/book.model';
   templateUrl: 'userTemplate.component.html',
   styleUrls: ['userTemplate.component.scss']
 })
-export class UserTemplateComponent {
+export class UserTemplateComponent implements OnInit {
+
+  constructor(private readonly _userRepository: UserRepository) {
+  }
 
 
-
-
-  booksStatus: UserBookStatus = {
-    booksRead: 2131,
-    borrowedBooks: 321
-  };
-
+  booksStatus: UserBookStatus;
 
   firstName: any;
+
+  ngOnInit(): void {
+    this._userRepository.showUserBooksStatus().subscribe((data) => {
+      this.booksStatus = data;
+    });
+
+  }
 }

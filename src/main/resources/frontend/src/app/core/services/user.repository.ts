@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ShowedUserModel } from '../../model/user.model';
 import { UserService } from '../http/user.service';
 import { Observable } from 'rxjs';
+import { UserBookStatus } from '../../model/book.model';
 
 
 
@@ -15,5 +16,12 @@ export class UserRepository {
   showUserData(): Observable<ShowedUserModel> {
     return this._userService.getUserData();
   }
+
+  showUserBooksStatus(): Observable<UserBookStatus> {
+    return this._userService.getUserBooksCount();
+  }
+
+
+
 
 }

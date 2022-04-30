@@ -7,7 +7,6 @@ import { UserService } from './http/user.service';
 
 
 @NgModule({
-  declarations: [],
   imports: [ComponentsModule, ValidatorsModule, MessageModule],
   exports: [ComponentsModule, MessageModule],
   providers: [UserRepository, UserService],

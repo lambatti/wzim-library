@@ -15,5 +15,27 @@ export class BookService {
     return this._http.get<Book[]>('https://wolnelektury.pl/api/books');
   }
 
+  // PROLONGACJA KSIĄŻKI
+
+  prolongationBoook(id: number): Observable<any> {
+
+    return this._http.post(``, id);
+  }
+
+
+  // GET BOOKS TO HOME PAGE WITH PARAM x3
+
+  // BORROW BOOK
+
+  // GET ALL BOOK WITH CATEGORY
+  // tu trzeba wyswietlać categorie po czym sortujemy
+
+  // FIND ONE BOOK BY TEXT
+
+  // GET BOOK DATA BY SLUG
+
+  // GET ONE BOOK TEXT
+
+
 
 }
