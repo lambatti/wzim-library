@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { UserBookStatus } from '../../model/book.model';
 import { ChangePassword } from '../validators/changePassword.model';
 import { ChangePasswordModel } from '../../model/changePassword.model';
+import { ChangeQuestionModel } from '../../model/changeQuestion.model';
 
 
 @Injectable()
@@ -22,20 +23,20 @@ export class UserService {
     return this._http.get<UserBookStatus>(`http://localhost:5000/bookstatus`, UserService.httpOptions());
   }
 
-  // CHANGE PASSWORD FROM PANEL ------ chandle error
+  // CHANGE PASSWORD FROM PANEL ------ handle error
   changePassword(changedData: ChangePasswordModel): Observable<Object> {
     return this._http.patch<ChangePassword>(`${environment.url}/changePassword`, changedData, UserService.httpOptions());
   }
 
-  // CHANGE VERIFICATION DATA ---- chandle error
-  changeVerification() {
-
+  // CHANGE VERIFICATION DATA ---- handle error
+  changeQusetion(changedData: ChangeQuestionModel): Observable<Object> {
+    return this._http.patch<ChangeQuestionModel>(`${environment.url}/changePassword`, changedData, UserService.httpOptions());
   }
+
 
   // BORROWED BOOKS USER  ----- basic get method
 
-  // Verification question
-
+  // Verification questions
 
   private static httpOptions() {
     return {

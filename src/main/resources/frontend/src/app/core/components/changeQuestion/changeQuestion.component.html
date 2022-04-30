@@ -1,5 +1,5 @@
 <div nz-row nzJustify='center' nzAlign='middle' style='height: 50vh;'>
-  <form nz-form nzLayout='vertical' nz-col [nzXs]='20' [nzMd]='8'>
+  <form nz-form nzLayout='vertical' nz-col [nzXs]='20' [nzMd]='8' [formGroup]='formGroup' (ngSubmit)='submitForm()'>
     <nz-form-item>
       <nz-form-label nzRequired><span>Aktualne hasło:</span></nz-form-label>
       <nz-form-control>
@@ -34,3 +34,5 @@
     </div>
   </form>
 </div>
+
+<app-ok-modal status='success' title='Udało się' [handleOk]='handleOk' [isVisible]='isVisible'></app-ok-modal>

@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { UserBookStatus } from '../../model/book.model';
 import { catchError } from 'rxjs/operators';
 import { ChangePasswordModel } from '../../model/changePassword.model';
+import { ChangeQuestionModel } from '../../model/changeQuestion.model';
 
 
 @Injectable()
@@ -28,5 +29,10 @@ export class UserRepository {
       .pipe(catchError(() => throwError(`Podane dane nie są poprawne`)));
   }
 
+  changeQusetion(changedData: ChangeQuestionModel): Observable<Object> {
+    return this._userService
+      .changeQusetion(changedData)
+      .pipe(catchError(() => throwError(`Podane dane nie są poprawne`)));
+  }
 
 }
