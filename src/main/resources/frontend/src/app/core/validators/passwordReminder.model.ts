@@ -14,6 +14,16 @@ export class PasswordReminder extends FormGroup {
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(30)
+      ])),
+      newPassword: new CustomFormControl('Nowe hasło', 'newPassword', '', Validators.compose([
+        Validators.required,
+        Validators.minLength(7),
+        Validators.maxLength(30)
+      ])),
+      passwordConfirmation: new CustomFormControl('Potwierdź nowe hasło', 'passwordConfirmation', '', Validators.compose([
+        Validators.required,
+        Validators.minLength(7),
+        Validators.maxLength(30)
       ]))
     });
   }
@@ -21,7 +31,6 @@ export class PasswordReminder extends FormGroup {
   getValidationMessages(name: string): string[] {
     return (this.controls[name] as CustomFormControl).getValidationMessages();
   }
-
 
 
 }

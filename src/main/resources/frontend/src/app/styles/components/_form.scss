@@ -46,12 +46,7 @@
   }
 }
 
-.restHeight {
-  height: 3*(100vh/4);
-  @include respond-to('lg') {
-    height: 100vh;
-  }
-}
+
 .higherPadding {
   padding-bottom: 10vh;
 }

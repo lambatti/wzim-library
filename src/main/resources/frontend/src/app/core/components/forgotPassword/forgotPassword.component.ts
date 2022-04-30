@@ -8,8 +8,8 @@ import { PasswordReminder } from '../../validators/passwordReminder.model';
 })
 export class ForgotPasswordComponent {
   passwordVisible: boolean = false;
+  confirmPasswordVisible: boolean = false;
   formGroup: PasswordReminder = new PasswordReminder();
-
 
 
 
