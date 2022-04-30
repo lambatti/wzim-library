@@ -13,6 +13,8 @@ export class ForgotPasswordComponent {
   constructor(private readonly _auth: AuthenticationService) {
   }
 
+  isVisibleModal: boolean = false;
+
   passwordVisible: boolean = false;
   confirmPasswordVisible: boolean = false;
 
@@ -21,15 +23,32 @@ export class ForgotPasswordComponent {
   modelPasswordReminder: PasswordReminderModel = new PasswordReminderModel();
   formSubmitted: boolean = false;
 
+
+  get questionVerification(): string[] {
+    return [
+      'Co pije krowa?',
+      'Jak się mają tomki?',
+      'Jak się macie?'
+    ];
+
+  }
+
   submitFrom(): void {
     // @ts-ignore
     Object.keys(this.formGroup.controls).forEach(c => this.modelPasswordReminder[c] = this.formGroup.controls[c].value);
     this.formSubmitted = true;
     if (this.formGroup.valid) {
-      this._auth.passwordReminder(this.modelPasswordReminder).subscribe();
+      console.log(this.modelPasswordReminder);
+      this._auth.passwordReminder(this.modelPasswordReminder).subscribe(() => {
+        this.isVisibleModal = true;
+      });
       this.modelPasswordReminder = new PasswordReminderModel();
       this.formGroup.reset();
       this.formSubmitted = false;
     }
+  }
+
+  handleOk() {
+    this.isVisibleModal = false;
   }
 }

@@ -29,6 +29,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MessageModule } from '../message/message.module';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { OkModalComponent } from './okModal/okModal.component';
+import { NzResultModule } from 'ng-zorro-antd/result';
 
 
 @NgModule({
@@ -43,22 +45,23 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
     UserDrawerComponent,
     ChangePasswordComponent,
     ChangeQuestionComponent,
+    OkModalComponent,
     ModalComponent],
-    imports: [NzLayoutModule,
-        NzGridModule,
-        NzTypographyModule,
-        NzListModule,
-        NzButtonModule,
-        NzCardModule,
-        CommonModule,
-        NzIconModule,
-        RouterModule,
-        NzFormModule,
-        NzInputModule,
-        NzSelectModule,
-        NzDrawerModule,
-        NzMenuModule,
-        NzModalModule, ReactiveFormsModule, MessageModule, NzDropDownModule],
+  imports: [NzLayoutModule,
+    NzGridModule,
+    NzTypographyModule,
+    NzListModule,
+    NzButtonModule,
+    NzCardModule,
+    CommonModule,
+    NzIconModule,
+    RouterModule,
+    NzFormModule,
+    NzInputModule,
+    NzSelectModule,
+    NzDrawerModule,
+    NzMenuModule,
+    NzModalModule, ReactiveFormsModule, MessageModule, NzDropDownModule, NzResultModule],
   exports: [HeaderComponent,
     CardComponent,
     PopularSectionComponent,
@@ -67,7 +70,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
     UserDrawerComponent,
     ChangePasswordComponent,
     ChangeQuestionComponent,
-    ModalComponent],
+    ModalComponent]
 })
 export class ComponentsModule {
 }

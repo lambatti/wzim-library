@@ -7,10 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class ModalComponent {
   @Input() isVisible!: boolean;
-
   @Input() handleOk!: Function;
   @Input() handleCancel!: Function;
-
-
 
 }
