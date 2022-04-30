@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ShowedUserModel } from '../../model/user.model';
 import { UserService } from '../http/user.service';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { UserBookStatus } from '../../model/book.model';
-
+import { catchError } from 'rxjs/operators';
+import { ChangePasswordModel } from '../../model/changePassword.model';
 
 
 @Injectable()
@@ -22,6 +23,10 @@ export class UserRepository {
   }
 
 
+  changePassword(changedData: ChangePasswordModel): Observable<Object> {
+    return this._userService.changePassword(changedData)
+      .pipe(catchError(() => throwError(`Podane dane nie są poprawne`)));
+  }
 
 
 }

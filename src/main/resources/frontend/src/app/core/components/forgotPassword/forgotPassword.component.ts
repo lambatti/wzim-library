@@ -25,16 +25,11 @@ export class ForgotPasswordComponent {
     // @ts-ignore
     Object.keys(this.formGroup.controls).forEach(c => this.modelPasswordReminder[c] = this.formGroup.controls[c].value);
     this.formSubmitted = true;
-
-      console.log(this.modelPasswordReminder);
-
     if (this.formGroup.valid) {
       this._auth.passwordReminder(this.modelPasswordReminder).subscribe();
       this.modelPasswordReminder = new PasswordReminderModel();
       this.formGroup.reset();
       this.formSubmitted = false;
     }
-
   }
-
 }
