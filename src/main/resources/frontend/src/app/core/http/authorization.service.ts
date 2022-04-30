@@ -5,20 +5,25 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { TokenModel } from '../../model/token.model';
 import { RegisterUserModel } from '../../model/registerUser.model';
+import { PasswordReminderModel } from '../../model/passwordReminder.model';
 
 
 @Injectable()
 export class AuthorizationService {
-  constructor(private http: HttpClient) {
+  constructor(private _http: HttpClient) {
   }
 
   login(user: LoginUserModel): Observable<TokenModel> {
-    return this.http
+    return this._http
       .post<TokenModel>(`${environment.url}/login`, user);
   }
 
   register(newUser: RegisterUserModel): Observable<Object> {
-    return this.http.post(`${environment.url}/register`, newUser);
+    return this._http.post(`${environment.url}/register`, newUser);
+  }
+
+  passwordReminder(newAuthenticationData: PasswordReminderModel): Observable<Object> {
+      return this._http.patch(`${environment.url}/reminderPassword`, newAuthenticationData);
   }
 
 }
