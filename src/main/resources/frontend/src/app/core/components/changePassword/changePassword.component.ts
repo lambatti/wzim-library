@@ -20,17 +20,22 @@ export class ChangePasswordComponent {
   formGroup: ChangePassword = new ChangePassword();
   changePasswordModel: ChangePasswordModel = new ChangePasswordModel();
   formSubmitted: boolean = false;
+  isVisible: boolean = false;
 
   submitForm(): void {
-
     // @ts-ignore
     Object.keys(this.formGroup.controls).forEach(c => this.changePasswordModel[c] = this.formGroup.controls[c].value);
     this.formSubmitted = true;
-
     if (this.formGroup.valid) {
-      this._userRepository.changePassword(this.changePasswordModel).subscribe();
+      this._userRepository
+        .changePassword(this.changePasswordModel)
+        .subscribe(() => {
+          this.isVisible = true;
+        });
     }
   }
 
-
+  handleOk() {
+    this.isVisible = false;
+  }
 }
