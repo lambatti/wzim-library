@@ -41,10 +41,15 @@ registerLocaleData(en);
   providers: [{
     provide: NZ_I18N,
     useValue: en_US
-  }, AuthorizationService, AuthenticationService, AuthService, JwtHelperService, {
-    provide: JWT_OPTIONS,
-    useValue: JWT_OPTIONS
-  }, AuthGuard, BookService],
+  }, AuthorizationService,
+    AuthenticationService,
+    AuthService,
+    JwtHelperService, {
+      provide: JWT_OPTIONS,
+      useValue: JWT_OPTIONS
+    },
+    AuthGuard,
+    BookService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

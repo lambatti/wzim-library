@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 
 export class HeaderComponent {
   @Input() isRegister: boolean = false;
-  public name: string = 'Tomek';
+  public name: string = localStorage.getItem('email') as string;
 
   constructor(public _auth: AuthService, private router: Router) {
   }

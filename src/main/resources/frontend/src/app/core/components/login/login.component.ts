@@ -3,6 +3,7 @@ import { LoginFormGroup } from '../../validators/loginFormGroup.model';
 import { LoginUserModel } from '../../../model/loginUser.model';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
-  constructor(private _authentication: AuthenticationService, private router: Router) {
+  constructor(private _authentication: AuthenticationService, private router: Router, private _jwt: JwtHelperService) {
   }
 
   passwordVisible: boolean = false;
@@ -29,6 +30,7 @@ export class LoginComponent {
         .login(this.newUser)
         .subscribe( ({token})=> {
           localStorage.setItem('token', token);
+         localStorage.setItem('email', this._jwt.decodeToken(token).sub);
           this.router.navigateByUrl('/');
         });
       this.newUser = new LoginUserModel();
