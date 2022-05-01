@@ -52,8 +52,6 @@ public class UserService implements UserDetailsService {
 
     @Async
     public CompletableFuture<Void> setPassword(String email, String encodedPassword) {
-//        return CompletableFuture.completedFuture(userCacheService.setPassword(email, encodedPassword)).complete(null);
-//        return CompletableFuture.completedFuture(null);
         userCacheService.setPassword(email, encodedPassword);
         return null;
     }
@@ -145,7 +143,6 @@ public class UserService implements UserDetailsService {
 
     private void setUserPassword(User user, String newPassword) {
         String encodedPassword = passwordEncoder.encode(newPassword);
-        //userCacheService.setPassword(user.getEmail(), encodedPassword);
         setPassword(user.getEmail(), encodedPassword);
     }
 
