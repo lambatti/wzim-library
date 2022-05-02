@@ -1,5 +1,6 @@
 package pl.sggw.wzimlibrary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import pl.sggw.wzimlibrary.model.constant.Gender;
@@ -36,12 +37,15 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<BookBorrow> bookBorrows;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<BookBorrowRequest> bookBorrowRequests;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<BookBorrowProlongationRequest> bookBorrowProlongationRequests;
 

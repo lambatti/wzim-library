@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.Role;
+import pl.sggw.wzimlibrary.model.dto.UserForgottenPasswordDto;
 import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
 import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
@@ -154,4 +155,30 @@ public class UserService implements UserDetailsService {
         String email = extractEmailFromToken(token);
         return findByEmail(email).get();
     }
+
+    public boolean forgottenPasswordChange(UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException {
+        if (!userForgottenPasswordDto.getNewPassword().equals(userForgottenPasswordDto.getNewPasswordConfirmation())) {
+            return false;
+        }
+
+        Optional<User> user = findByEmail(userForgottenPasswordDto.getEmail()).get();
+
+        if (user.isEmpty() ||
+                !doesTheQuestionMatch(userForgottenPasswordDto.getQuestion().toString(), user.get().getSecurityQuestion().toString()) ||
+                !doesTheAnswerMatch(userForgottenPasswordDto.getAnswer(), user.get().getSecurityQuestionAnswer())) {
+            return false;
+        }
+
+        setUserPassword(user.get(), userForgottenPasswordDto.getNewPassword());
+        return true;
+    }
+
+    private boolean doesTheQuestionMatch(String sentQuestion, String userQuestion){
+        return sentQuestion.equals(userQuestion);
+    }
+
+    private boolean doesTheAnswerMatch(String sentAnswer, String userAnswer){
+        return sentAnswer.equals(userAnswer);
+    }
+
 }

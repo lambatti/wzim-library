@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.sggw.wzimlibrary.model.dto.UserForgottenPasswordDto;
 import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
 import pl.sggw.wzimlibrary.service.UserService;
 
@@ -29,4 +30,13 @@ public class UserController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @PatchMapping("/user/forgottenPassword")
+    ResponseEntity<?> forgottenPassword( @RequestBody UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException {
+        if (userService.forgottenPasswordChange(userForgottenPasswordDto)) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
 }
