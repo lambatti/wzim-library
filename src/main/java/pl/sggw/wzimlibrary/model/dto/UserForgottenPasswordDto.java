@@ -2,17 +2,18 @@ package pl.sggw.wzimlibrary.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
 
 import javax.validation.constraints.NotEmpty;
 
 @AllArgsConstructor
 @Getter
-class ForgottenPasswordDto {
+public class UserForgottenPasswordDto {
     @NotEmpty
     private final String email;
 
     @NotEmpty
-    private final String question;
+    private final SecurityQuestion question;
 
     @NotEmpty
     private final String answer;
@@ -21,5 +22,5 @@ class ForgottenPasswordDto {
     private final String newPassword;
 
     @NotEmpty
-    private final String repeatNewPassword;
+    private final String newPasswordConfirmation;
 }
