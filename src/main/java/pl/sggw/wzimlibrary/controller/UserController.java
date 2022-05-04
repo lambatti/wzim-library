@@ -25,18 +25,14 @@ public class UserController {
 
     @PatchMapping("/user/changePassword")
     ResponseEntity<?> changePassword(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody UserPanelChangePasswordDto userPanelChangePasswordDto) throws ExecutionException, InterruptedException {
-        if (userService.changePassword(token, userPanelChangePasswordDto)) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.badRequest().build();
+        userService.changePassword(token, userPanelChangePasswordDto);
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/user/forgottenPassword")
-    ResponseEntity<?> forgottenPassword( @RequestBody UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException {
-        if (userService.forgottenPasswordChange(userForgottenPasswordDto)) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.badRequest().build();
+    ResponseEntity<?> forgottenPassword(@RequestBody UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException {
+        userService.forgottenPasswordChange(userForgottenPasswordDto);
+        return ResponseEntity.ok().build();
     }
-
+    
 }
