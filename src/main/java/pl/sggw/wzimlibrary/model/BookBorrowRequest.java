@@ -1,7 +1,9 @@
 package pl.sggw.wzimlibrary.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import pl.sggw.wzimlibrary.model.base.BookBorrowBase;
 
 import javax.persistence.Entity;
@@ -12,6 +14,8 @@ import java.time.LocalDate;
 @Table(name = "book_borrows_requests")
 @Getter
 @Setter
+@SuperBuilder
+@NoArgsConstructor
 public class BookBorrowRequest extends BookBorrowBase {
 
     private LocalDate requestDate;

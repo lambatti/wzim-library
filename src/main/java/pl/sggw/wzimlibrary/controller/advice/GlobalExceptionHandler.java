@@ -5,17 +5,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.io.JsonEOFException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
+import pl.sggw.wzimlibrary.exception.*;
 import pl.sggw.wzimlibrary.exception.dto.ApiError;
 
 import javax.mail.MessagingException;
@@ -26,7 +29,64 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(BookBorrowNotFoundException.class)
+    public ResponseEntity<?> handleBookBorrowNotFoundException(BookBorrowNotFoundException ex,
+                                                               HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
+
+    }
+
+    @ExceptionHandler(BookBorrowConflictException.class)
+    public ResponseEntity<?> handleUserHasTheBookAlreadyException(BookBorrowConflictException ex,
+                                                                  HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.CONFLICT;
+
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex,
+                                                         HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException ex,
+                                                             HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
+    }
+
+    @ExceptionHandler(UserDecryptionException.class)
+    public ResponseEntity<?> handleUserDecryptionException(UserDecryptionException ex,
+                                                           HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
+    }
 
     @ExceptionHandler(MessagingException.class)
     public ResponseEntity<?> handleMessagingException(MessagingException ex, HttpServletRequest httpServletRequest) {
@@ -35,8 +95,7 @@ public class GlobalExceptionHandler {
 
         String message = "Failed to send a registration email.";
 
-        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
-                httpServletRequest));
+        return createResponse(httpStatus, message, httpServletRequest);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -47,8 +106,7 @@ public class GlobalExceptionHandler {
 
         String message = ex.getMessage();
 
-        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
-                httpServletRequest));
+        return createResponse(httpStatus, message, httpServletRequest);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -59,9 +117,7 @@ public class GlobalExceptionHandler {
 
         String message = "Bad credentials.";
 
-        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
-                httpServletRequest));
-
+        return createResponse(httpStatus, message, httpServletRequest);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -74,8 +130,7 @@ public class GlobalExceptionHandler {
 
         String message = "Validation failed due to errors: " + createStringFromErrorList(errors);
 
-        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
-                httpServletRequest));
+        return createResponse(httpStatus, message, httpServletRequest);
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
@@ -85,8 +140,7 @@ public class GlobalExceptionHandler {
 
         String message = "JWT token for the mail: " + ex.getClaims().getSubject() + " has expired.";
 
-        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
-                httpServletRequest));
+        return createResponse(httpStatus, message, httpServletRequest);
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
@@ -95,8 +149,9 @@ public class GlobalExceptionHandler {
 
         HttpStatus httpStatus = HttpStatus.CONFLICT;
 
-        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, ex.getMessage(),
-                httpServletRequest));
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
     }
 
     @ExceptionHandler({JsonProcessingException.class, JsonMappingException.class,
@@ -108,12 +163,17 @@ public class GlobalExceptionHandler {
 
         String message = "There has been an error while processing the JSON. Check the JSON format.";
 
-        return ResponseEntity.status(httpStatus).body(createApiError(httpStatus, message,
-                httpServletRequest));
+        return createResponse(httpStatus, message, httpServletRequest);
     }
 
+    private ResponseEntity<?> createResponse(HttpStatus httpStatus, String message, HttpServletRequest httpServletRequest) {
+
+        return ResponseEntity.status(httpStatus).contentType(MediaType.APPLICATION_JSON)
+                .body(createApiError(httpStatus, message, httpServletRequest));
+    }
 
     private ApiError createApiError(HttpStatus httpStatus, String message, HttpServletRequest request) {
+
         return new ApiError(new Timestamp(System.currentTimeMillis()).toString(), httpStatus.value(),
                 httpStatus.name(), message, request.getRequestURI());
     }

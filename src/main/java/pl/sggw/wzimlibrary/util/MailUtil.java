@@ -1,4 +1,4 @@
-package pl.sggw.wzimlibrary.service;
+package pl.sggw.wzimlibrary.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,7 +10,7 @@ import javax.mail.internet.MimeMessage;
 
 @Component
 @RequiredArgsConstructor
-public class MailService {
+public class MailUtil {
 
     private final JavaMailSender mailSender;
 

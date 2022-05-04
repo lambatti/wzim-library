@@ -10,15 +10,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
-import pl.sggw.wzimlibrary.model.User;
+import pl.sggw.wzimlibrary.exception.UserNotFoundException;
+import pl.sggw.wzimlibrary.model.*;
 import pl.sggw.wzimlibrary.model.constant.Role;
-import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
-import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
+import pl.sggw.wzimlibrary.model.dto.user.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
-import pl.sggw.wzimlibrary.util.JwtUtil;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +26,9 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService implements UserDetailsService {
 
-    private final JwtUtil jwtUtil;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserCacheService userCacheService;
@@ -63,9 +62,39 @@ public class UserService implements UserDetailsService {
         return CompletableFuture.completedFuture(userCacheService.existsByEmail(email));
     }
 
-    private String extractEmailFromToken(String token) {
-        token = jwtUtil.removeBearer(token);
-        return jwtUtil.extractEmail(token);
+    @Async
+    public CompletableFuture<Void> addBookBorrowRequestToUser(User user, BookBorrowRequest request) {
+        return CompletableFuture.runAsync(() -> userCacheService.addBookBorrowRequestToUser(user, request));
+    }
+
+    @Async
+    public CompletableFuture<Void> addBookBorrowToUser(User user, BookBorrowRequest request, BookBorrow bookBorrow) {
+        return CompletableFuture.runAsync(() -> userCacheService.addBookBorrowToUser(user, request, bookBorrow));
+    }
+
+    @Async
+    public CompletableFuture<Void> addBookBorrowProlongationRequestToUser(User user, BookBorrowProlongationRequest request) {
+        return CompletableFuture.runAsync(() -> userCacheService.addBookBorrowProlongationRequestToUser(user, request));
+    }
+
+    @Async
+    public CompletableFuture<Void> removeBookBorrowRequestFromUser(User user, BookBorrowRequest request) {
+        return CompletableFuture.runAsync(() -> userCacheService.removeBookBorrowRequestFromUser(user, request));
+    }
+
+    @Async
+    public CompletableFuture<Void> removeBookBorrowProlongationRequestFromUser(User user, BookBorrowProlongationRequest request) {
+        return CompletableFuture.runAsync(() -> userCacheService.removeBookBorrowProlongationRequestFromUser(user, request));
+    }
+
+    @Async
+    public CompletableFuture<Void> updateBookBorrowReturnDate(BookBorrow bookBorrow) {
+        return CompletableFuture.runAsync(() -> userCacheService.updateBookBorrowReturnDate(bookBorrow.getUser(), bookBorrow));
+    }
+
+    @Async
+    public CompletableFuture<Void> updateReadBooksByUser(User user, int booksCount) {
+        return CompletableFuture.runAsync(() -> userCacheService.updateReadBooksByUser(user, booksCount));
     }
 
     @Transactional
@@ -81,7 +110,38 @@ public class UserService implements UserDetailsService {
 
         userRegistrationDto.setPassword(encodedPassword);
 
-        return save(modelMapper.map(userRegistrationDto, User.class)).get();
+        User createdUser = modelMapper.map(userRegistrationDto, User.class);
+
+        createdUser.setBorrowStatistics(createUserBorrowStatistics(createdUser));
+
+        return save(createdUser).get();
+    }
+
+    public User getUserFromUserDetails(UserDetails userDetails) throws UserNotFoundException {
+
+        String email = "";
+        Optional<User> user = Optional.empty();
+
+        try {
+            email = userDetails.getUsername();
+            user = findByEmail(email).get();
+
+        } catch (NullPointerException e) {
+            throw new UsernameNotFoundException("User not found.");
+
+        } catch (ExecutionException | InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        String finalEmail = email;
+
+        return Optional.ofNullable(user)
+                .orElseThrow(() -> new UserNotFoundException("User with the email " + finalEmail + " does not exist."))
+                .get();
+    }
+
+    private UserBorrowStatistics createUserBorrowStatistics(User user) {
+        return new UserBorrowStatistics(user.getId(), user, 0, 0);
     }
 
     @Override

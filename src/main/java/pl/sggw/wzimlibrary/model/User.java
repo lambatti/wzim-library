@@ -1,5 +1,6 @@
 package pl.sggw.wzimlibrary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import pl.sggw.wzimlibrary.model.constant.Gender;
@@ -7,6 +8,7 @@ import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -36,13 +38,21 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BookBorrow> bookBorrows;
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private UserBorrowStatistics borrowStatistics;
 
-    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BookBorrowRequest> bookBorrowRequests;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BookBorrow> bookBorrows = new HashSet<>();
 
-    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BookBorrowProlongationRequest> bookBorrowProlongationRequests;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BookBorrowRequest> bookBorrowRequests = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BookBorrowProlongationRequest> bookBorrowProlongationRequests = new HashSet<>();
 
 }
