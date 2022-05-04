@@ -38,6 +38,7 @@ public class UserService implements UserDetailsService {
         return CompletableFuture.completedFuture(userCacheService.findByEmail(email));
     }
 
+
     @Async
     public CompletableFuture<List<User>> findAll() {
         return CompletableFuture.completedFuture(userCacheService.findAll());
@@ -46,6 +47,14 @@ public class UserService implements UserDetailsService {
     @Async
     public CompletableFuture<User> save(User user) {
         return CompletableFuture.completedFuture(userCacheService.save(user));
+    }
+
+    @Async
+    public CompletableFuture<Void> setPassword(String email, String encodedPassword) {
+//        return CompletableFuture.completedFuture(userCacheService.setPassword(email, encodedPassword)).complete(null);
+//        return CompletableFuture.completedFuture(null);
+        userCacheService.setPassword(email, encodedPassword);
+        return null;
     }
 
     @Async
@@ -177,5 +186,35 @@ public class UserService implements UserDetailsService {
         }
 
         return authorities;
+    }
+
+    public boolean changePassword(String token, UserPanelChangePasswordDto userPanelChangePasswordDto) throws ExecutionException, InterruptedException {
+        if (!userPanelChangePasswordDto.getNewPassword().equals(userPanelChangePasswordDto.getNewPasswordConfirmation())) {
+            return false;
+        }
+
+        Optional<User> user = getUserByToken(token);
+
+        if (user.isEmpty() || !doesThePasswordMatch(userPanelChangePasswordDto.getOldPassword(), user.get().getPassword())) {
+            return false;
+        }
+
+        setUserPassword(user.get(), userPanelChangePasswordDto.getNewPassword());
+        return true;
+    }
+
+    private void setUserPassword(User user, String newPassword) {
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        //userCacheService.setPassword(user.getEmail(), encodedPassword);
+        setPassword(user.getEmail(), encodedPassword);
+    }
+
+    private boolean doesThePasswordMatch(String oldPassword, String newPassword) {
+        return passwordEncoder.matches(oldPassword, newPassword);
+    }
+
+    private Optional<User> getUserByToken(String token) throws ExecutionException, InterruptedException {
+        String email = extractEmailFromToken(token);
+        return findByEmail(email).get();
     }
 }

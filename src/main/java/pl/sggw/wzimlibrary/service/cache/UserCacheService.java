@@ -24,6 +24,14 @@ public class UserCacheService {
     private final SqlUserRepository userRepository;
     private final SqlUserBorrowStatisticsRepository userBorrowStatisticsRepository;
 
+    @Caching(evict = {
+            @CacheEvict(value = "userEmail", key = "#email"),
+            @CacheEvict(value = "allUsers", allEntries = true)
+    })
+    public void setPassword(String email, String encodedPassword) {
+        userRepository.setPassword(email, encodedPassword);
+    }
+
     @Cacheable(value = "userEmail", key = "#email")
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
