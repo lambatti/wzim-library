@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
+import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangePasswordDto;
 import pl.sggw.wzimlibrary.service.UserService;
 
 import java.util.concurrent.ExecutionException;
