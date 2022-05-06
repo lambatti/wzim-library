@@ -17,6 +17,9 @@ import pl.sggw.wzimlibrary.model.*;
 import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangePasswordDto;
 import pl.sggw.wzimlibrary.model.dto.user.UserRegistrationDto;
+import pl.sggw.wzimlibrary.model.dto.UserForgottenPasswordDto;
+import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
+import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
 import pl.sggw.wzimlibrary.util.JwtUtil;
 
@@ -222,4 +225,29 @@ public class UserService implements UserDetailsService {
         token = jwtUtil.removeBearer(token);
         return jwtUtil.extractEmail(token);
     }
+    public boolean forgottenPasswordChange(UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException {
+        if (!userForgottenPasswordDto.getNewPassword().equals(userForgottenPasswordDto.getNewPasswordConfirmation())) {
+            return false;
+        }
+
+        Optional<User> user = findByEmail(userForgottenPasswordDto.getEmail()).get();
+
+        if (user.isEmpty() ||
+                !doesTheQuestionMatch(userForgottenPasswordDto.getQuestion().toString(), user.get().getSecurityQuestion().toString()) ||
+                !doesTheAnswerMatch(userForgottenPasswordDto.getAnswer(), user.get().getSecurityQuestionAnswer())) {
+            return false;
+        }
+
+        setUserPassword(user.get(), userForgottenPasswordDto.getNewPassword());
+        return true;
+    }
+
+    private boolean doesTheQuestionMatch(String sentQuestion, String userQuestion){
+        return sentQuestion.equals(userQuestion);
+    }
+
+    private boolean doesTheAnswerMatch(String sentAnswer, String userAnswer){
+        return sentAnswer.equals(userAnswer);
+    }
+
 }
