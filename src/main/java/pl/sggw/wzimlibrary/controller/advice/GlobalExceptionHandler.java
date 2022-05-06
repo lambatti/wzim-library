@@ -32,6 +32,28 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(PasswordMissmatchException.class)
+    public ResponseEntity<?> handlePasswordMissmatchException(PasswordMissmatchException ex,
+                                                         HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
+    }
+
+    @ExceptionHandler(SecurityQuestionAnswerMissmatchException.class)
+    public ResponseEntity<?> handleSecurityQuestionAnswerMissmatchException(SecurityQuestionAnswerMissmatchException ex,
+                                                              HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
+    }
+
     @ExceptionHandler(BookBorrowNotFoundException.class)
     public ResponseEntity<?> handleBookBorrowNotFoundException(BookBorrowNotFoundException ex,
                                                                HttpServletRequest httpServletRequest) {
