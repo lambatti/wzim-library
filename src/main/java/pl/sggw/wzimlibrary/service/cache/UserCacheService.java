@@ -13,6 +13,7 @@ import pl.sggw.wzimlibrary.model.BookBorrowProlongationRequest;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.BookBorrowConstant;
+import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,16 @@ public class UserCacheService {
     })
     public void setPassword(String email, String encodedPassword) {
         userRepository.setPassword(email, encodedPassword);
+    }
+
+    //    @CacheEvict(value = "userEmail", key = "#email")
+//    @Cacheable(value = "userEmail", key = "#email")
+    @Caching(evict = {
+            @CacheEvict(value = "userEmail", key = "#email"),
+            @CacheEvict(value = "allUsers", allEntries = true)
+    })
+    public void setQuestionAndAnswer(String email, String question, String answer) {
+        userRepository.setQuestionAndAnswer(email, question, answer);
     }
 
     @Cacheable(value = "userEmail", key = "#email")
