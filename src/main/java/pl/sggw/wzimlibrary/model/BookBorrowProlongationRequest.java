@@ -18,6 +18,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class BookBorrowProlongationRequest extends BookBorrowBase {
 
+    private LocalDate borrowDate;
     private LocalDate requestDate;
     private LocalDate prolongationDate;
 

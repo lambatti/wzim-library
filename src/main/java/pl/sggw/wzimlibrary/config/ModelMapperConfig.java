@@ -23,10 +23,22 @@ public class ModelMapperConfig {
                 .addMapping(src -> src.getUser().getId(), BookBorrowDto::setUserId);
 
         modelMapper.createTypeMap(BookBorrowRequest.class, BookBorrowRequestDto.class)
-                .addMapping(src -> src.getUser().getId(), BookBorrowRequestDto::setUserId);
+                .addMappings(mapper -> {
+                    mapper.map(src -> src.getUser().getId(), BookBorrowRequestDto::setUserId);
+                    mapper.map(src -> src.getUser().getFirstName(), BookBorrowRequestDto::setFirstName);
+                    mapper.map(src -> src.getUser().getLastName(), BookBorrowRequestDto::setLastName);
+                    mapper.map(src -> src.getUser().getBorrowStatistics().getBorrowedBooks(), BookBorrowRequestDto::setBorrowedBooks);
+                    mapper.map(src -> src.getUser().getBorrowStatistics().getReadBooks(), BookBorrowRequestDto::setReadBooks);
+                });
 
         modelMapper.createTypeMap(BookBorrowProlongationRequest.class, BookBorrowProlongationRequestDto.class)
-                .addMapping(src -> src.getUser().getId(), BookBorrowProlongationRequestDto::setUserId);
+                .addMappings(mapper -> {
+                    mapper.map(src -> src.getUser().getId(), BookBorrowProlongationRequestDto::setUserId);
+                    mapper.map(src -> src.getUser().getFirstName(), BookBorrowProlongationRequestDto::setFirstName);
+                    mapper.map(src -> src.getUser().getLastName(), BookBorrowProlongationRequestDto::setLastName);
+                    mapper.map(src -> src.getUser().getBorrowStatistics().getBorrowedBooks(), BookBorrowProlongationRequestDto::setBorrowedBooks);
+                    mapper.map(src -> src.getUser().getBorrowStatistics().getReadBooks(), BookBorrowProlongationRequestDto::setReadBooks);
+                });
 
         modelMapper.createTypeMap(User.class, UserPanelSummaryDto.class)
                 .addMappings(mapper -> {

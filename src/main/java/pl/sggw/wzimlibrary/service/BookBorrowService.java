@@ -233,7 +233,8 @@ public class BookBorrowService {
         // TODO: 17.04.2022 check if the book exists
 
         BookBorrowProlongationRequest request = BookBorrowProlongationRequest.builder()
-                .user(user).bookSlug(bookSlug).requestDate(BookBorrowConstant.CURRENT_DATE)
+                .user(user).bookSlug(bookSlug).borrowDate(bookBorrow.getBorrowDate())
+                .requestDate(BookBorrowConstant.CURRENT_DATE)
                 .prolongationDate(bookBorrow.getReturnDate().plusDays(BookBorrowConstant.BOOK_BORROW_DAYS))
                 .build();
 
