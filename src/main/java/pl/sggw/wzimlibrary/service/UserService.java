@@ -196,7 +196,7 @@ public class UserService implements UserDetailsService {
         return authorities;
     }
 
-    public void changePassword(UserDetails userDetails, UserPanelChangePasswordDto userPanelChangePasswordDto) throws UserNotFoundException, PasswordMismatchException {
+    public void changePassword(UserDetails userDetails, UserPanelChangePasswordDto userPanelChangePasswordDto) throws UserNotFoundException, PasswordMismatchException, ExecutionException, InterruptedException {
         if (!userPanelChangePasswordDto.getNewPassword().equals(userPanelChangePasswordDto.getNewPasswordConfirmation())) {
             throw new PasswordMismatchException("Password confirmation is not matching");
         }
@@ -208,9 +208,9 @@ public class UserService implements UserDetailsService {
         setUserPassword(user, userPanelChangePasswordDto.getNewPassword());
     }
 
-    private void setUserPassword(User user, String newPassword) {
+    private void setUserPassword(User user, String newPassword) throws ExecutionException, InterruptedException {
         String encodedPassword = passwordEncoder.encode(newPassword);
-        setPassword(user.getEmail(), encodedPassword);
+        setPassword(user.getEmail(), encodedPassword).get();
     }
 
     private boolean doesThePasswordMatch(String newPassword, String oldPassword) {
@@ -245,12 +245,12 @@ public class UserService implements UserDetailsService {
         return sentAnswer.equals(userAnswer);
     }
 
-    public void changeQuestion(UserDetails userDetails, UserPanelChangeQuestionDto userPanelChangeQuestionDto) throws PasswordMismatchException, UserNotFoundException {
+    public void changeQuestion(UserDetails userDetails, UserPanelChangeQuestionDto userPanelChangeQuestionDto) throws PasswordMismatchException, UserNotFoundException, ExecutionException, InterruptedException {
         User user = getUserFromUserDetails(userDetails);
 
         if (!doesThePasswordMatch(userPanelChangeQuestionDto.getPassword(), user.getPassword())) {
             throw new PasswordMismatchException("User provided wrong password");
         }
-        setQuestionAndAnswer(user.getEmail(), userPanelChangeQuestionDto.getSecurityQuestion().name(), userPanelChangeQuestionDto.getSecurityQuestionAnswer());
+        setQuestionAndAnswer(user.getEmail(), userPanelChangeQuestionDto.getSecurityQuestion().name(), userPanelChangeQuestionDto.getSecurityQuestionAnswer()).get();
     }
 }

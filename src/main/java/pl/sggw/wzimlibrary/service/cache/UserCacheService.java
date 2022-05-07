@@ -33,8 +33,6 @@ public class UserCacheService {
         userRepository.setPassword(email, encodedPassword);
     }
 
-    //    @CacheEvict(value = "userEmail", key = "#email")
-//    @Cacheable(value = "userEmail", key = "#email")
     @Caching(evict = {
             @CacheEvict(value = "userEmail", key = "#email"),
             @CacheEvict(value = "allUsers", allEntries = true)

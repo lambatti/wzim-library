@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @PatchMapping("/user/changePassword")
-    ResponseEntity<?> changePassword(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserPanelChangePasswordDto userPanelChangePasswordDto) throws UserNotFoundException, PasswordMismatchException {
+    ResponseEntity<?> changePassword(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserPanelChangePasswordDto userPanelChangePasswordDto) throws UserNotFoundException, PasswordMismatchException, ExecutionException, InterruptedException {
         userService.changePassword(userDetails, userPanelChangePasswordDto);
         return ResponseEntity.ok().build();
     }
@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @PatchMapping("/user/changeQuestion")
-    ResponseEntity<?> changeQuestion(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserPanelChangeQuestionDto userPanelChangeQuestionDto) throws UserNotFoundException, PasswordMismatchException {
+    ResponseEntity<?> changeQuestion(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserPanelChangeQuestionDto userPanelChangeQuestionDto) throws UserNotFoundException, PasswordMismatchException, ExecutionException, InterruptedException {
         userService.changeQuestion(userDetails, userPanelChangeQuestionDto);
         return ResponseEntity.ok().build();
     }
