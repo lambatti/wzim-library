@@ -16,6 +16,7 @@ import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.*;
 import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangePasswordDto;
+import pl.sggw.wzimlibrary.model.dto.user.UserPanelSummaryDto;
 import pl.sggw.wzimlibrary.model.dto.user.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
 
@@ -116,6 +117,11 @@ public class UserService implements UserDetailsService {
         createdUser.setBorrowStatistics(createUserBorrowStatistics(createdUser));
 
         return save(createdUser).get();
+    }
+
+    public UserPanelSummaryDto getUserSummary(UserDetails userDetails) throws UserNotFoundException {
+        User user = getUserFromUserDetails(userDetails);
+        return modelMapper.map(user, UserPanelSummaryDto.class);
     }
 
     public User getUserFromUserDetails(UserDetails userDetails) throws UserNotFoundException {
