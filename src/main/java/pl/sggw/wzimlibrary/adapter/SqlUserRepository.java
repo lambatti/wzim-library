@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sggw.wzimlibrary.model.User;
-import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
 import pl.sggw.wzimlibrary.repository.UserRepository;
 
 import java.util.List;
@@ -35,6 +34,12 @@ public interface SqlUserRepository extends UserRepository, JpaRepository<User, I
     @Modifying
     @Query(nativeQuery = true, value = "UPDATE users SET SECURITY_QUESTION=:newQuestion, SECURITY_QUESTION_ANSWER=:newAnswer WHERE email=:email")
     void setQuestionAndAnswer(@Param("email") String email, @Param("newQuestion") String question, @Param("newAnswer") String answer);
+
+    @Override
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE users SET ROLE=:newRole WHERE email=:email")
+    void changeRole(@Param("email") String email, @Param("newRole") String role);
 
     boolean existsByEmail(String email);
 }

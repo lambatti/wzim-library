@@ -32,6 +32,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(NotAdminException.class)
+    public ResponseEntity<?> handleNotAdminException(NotAdminException ex,
+                                                     HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.FORBIDDEN;
+
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
+    }
+
     @ExceptionHandler(PasswordMismatchException.class)
     public ResponseEntity<?> handlePasswordMismatchException(PasswordMismatchException ex,
                                                              HttpServletRequest httpServletRequest) {

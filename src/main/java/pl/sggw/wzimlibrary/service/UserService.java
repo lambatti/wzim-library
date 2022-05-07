@@ -11,16 +11,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.sggw.wzimlibrary.exception.PasswordMismatchException;
-import pl.sggw.wzimlibrary.exception.SecurityQuestionAnswerMismatchException;
-import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
-import pl.sggw.wzimlibrary.exception.UserNotFoundException;
+import pl.sggw.wzimlibrary.exception.*;
 import pl.sggw.wzimlibrary.model.*;
 import pl.sggw.wzimlibrary.model.constant.Role;
-import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangePasswordDto;
-import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangeQuestionDto;
-import pl.sggw.wzimlibrary.model.dto.user.UserRegistrationDto;
-import pl.sggw.wzimlibrary.model.dto.user.UserForgottenPasswordDto;
+import pl.sggw.wzimlibrary.model.dto.user.*;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
 import pl.sggw.wzimlibrary.util.JwtUtil;
 
@@ -63,6 +57,10 @@ public class UserService implements UserDetailsService {
 
     public CompletableFuture<Void> setQuestionAndAnswer(String email, String question, String answer) {
         return CompletableFuture.runAsync(() -> userCacheService.setQuestionAndAnswer(email, question, answer));
+    }
+
+    public CompletableFuture<Void> changeRole(String email, String role) {
+        return CompletableFuture.runAsync(() -> userCacheService.changeRole(email, role));
     }
 
     @Async
@@ -250,5 +248,23 @@ public class UserService implements UserDetailsService {
             throw new PasswordMismatchException("User provided wrong password");
         }
         setQuestionAndAnswer(user.getEmail(), userPanelChangeQuestionDto.getSecurityQuestion().name(), userPanelChangeQuestionDto.getSecurityQuestionAnswer()).get();
+    }
+
+    public void promoteWorker(UserDetails userDetails, UserWorkerPromotionDto userWorkerPromotionDto) throws UserNotFoundException, NotAdminException, ExecutionException, InterruptedException {
+        User admin = getUserFromUserDetails(userDetails);
+
+        if (!admin.getRole().toString().equals("ADMIN")) {
+            throw new NotAdminException("User is not an Admin");
+        }
+
+        User user = findByEmail(userWorkerPromotionDto.getEmail()).get()
+                .orElseThrow(() -> new UsernameNotFoundException("User with this email not found"));
+
+        if (user.getRole().toString().equals("USER")) {
+            changeRole(user.getEmail(), "WORKER");
+        }
+        if (user.getRole().toString().equals("WORKER")) {
+            changeRole(user.getEmail(), "USER");
+        }
     }
 }

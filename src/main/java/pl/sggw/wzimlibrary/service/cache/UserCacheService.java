@@ -41,6 +41,14 @@ public class UserCacheService {
         userRepository.setQuestionAndAnswer(email, question, answer);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "userEmail", key = "#email"),
+            @CacheEvict(value = "allUsers", allEntries = true)
+    })
+    public void changeRole(String email, String role) {
+        userRepository.changeRole(email, role);
+    }
+
     @Cacheable(value = "userEmail", key = "#email")
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);

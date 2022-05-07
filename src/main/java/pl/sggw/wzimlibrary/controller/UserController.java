@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import pl.sggw.wzimlibrary.exception.NotAdminException;
 import pl.sggw.wzimlibrary.exception.PasswordMismatchException;
 import pl.sggw.wzimlibrary.exception.SecurityQuestionAnswerMismatchException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
@@ -11,6 +12,7 @@ import pl.sggw.wzimlibrary.model.annotation.CurrentlyLoggedUser;
 import pl.sggw.wzimlibrary.model.dto.user.UserForgottenPasswordDto;
 import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangePasswordDto;
 import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangeQuestionDto;
+import pl.sggw.wzimlibrary.model.dto.user.UserWorkerPromotionDto;
 import pl.sggw.wzimlibrary.service.UserService;
 
 import java.util.concurrent.ExecutionException;
@@ -43,6 +45,12 @@ public class UserController {
     @PatchMapping("/user/changeQuestion")
     ResponseEntity<?> changeQuestion(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserPanelChangeQuestionDto userPanelChangeQuestionDto) throws UserNotFoundException, PasswordMismatchException, ExecutionException, InterruptedException {
         userService.changeQuestion(userDetails, userPanelChangeQuestionDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/user/workerPromotion")
+    ResponseEntity<?> promoteWorker(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserWorkerPromotionDto userWorkerPromotionDto) throws UserNotFoundException, NotAdminException, ExecutionException, InterruptedException {
+        userService.promoteWorker(userDetails, userWorkerPromotionDto);
         return ResponseEntity.ok().build();
     }
 }
