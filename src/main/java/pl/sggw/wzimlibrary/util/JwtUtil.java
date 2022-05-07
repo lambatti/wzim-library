@@ -3,8 +3,12 @@ package pl.sggw.wzimlibrary.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import pl.sggw.wzimlibrary.exception.UserNotFoundException;
+import pl.sggw.wzimlibrary.model.User;
+import pl.sggw.wzimlibrary.service.UserService;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -12,9 +16,11 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtUtil {
 
-    private final String SECRET_KEY = "gRZEGORZfLORYDA";
+    private final String SECRET_KEY = "Z1JaRUdPUlpmTE9SWURB";
+    private final UserService userService;
 
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -37,8 +43,12 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) throws UserNotFoundException {
         Map<String, Object> claims = new HashMap<>();
+
+        User user = userService.getUserFromUserDetails(userDetails);
+        claims.put("name", user.getFirstName());
+        claims.put("role", user.getRole());
         return createToken(claims, userDetails.getUsername());
     }
 

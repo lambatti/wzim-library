@@ -129,6 +129,8 @@ public class BookBorrowService {
     public BookBorrowDto getBookBorrowByUserIdAndBookSlug(Integer userId, String bookSlug)
             throws ExecutionException, InterruptedException, BookBorrowNotFoundException {
 
+        // TODO: 07.05.2022 check if the book exists
+
         BookBorrow bookBorrow = findBookBorrowByUserIdAndBookSlug(userId, bookSlug).get()
                 .orElseThrow(() -> new BookBorrowNotFoundException("User with the id: " + userId
                         + " has not borrowed the book: " + bookSlug));
@@ -149,6 +151,8 @@ public class BookBorrowService {
     public BookBorrowRequestDto getRequestByUserIdAndBookSlug(Integer userId, String bookSlug)
             throws ExecutionException, InterruptedException, BookBorrowNotFoundException {
 
+        // TODO: 07.05.2022 check if the book exists
+
         BookBorrowRequest request = findRequestByUserIdAndBookSlug(userId, bookSlug).get()
                 .orElseThrow(() -> new BookBorrowNotFoundException("User with the id: " + userId
                         + " has not sent a request for the book: " + bookSlug));
@@ -166,6 +170,8 @@ public class BookBorrowService {
 
     public BookBorrowProlongationRequestDto getProlongationRequestByUserIdAndBookSlug(Integer userId, String bookSlug)
             throws ExecutionException, InterruptedException, BookBorrowNotFoundException {
+
+        // TODO: 07.05.2022 check if the book exists
 
         BookBorrowProlongationRequest request = findProlongationRequestByUserIdAndBookSlug(userId, bookSlug).get()
                 .orElseThrow(() -> new BookBorrowNotFoundException("User with the id: " + userId
