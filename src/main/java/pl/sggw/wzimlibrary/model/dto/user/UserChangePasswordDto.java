@@ -14,10 +14,10 @@ public class UserChangePasswordDto {
     @NotEmpty
     @Size(min = ValidationConstant.PASSWORD_MIN_LENGTH,
             max = ValidationConstant.PASSWORD_MAX_LENGTH)
-    private final String newPassword;
+    private String newPassword;
 
     @NotEmpty
     @Size(min = ValidationConstant.PASSWORD_MIN_LENGTH,
             max = ValidationConstant.PASSWORD_MAX_LENGTH)
-    private final String newPasswordConfirmation;
+    private String newPasswordConfirmation;
 }

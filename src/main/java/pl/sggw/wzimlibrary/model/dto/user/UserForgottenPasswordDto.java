@@ -1,7 +1,7 @@
 package pl.sggw.wzimlibrary.model.dto.user;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
 import pl.sggw.wzimlibrary.model.constant.ValidationConstant;
 
@@ -9,28 +9,28 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 public class UserForgottenPasswordDto {
     @NotEmpty
     @Email
-    private final String email;
+    private String email;
 
     @NotEmpty
     @Size(max = ValidationConstant.SECURITY_QUESTION_MAX_LENGTH)
-    private final SecurityQuestion question;
+    private SecurityQuestion question;
 
     @NotEmpty
     @Size(max = ValidationConstant.SECURITY_QUESTION_ANSWER_MAX_LENGTH)
-    private final String answer;
+    private String answer;
 
     @NotEmpty
     @Size(min = ValidationConstant.PASSWORD_MIN_LENGTH,
             max = ValidationConstant.PASSWORD_MAX_LENGTH)
-    private final String newPassword;
+    private String newPassword;
 
     @NotEmpty
     @Size(min = ValidationConstant.PASSWORD_MIN_LENGTH,
             max = ValidationConstant.PASSWORD_MAX_LENGTH)
-    private final String newPasswordConfirmation;
+    private String newPasswordConfirmation;
 }
