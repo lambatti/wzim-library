@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleSecurityQuestionAnswerMismatchException(SecurityQuestionAnswerMismatchException ex,
                                                                            HttpServletRequest httpServletRequest) {
 
-        HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         String message = ex.getMessage();
 

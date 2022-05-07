@@ -36,7 +36,7 @@ public class UserController {
 
     @PatchMapping("/user/forgottenPassword")
     ResponseEntity<?> forgottenPassword(@RequestBody UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException, SecurityQuestionAnswerMismatchException, PasswordMismatchException {
-        userService.forgottenPasswordChange(userForgottenPasswordDto);
+        userService.changeForgottenPassword(userForgottenPasswordDto);
         return ResponseEntity.ok().build();
     }
 

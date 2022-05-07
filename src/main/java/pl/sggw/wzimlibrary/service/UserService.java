@@ -217,24 +217,22 @@ public class UserService implements UserDetailsService {
         return passwordEncoder.matches(newPassword, oldPassword);
     }
 
-    public void forgottenPasswordChange(UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException, PasswordMismatchException, SecurityQuestionAnswerMismatchException {
+    public void changeForgottenPassword(UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException, PasswordMismatchException, SecurityQuestionAnswerMismatchException {
         if (!userForgottenPasswordDto.getNewPassword().equals(userForgottenPasswordDto.getNewPasswordConfirmation())) {
             throw new PasswordMismatchException("Password confirmation is not matching");
         }
+        User user = findByEmail(userForgottenPasswordDto.getEmail()).get()
+                .orElseThrow(() -> new UsernameNotFoundException("User with this email not found"));
 
-        Optional<User> user = findByEmail(userForgottenPasswordDto.getEmail()).get();
-
-        if (user.isEmpty() ||
-                !doesTheQuestionMatch(userForgottenPasswordDto.getQuestion().toString(), user.get().getSecurityQuestion().toString()) ||
-                !doesTheAnswerMatch(userForgottenPasswordDto.getAnswer(), user.get().getSecurityQuestionAnswer())) {
+        if (!doesTheQuestionMatch(userForgottenPasswordDto.getQuestion().toString(), user.getSecurityQuestion().toString()) ||
+                !doesTheAnswerMatch(userForgottenPasswordDto.getAnswer(), user.getSecurityQuestionAnswer())) {
             throw new SecurityQuestionAnswerMismatchException("Security question and provided answer are not matching");
         }
 
-        if (doesThePasswordMatch(userForgottenPasswordDto.getNewPassword(), user.get().getPassword())) {
-            throw new PasswordMismatchException("New password and old password does not match");
+        if (doesThePasswordMatch(userForgottenPasswordDto.getNewPassword(), user.getPassword())) {
+            throw new PasswordMismatchException("New password and old password are the same");
         }
-
-        setUserPassword(user.get(), userForgottenPasswordDto.getNewPassword());
+        setUserPassword(user, userForgottenPasswordDto.getNewPassword());
     }
 
     private boolean doesTheQuestionMatch(String sentQuestion, String userQuestion) {
