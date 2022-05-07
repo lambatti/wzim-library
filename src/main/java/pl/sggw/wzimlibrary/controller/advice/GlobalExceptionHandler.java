@@ -32,9 +32,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(PasswordMissmatchException.class)
-    public ResponseEntity<?> handlePasswordMissmatchException(PasswordMissmatchException ex,
-                                                         HttpServletRequest httpServletRequest) {
+    @ExceptionHandler(PasswordMismatchException.class)
+    public ResponseEntity<?> handlePasswordMismatchException(PasswordMismatchException ex,
+                                                             HttpServletRequest httpServletRequest) {
 
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
 
@@ -43,9 +43,9 @@ public class GlobalExceptionHandler {
         return createResponse(httpStatus, message, httpServletRequest);
     }
 
-    @ExceptionHandler(SecurityQuestionAnswerMissmatchException.class)
-    public ResponseEntity<?> handleSecurityQuestionAnswerMissmatchException(SecurityQuestionAnswerMissmatchException ex,
-                                                              HttpServletRequest httpServletRequest) {
+    @ExceptionHandler(SecurityQuestionAnswerMismatchException.class)
+    public ResponseEntity<?> handleSecurityQuestionAnswerMismatchException(SecurityQuestionAnswerMismatchException ex,
+                                                                           HttpServletRequest httpServletRequest) {
 
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
 

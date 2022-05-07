@@ -11,13 +11,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.sggw.wzimlibrary.exception.PasswordMissmatchException;
-import pl.sggw.wzimlibrary.exception.SecurityQuestionAnswerMissmatchException;
+import pl.sggw.wzimlibrary.exception.PasswordMismatchException;
+import pl.sggw.wzimlibrary.exception.SecurityQuestionAnswerMismatchException;
 import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.*;
 import pl.sggw.wzimlibrary.model.constant.Role;
-import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
 import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangePasswordDto;
 import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangeQuestionDto;
 import pl.sggw.wzimlibrary.model.dto.user.UserRegistrationDto;
@@ -25,7 +24,6 @@ import pl.sggw.wzimlibrary.model.dto.user.UserForgottenPasswordDto;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
 import pl.sggw.wzimlibrary.util.JwtUtil;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -198,14 +196,14 @@ public class UserService implements UserDetailsService {
         return authorities;
     }
 
-    public void changePassword(UserDetails userDetails, UserPanelChangePasswordDto userPanelChangePasswordDto) throws UserNotFoundException, PasswordMissmatchException {
+    public void changePassword(UserDetails userDetails, UserPanelChangePasswordDto userPanelChangePasswordDto) throws UserNotFoundException, PasswordMismatchException {
         if (!userPanelChangePasswordDto.getNewPassword().equals(userPanelChangePasswordDto.getNewPasswordConfirmation())) {
-            throw new PasswordMissmatchException("Password confirmation is not matching");
+            throw new PasswordMismatchException("Password confirmation is not matching");
         }
         User user = getUserFromUserDetails(userDetails);
 
         if (!doesThePasswordMatch(userPanelChangePasswordDto.getOldPassword(), user.getPassword())) {
-            throw new PasswordMissmatchException("New password and old password does not match");
+            throw new PasswordMismatchException("New password and old password does not match");
         }
         setUserPassword(user, userPanelChangePasswordDto.getNewPassword());
     }
@@ -219,9 +217,9 @@ public class UserService implements UserDetailsService {
         return passwordEncoder.matches(newPassword, oldPassword);
     }
 
-    public void forgottenPasswordChange(UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException, PasswordMissmatchException, SecurityQuestionAnswerMissmatchException {
+    public void forgottenPasswordChange(UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException, PasswordMismatchException, SecurityQuestionAnswerMismatchException {
         if (!userForgottenPasswordDto.getNewPassword().equals(userForgottenPasswordDto.getNewPasswordConfirmation())) {
-            throw new PasswordMissmatchException("Password confirmation is not matching");
+            throw new PasswordMismatchException("Password confirmation is not matching");
         }
 
         Optional<User> user = findByEmail(userForgottenPasswordDto.getEmail()).get();
@@ -229,11 +227,11 @@ public class UserService implements UserDetailsService {
         if (user.isEmpty() ||
                 !doesTheQuestionMatch(userForgottenPasswordDto.getQuestion().toString(), user.get().getSecurityQuestion().toString()) ||
                 !doesTheAnswerMatch(userForgottenPasswordDto.getAnswer(), user.get().getSecurityQuestionAnswer())) {
-            throw new SecurityQuestionAnswerMissmatchException("Security question and provided answer are not matching");
+            throw new SecurityQuestionAnswerMismatchException("Security question and provided answer are not matching");
         }
 
         if (doesThePasswordMatch(userForgottenPasswordDto.getNewPassword(), user.get().getPassword())) {
-            throw new PasswordMissmatchException("New password and old password does not match");
+            throw new PasswordMismatchException("New password and old password does not match");
         }
 
         setUserPassword(user.get(), userForgottenPasswordDto.getNewPassword());
@@ -247,14 +245,12 @@ public class UserService implements UserDetailsService {
         return sentAnswer.equals(userAnswer);
     }
 
-    public void changeQuestion(UserDetails userDetails, UserPanelChangeQuestionDto userPanelChangeQuestionDto) throws ExecutionException, InterruptedException, PasswordMissmatchException, SecurityQuestionAnswerMissmatchException, UserNotFoundException {
+    public void changeQuestion(UserDetails userDetails, UserPanelChangeQuestionDto userPanelChangeQuestionDto) throws PasswordMismatchException, UserNotFoundException {
         User user = getUserFromUserDetails(userDetails);
 
         if (!doesThePasswordMatch(userPanelChangeQuestionDto.getPassword(), user.getPassword())) {
-            throw new PasswordMissmatchException("User provided wrong password");
+            throw new PasswordMismatchException("User provided wrong password");
         }
         setQuestionAndAnswer(user.getEmail(), userPanelChangeQuestionDto.getSecurityQuestion().name(), userPanelChangeQuestionDto.getSecurityQuestionAnswer());
     }
-
-
 }

@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import pl.sggw.wzimlibrary.exception.PasswordMissmatchException;
-import pl.sggw.wzimlibrary.exception.SecurityQuestionAnswerMissmatchException;
+import pl.sggw.wzimlibrary.exception.PasswordMismatchException;
+import pl.sggw.wzimlibrary.exception.SecurityQuestionAnswerMismatchException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.annotation.CurrentlyLoggedUser;
 import pl.sggw.wzimlibrary.model.dto.user.UserForgottenPasswordDto;
@@ -29,19 +29,19 @@ public class UserController {
     }
 
     @PatchMapping("/user/changePassword")
-    ResponseEntity<?> changePassword(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserPanelChangePasswordDto userPanelChangePasswordDto) throws UserNotFoundException, PasswordMissmatchException {
+    ResponseEntity<?> changePassword(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserPanelChangePasswordDto userPanelChangePasswordDto) throws UserNotFoundException, PasswordMismatchException {
         userService.changePassword(userDetails, userPanelChangePasswordDto);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/user/forgottenPassword")
-    ResponseEntity<?> forgottenPassword(@RequestBody UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException, SecurityQuestionAnswerMissmatchException, PasswordMissmatchException {
+    ResponseEntity<?> forgottenPassword(@RequestBody UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException, SecurityQuestionAnswerMismatchException, PasswordMismatchException {
         userService.forgottenPasswordChange(userForgottenPasswordDto);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/user/changeQuestion")
-    ResponseEntity<?> changeQuestion(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserPanelChangeQuestionDto userPanelChangeQuestionDto) throws UserNotFoundException, SecurityQuestionAnswerMissmatchException, ExecutionException, InterruptedException, PasswordMissmatchException {
+    ResponseEntity<?> changeQuestion(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserPanelChangeQuestionDto userPanelChangeQuestionDto) throws UserNotFoundException, PasswordMismatchException {
         userService.changeQuestion(userDetails, userPanelChangeQuestionDto);
         return ResponseEntity.ok().build();
     }
