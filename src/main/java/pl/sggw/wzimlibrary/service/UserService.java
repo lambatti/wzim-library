@@ -250,21 +250,23 @@ public class UserService implements UserDetailsService {
         setQuestionAndAnswer(user.getEmail(), userPanelChangeQuestionDto.getSecurityQuestion().name(), userPanelChangeQuestionDto.getSecurityQuestionAnswer()).get();
     }
 
-    public void promoteWorker(UserDetails userDetails, UserWorkerPromotionDto userWorkerPromotionDto) throws UserNotFoundException, NotAdminException, ExecutionException, InterruptedException {
-        User admin = getUserFromUserDetails(userDetails);
-
-        if (!admin.getRole().toString().equals("ADMIN")) {
-            throw new NotAdminException("User is not an Admin");
-        }
-
+    public void promoteWorker(UserWorkerPromotionDto userWorkerPromotionDto) throws WrongRoleException, ExecutionException, InterruptedException {
         User user = findByEmail(userWorkerPromotionDto.getEmail()).get()
                 .orElseThrow(() -> new UsernameNotFoundException("User with this email not found"));
 
-        if (user.getRole().toString().equals("USER")) {
-            changeRole(user.getEmail(), "WORKER");
+        if (!user.getRole().toString().equals("USER")) {
+            throw new WrongRoleException("User don't have role: USER");
         }
-        if (user.getRole().toString().equals("WORKER")) {
-            changeRole(user.getEmail(), "USER");
+        changeRole(user.getEmail(), "WORKER");
+    }
+
+    public void demoteWorker(UserWorkerPromotionDto userWorkerPromotionDto) throws WrongRoleException, ExecutionException, InterruptedException {
+        User user = findByEmail(userWorkerPromotionDto.getEmail()).get()
+                .orElseThrow(() -> new UsernameNotFoundException("User with this email not found"));
+
+        if (!user.getRole().toString().equals("WORKER")) {
+            throw new WrongRoleException("User don't have role: WORKER");
         }
+        changeRole(user.getEmail(), "USER");
     }
 }

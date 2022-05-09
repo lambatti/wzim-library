@@ -1,8 +1,6 @@
 package pl.sggw.wzimlibrary.repository;
 
 import pl.sggw.wzimlibrary.model.User;
-import pl.sggw.wzimlibrary.model.constant.Role;
-import pl.sggw.wzimlibrary.model.constant.SecurityQuestion;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +17,7 @@ public interface UserRepository {
 
     void setQuestionAndAnswer(String email, String question, String answer);
 
-    void changeRole(String email, String role);
+    void setRole(String email, String role);
 
     boolean existsByEmail(String email);
 }

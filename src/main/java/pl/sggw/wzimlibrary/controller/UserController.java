@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import pl.sggw.wzimlibrary.exception.NotAdminException;
+import pl.sggw.wzimlibrary.exception.WrongRoleException;
 import pl.sggw.wzimlibrary.exception.PasswordMismatchException;
 import pl.sggw.wzimlibrary.exception.SecurityQuestionAnswerMismatchException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
@@ -49,8 +49,14 @@ public class UserController {
     }
 
     @PatchMapping("/user/workerPromotion")
-    ResponseEntity<?> promoteWorker(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserWorkerPromotionDto userWorkerPromotionDto) throws UserNotFoundException, NotAdminException, ExecutionException, InterruptedException {
-        userService.promoteWorker(userDetails, userWorkerPromotionDto);
+    ResponseEntity<?> promoteWorker(@RequestBody UserWorkerPromotionDto userWorkerPromotionDto) throws WrongRoleException, ExecutionException, InterruptedException {
+        userService.promoteWorker(userWorkerPromotionDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/user/workerDemotion")
+    ResponseEntity<?> demoteWorker(@RequestBody UserWorkerPromotionDto userWorkerPromotionDto) throws WrongRoleException, ExecutionException, InterruptedException {
+        userService.demoteWorker(userWorkerPromotionDto);
         return ResponseEntity.ok().build();
     }
 }

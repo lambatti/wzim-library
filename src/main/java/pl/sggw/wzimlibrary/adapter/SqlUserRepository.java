@@ -39,7 +39,7 @@ public interface SqlUserRepository extends UserRepository, JpaRepository<User, I
     @Transactional
     @Modifying
     @Query(nativeQuery = true, value = "UPDATE users SET ROLE=:newRole WHERE email=:email")
-    void changeRole(@Param("email") String email, @Param("newRole") String role);
+    void setRole(@Param("email") String email, @Param("newRole") String role);
 
     boolean existsByEmail(String email);
 }

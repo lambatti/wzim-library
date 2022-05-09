@@ -1,11 +1,13 @@
 package pl.sggw.wzimlibrary.model.dto.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class UserWorkerPromotionDto {
     @NotEmpty

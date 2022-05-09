@@ -32,8 +32,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(NotAdminException.class)
-    public ResponseEntity<?> handleNotAdminException(NotAdminException ex,
+    @ExceptionHandler(WrongRoleException.class)
+    public ResponseEntity<?> handleWrongRoleException(WrongRoleException ex,
                                                      HttpServletRequest httpServletRequest) {
 
         HttpStatus httpStatus = HttpStatus.FORBIDDEN;
