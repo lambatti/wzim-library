@@ -30,6 +30,11 @@ public class UserController {
         return ResponseEntity.ok(userService.findAll().get());
     }
 
+    @GetMapping("user/summary")
+    ResponseEntity<?> getUserSummary(@CurrentlyLoggedUser UserDetails userDetails) throws UserNotFoundException {
+        return ResponseEntity.ok(userService.getUserSummary(userDetails));
+    }
+
     @PatchMapping("/user/changePassword")
     ResponseEntity<?> changePassword(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserPanelChangePasswordDto userPanelChangePasswordDto) throws UserNotFoundException, PasswordMismatchException, ExecutionException, InterruptedException {
         userService.changePassword(userDetails, userPanelChangePasswordDto);
