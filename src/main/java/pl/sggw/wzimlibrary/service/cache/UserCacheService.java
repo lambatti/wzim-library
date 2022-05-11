@@ -32,6 +32,22 @@ public class UserCacheService {
         userRepository.setPassword(email, encodedPassword);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "userEmail", key = "#email"),
+            @CacheEvict(value = "allUsers", allEntries = true)
+    })
+    public void setQuestionAndAnswer(String email, String question, String answer) {
+        userRepository.setQuestionAndAnswer(email, question, answer);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "userEmail", key = "#email"),
+            @CacheEvict(value = "allUsers", allEntries = true)
+    })
+    public void changeRole(String email, String role) {
+        userRepository.setRole(email, role);
+    }
+
     @Cacheable(value = "userEmail", key = "#email")
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);

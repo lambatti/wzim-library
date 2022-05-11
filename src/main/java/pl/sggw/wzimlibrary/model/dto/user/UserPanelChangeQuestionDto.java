@@ -16,13 +16,12 @@ public class UserPanelChangeQuestionDto {
     @NotEmpty
     @Size(min = ValidationConstant.PASSWORD_MIN_LENGTH,
             max = ValidationConstant.PASSWORD_MAX_LENGTH)
-    private final String password;
+    private String password;
 
     @NotNull
-    private final SecurityQuestion securityQuestion;
+    private SecurityQuestion securityQuestion;
 
     @NotEmpty
     @Size(max = ValidationConstant.SECURITY_QUESTION_ANSWER_MAX_LENGTH)
-    private final String securityQuestionAnswer;
-
+    private String securityQuestionAnswer;
 }

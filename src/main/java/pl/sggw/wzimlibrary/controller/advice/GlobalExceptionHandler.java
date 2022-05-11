@@ -32,6 +32,39 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(WrongRoleException.class)
+    public ResponseEntity<?> handleWrongRoleException(WrongRoleException ex,
+                                                     HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.FORBIDDEN;
+
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
+    }
+
+    @ExceptionHandler(PasswordMismatchException.class)
+    public ResponseEntity<?> handlePasswordMismatchException(PasswordMismatchException ex,
+                                                             HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
+    }
+
+    @ExceptionHandler(SecurityQuestionAnswerMismatchException.class)
+    public ResponseEntity<?> handleSecurityQuestionAnswerMismatchException(SecurityQuestionAnswerMismatchException ex,
+                                                                           HttpServletRequest httpServletRequest) {
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        String message = ex.getMessage();
+
+        return createResponse(httpStatus, message, httpServletRequest);
+    }
+
     @ExceptionHandler(BookBorrowNotFoundException.class)
     public ResponseEntity<?> handleBookBorrowNotFoundException(BookBorrowNotFoundException ex,
                                                                HttpServletRequest httpServletRequest) {

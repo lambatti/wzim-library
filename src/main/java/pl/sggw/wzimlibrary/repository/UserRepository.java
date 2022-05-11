@@ -14,6 +14,10 @@ public interface UserRepository {
     <S extends User> S save(S s);
 
     void setPassword(String email, String newPassword);
-  
+
+    void setQuestionAndAnswer(String email, String question, String answer);
+
+    void setRole(String email, String role);
+
     boolean existsByEmail(String email);
 }
