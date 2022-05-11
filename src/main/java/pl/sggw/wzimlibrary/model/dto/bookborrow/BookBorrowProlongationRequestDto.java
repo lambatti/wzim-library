@@ -9,6 +9,11 @@ public class BookBorrowProlongationRequestDto {
 
     private Integer userId;
     private String bookSlug;
+    private String firstName;
+    private String lastName;
+    private int borrowedBooks;
+    private int readBooks;
+    private LocalDate borrowDate;
     private LocalDate requestDate;
     private LocalDate prolongationDate;
 

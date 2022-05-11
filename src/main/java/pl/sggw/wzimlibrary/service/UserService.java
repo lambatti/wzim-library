@@ -16,9 +16,9 @@ import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.*;
 import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangePasswordDto;
+import pl.sggw.wzimlibrary.model.dto.user.UserPanelSummaryDto;
 import pl.sggw.wzimlibrary.model.dto.user.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
-import pl.sggw.wzimlibrary.util.JwtUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,6 @@ public class UserService implements UserDetailsService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserCacheService userCacheService;
-    private final JwtUtil jwtUtil;
 
     @Async
     public CompletableFuture<Optional<User>> findByEmail(String email) {
@@ -118,6 +117,11 @@ public class UserService implements UserDetailsService {
         createdUser.setBorrowStatistics(createUserBorrowStatistics(createdUser));
 
         return save(createdUser).get();
+    }
+
+    public UserPanelSummaryDto getUserSummary(UserDetails userDetails) throws UserNotFoundException {
+        User user = getUserFromUserDetails(userDetails);
+        return modelMapper.map(user, UserPanelSummaryDto.class);
     }
 
     public User getUserFromUserDetails(UserDetails userDetails) throws UserNotFoundException {
@@ -222,7 +226,6 @@ public class UserService implements UserDetailsService {
     }
 
     public String extractEmailFromToken(String token) {
-        token = jwtUtil.removeBearer(token);
-        return jwtUtil.extractEmail(token);
+        return "";
     }
 }
