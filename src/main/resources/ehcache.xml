@@ -18,5 +18,6 @@ https://www.ehcache.org/schema/ehcache-core-3.0.xsd">
         <expiry>
             <ttl unit="days">365</ttl>
         </expiry>
+        <heap unit="entries">1000</heap>
     </cache>
 </config>
