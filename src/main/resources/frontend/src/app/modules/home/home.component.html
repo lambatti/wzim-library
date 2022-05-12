@@ -18,8 +18,14 @@
   </nz-content>
 </nz-layout>
 <nz-layout>
-  <app-popular-section *ngFor='let item of homeSectionData' [shape]='item.shape' [heading]='item.heading'
-                       [cardList]='item.bookCard'>
+  <app-popular-section [shape]='shapes.shape1' [heading]='epic[0].kind'
+                       [cardList]='epic'>
+  </app-popular-section>
+  <app-popular-section [shape]='shapes.shape2' [heading]='poetry[0].kind'
+                       [cardList]='poetry'>
+  </app-popular-section>
+  <app-popular-section [shape]='shapes.shape3' [heading]='drama[0].kind'
+                       [cardList]='drama'>
   </app-popular-section>
   <nz-content nz-col [nzXs]='24'>
     <div class='check__section' nz-row nzJustify='center' nzAlign='middle'>

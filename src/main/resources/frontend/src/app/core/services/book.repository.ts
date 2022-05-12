@@ -7,18 +7,20 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class BookRepository {
 
-  constructor(private _data: BookService) {
-  }
-
-  // TEST URL ---- GET ALL BOOK FROM WOLNELEKTURY.PL
-  getBooksToCard(): Observable<BookCard[]> {
-    return this._data.getAllBooks().pipe();
+  constructor(private _bookService: BookService) {
   }
 
 
   // PROLONGACJA KSIĄŻKI
 
   // GET BOOKS TO HOME PAGE WITH PARAM x3
+
+  getBooksToHomePageCard(kind: string): Observable<BookCard[]> {
+    this._bookService.getBooksToHomePageCard(kind).subscribe(x => {
+      console.log(x);
+    });
+    return this._bookService.getBooksToHomePageCard(kind as string);
+  }
 
   // BORROW BOOK
 
@@ -30,10 +32,6 @@ export class BookRepository {
   // GET BOOK DATA BY SLUG
 
   // GET ONE BOOK TEXT
-
-
-
-
 
 
 }

@@ -14,9 +14,10 @@ export interface BookWithText extends Book {
 }
 
 export interface BookCard {
-  title: string,
-  genres: string,
-  cover: string,
+  title: string;
+  kind: string;
+  cover: string;
+  author: string;
 }
 
 

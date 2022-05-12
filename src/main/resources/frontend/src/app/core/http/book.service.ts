@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Book } from '../../model/book.model';
+import { Book, BookCard } from '../../model/book.model';
 
 
 @Injectable()
@@ -25,6 +25,13 @@ export class BookService {
 
   // GET BOOKS TO HOME PAGE WITH PARAM x3
 
+  getBooksToHomePageCard(kind: string): Observable<BookCard[]> {
+
+    return this._http.get<BookCard[]>(`http://localhost:5000/fiveBook/${kind}`);
+
+  }
+
+
   // BORROW BOOK
 
   // GET ALL BOOK WITH CATEGORY
@@ -35,7 +42,6 @@ export class BookService {
   // GET BOOK DATA BY SLUG
 
   // GET ONE BOOK TEXT
-
 
 
 }

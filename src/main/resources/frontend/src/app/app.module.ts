@@ -33,8 +33,8 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule,
     NzWaveModule,
-    ModuleModule,
     CoreModule,
+    ModuleModule,
     RouterModule,
     routing
   ],
