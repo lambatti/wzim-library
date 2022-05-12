@@ -6,8 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
+import pl.sggw.wzimlibrary.exception.UserDecryptionException;
 import pl.sggw.wzimlibrary.model.User;
-import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
+import pl.sggw.wzimlibrary.model.dto.user.UserRegistrationDto;
 import pl.sggw.wzimlibrary.service.RegistrationService;
 import pl.sggw.wzimlibrary.service.UserService;
 
@@ -39,13 +40,14 @@ public class RegistrationController {
 
     @GetMapping("activateAccount")
     public ResponseEntity<?> activateAccount(@RequestParam String user)
-            throws IOException, ExecutionException, InterruptedException, UserAlreadyExistsException {
+            throws IOException, ExecutionException, InterruptedException, UserAlreadyExistsException,
+            UserDecryptionException {
 
         return registerUser(registrationService.getUserFromEncryptedMessage(user));
 
     }
 
-    @PostMapping("register")
+    @PostMapping("users")
     ResponseEntity<?> registerUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto)
             throws ExecutionException, InterruptedException, UserAlreadyExistsException {
 

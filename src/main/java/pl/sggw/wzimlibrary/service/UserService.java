@@ -10,15 +10,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.sggw.wzimlibrary.exception.UserAlreadyExistsException;
-import pl.sggw.wzimlibrary.model.User;
+import org.springframework.transaction.annotation.Transactional;
+import pl.sggw.wzimlibrary.exception.*;
+import pl.sggw.wzimlibrary.model.*;
 import pl.sggw.wzimlibrary.model.constant.Role;
-import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
-import pl.sggw.wzimlibrary.model.dto.UserRegistrationDto;
+import pl.sggw.wzimlibrary.model.dto.user.*;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
-import pl.sggw.wzimlibrary.util.JwtUtil;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +25,9 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService implements UserDetailsService {
 
-    private final JwtUtil jwtUtil;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserCacheService userCacheService;
@@ -52,10 +50,15 @@ public class UserService implements UserDetailsService {
 
     @Async
     public CompletableFuture<Void> setPassword(String email, String encodedPassword) {
-//        return CompletableFuture.completedFuture(userCacheService.setPassword(email, encodedPassword)).complete(null);
-//        return CompletableFuture.completedFuture(null);
-        userCacheService.setPassword(email, encodedPassword);
-        return null;
+        return CompletableFuture.runAsync(() -> userCacheService.setPassword(email, encodedPassword));
+    }
+
+    public CompletableFuture<Void> setQuestionAndAnswer(String email, String question, String answer) {
+        return CompletableFuture.runAsync(() -> userCacheService.setQuestionAndAnswer(email, question, answer));
+    }
+
+    public CompletableFuture<Void> changeRole(String email, String role) {
+        return CompletableFuture.runAsync(() -> userCacheService.changeRole(email, role));
     }
 
     @Async
@@ -63,9 +66,39 @@ public class UserService implements UserDetailsService {
         return CompletableFuture.completedFuture(userCacheService.existsByEmail(email));
     }
 
-    private String extractEmailFromToken(String token) {
-        token = jwtUtil.removeBearer(token);
-        return jwtUtil.extractEmail(token);
+    @Async
+    public CompletableFuture<Void> addBookBorrowRequestToUser(User user, BookBorrowRequest request) {
+        return CompletableFuture.runAsync(() -> userCacheService.addBookBorrowRequestToUser(user, request));
+    }
+
+    @Async
+    public CompletableFuture<Void> addBookBorrowToUser(User user, BookBorrowRequest request, BookBorrow bookBorrow) {
+        return CompletableFuture.runAsync(() -> userCacheService.addBookBorrowToUser(user, request, bookBorrow));
+    }
+
+    @Async
+    public CompletableFuture<Void> addBookBorrowProlongationRequestToUser(User user, BookBorrowProlongationRequest request) {
+        return CompletableFuture.runAsync(() -> userCacheService.addBookBorrowProlongationRequestToUser(user, request));
+    }
+
+    @Async
+    public CompletableFuture<Void> removeBookBorrowRequestFromUser(User user, BookBorrowRequest request) {
+        return CompletableFuture.runAsync(() -> userCacheService.removeBookBorrowRequestFromUser(user, request));
+    }
+
+    @Async
+    public CompletableFuture<Void> removeBookBorrowProlongationRequestFromUser(User user, BookBorrowProlongationRequest request) {
+        return CompletableFuture.runAsync(() -> userCacheService.removeBookBorrowProlongationRequestFromUser(user, request));
+    }
+
+    @Async
+    public CompletableFuture<Void> updateBookBorrowReturnDate(BookBorrow bookBorrow) {
+        return CompletableFuture.runAsync(() -> userCacheService.updateBookBorrowReturnDate(bookBorrow.getUser(), bookBorrow));
+    }
+
+    @Async
+    public CompletableFuture<Void> updateReadBooksByUser(User user, int booksCount) {
+        return CompletableFuture.runAsync(() -> userCacheService.updateReadBooksByUser(user, booksCount));
     }
 
     @Transactional
@@ -81,7 +114,43 @@ public class UserService implements UserDetailsService {
 
         userRegistrationDto.setPassword(encodedPassword);
 
-        return save(modelMapper.map(userRegistrationDto, User.class)).get();
+        User createdUser = modelMapper.map(userRegistrationDto, User.class);
+
+        createdUser.setBorrowStatistics(createUserBorrowStatistics(createdUser));
+
+        return save(createdUser).get();
+    }
+
+    public UserPanelSummaryDto getUserSummary(UserDetails userDetails) throws UserNotFoundException {
+        User user = getUserFromUserDetails(userDetails);
+        return modelMapper.map(user, UserPanelSummaryDto.class);
+    }
+
+    public User getUserFromUserDetails(UserDetails userDetails) throws UserNotFoundException {
+
+        String email = "";
+        Optional<User> user = Optional.empty();
+
+        try {
+            email = userDetails.getUsername();
+            user = findByEmail(email).get();
+
+        } catch (NullPointerException e) {
+            throw new UsernameNotFoundException("User not found.");
+
+        } catch (ExecutionException | InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        String finalEmail = email;
+
+        return Optional.ofNullable(user)
+                .orElseThrow(() -> new UserNotFoundException("User with the email " + finalEmail + " does not exist."))
+                .get();
+    }
+
+    private UserBorrowStatistics createUserBorrowStatistics(User user) {
+        return new UserBorrowStatistics(user.getId(), user, 0, 0);
     }
 
     @Override
@@ -128,33 +197,79 @@ public class UserService implements UserDetailsService {
         return authorities;
     }
 
-    public boolean changePassword(String token, UserPanelChangePasswordDto userPanelChangePasswordDto) throws ExecutionException, InterruptedException {
+    public void changePassword(UserDetails userDetails, UserPanelChangePasswordDto userPanelChangePasswordDto) throws UserNotFoundException, PasswordMismatchException, ExecutionException, InterruptedException {
         if (!userPanelChangePasswordDto.getNewPassword().equals(userPanelChangePasswordDto.getNewPasswordConfirmation())) {
-            return false;
+            throw new PasswordMismatchException("Password confirmation is not matching");
         }
+        User user = getUserFromUserDetails(userDetails);
 
-        Optional<User> user = getUserByToken(token);
-
-        if (user.isEmpty() || !doesThePasswordMatch(userPanelChangePasswordDto.getOldPassword(), user.get().getPassword())) {
-            return false;
+        if (!doesThePasswordMatch(userPanelChangePasswordDto.getOldPassword(), user.getPassword())) {
+            throw new PasswordMismatchException("New password and old password does not match");
         }
-
-        setUserPassword(user.get(), userPanelChangePasswordDto.getNewPassword());
-        return true;
+        setUserPassword(user, userPanelChangePasswordDto.getNewPassword());
     }
 
-    private void setUserPassword(User user, String newPassword) {
+    private void setUserPassword(User user, String newPassword) throws ExecutionException, InterruptedException {
         String encodedPassword = passwordEncoder.encode(newPassword);
-        //userCacheService.setPassword(user.getEmail(), encodedPassword);
-        setPassword(user.getEmail(), encodedPassword);
+        setPassword(user.getEmail(), encodedPassword).get();
     }
 
-    private boolean doesThePasswordMatch(String oldPassword, String newPassword) {
-        return passwordEncoder.matches(oldPassword, newPassword);
+    private boolean doesThePasswordMatch(String newPassword, String oldPassword) {
+        return passwordEncoder.matches(newPassword, oldPassword);
     }
 
-    private Optional<User> getUserByToken(String token) throws ExecutionException, InterruptedException {
-        String email = extractEmailFromToken(token);
-        return findByEmail(email).get();
+    public void changeForgottenPassword(UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException, PasswordMismatchException, SecurityQuestionAnswerMismatchException {
+        if (!userForgottenPasswordDto.getNewPassword().equals(userForgottenPasswordDto.getNewPasswordConfirmation())) {
+            throw new PasswordMismatchException("Password confirmation is not matching");
+        }
+        User user = findByEmail(userForgottenPasswordDto.getEmail()).get()
+                .orElseThrow(() -> new UsernameNotFoundException("User with this email not found"));
+
+        if (!doesTheQuestionMatch(userForgottenPasswordDto.getQuestion().toString(), user.getSecurityQuestion().toString()) ||
+                !doesTheAnswerMatch(userForgottenPasswordDto.getAnswer(), user.getSecurityQuestionAnswer())) {
+            throw new SecurityQuestionAnswerMismatchException("Security question and provided answer are not matching");
+        }
+
+        if (doesThePasswordMatch(userForgottenPasswordDto.getNewPassword(), user.getPassword())) {
+            throw new PasswordMismatchException("New password and old password are the same");
+        }
+        setUserPassword(user, userForgottenPasswordDto.getNewPassword());
+    }
+
+    private boolean doesTheQuestionMatch(String sentQuestion, String userQuestion) {
+        return sentQuestion.equals(userQuestion);
+    }
+
+    private boolean doesTheAnswerMatch(String sentAnswer, String userAnswer) {
+        return sentAnswer.equals(userAnswer);
+    }
+
+    public void changeQuestion(UserDetails userDetails, UserPanelChangeQuestionDto userPanelChangeQuestionDto) throws PasswordMismatchException, UserNotFoundException, ExecutionException, InterruptedException {
+        User user = getUserFromUserDetails(userDetails);
+
+        if (!doesThePasswordMatch(userPanelChangeQuestionDto.getPassword(), user.getPassword())) {
+            throw new PasswordMismatchException("User provided wrong password");
+        }
+        setQuestionAndAnswer(user.getEmail(), userPanelChangeQuestionDto.getSecurityQuestion().name(), userPanelChangeQuestionDto.getSecurityQuestionAnswer()).get();
+    }
+
+    public void promoteWorker(UserWorkerPromotionDto userWorkerPromotionDto) throws WrongRoleException, ExecutionException, InterruptedException {
+        User user = findByEmail(userWorkerPromotionDto.getEmail()).get()
+                .orElseThrow(() -> new UsernameNotFoundException("User with this email not found"));
+
+        if (!user.getRole().toString().equals("USER")) {
+            throw new WrongRoleException("User don't have role: USER");
+        }
+        changeRole(user.getEmail(), "WORKER");
+    }
+
+    public void demoteWorker(UserWorkerPromotionDto userWorkerPromotionDto) throws WrongRoleException, ExecutionException, InterruptedException {
+        User user = findByEmail(userWorkerPromotionDto.getEmail()).get()
+                .orElseThrow(() -> new UsernameNotFoundException("User with this email not found"));
+
+        if (!user.getRole().toString().equals("WORKER")) {
+            throw new WrongRoleException("User don't have role: WORKER");
+        }
+        changeRole(user.getEmail(), "USER");
     }
 }

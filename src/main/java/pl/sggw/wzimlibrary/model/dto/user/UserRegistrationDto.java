@@ -1,4 +1,4 @@
-package pl.sggw.wzimlibrary.model.dto;
+package pl.sggw.wzimlibrary.model.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,12 +15,14 @@ import javax.validation.constraints.*;
 public class UserRegistrationDto {
 
     @NotEmpty
-    @Size(max = ValidationConstant.FIRST_NAME_MAX_LENGTH)
+    @Size(min = ValidationConstant.STRING_MIN_LENGTH,
+            max = ValidationConstant.FIRST_NAME_MAX_LENGTH)
     @Pattern(regexp = ValidationConstant.NAME_REGEXP)
     private final String firstName;
 
     @NotEmpty
-    @Size(max = ValidationConstant.LAST_NAME_MAX_LENGTH)
+    @Size(min = ValidationConstant.STRING_MIN_LENGTH,
+            max = ValidationConstant.LAST_NAME_MAX_LENGTH)
     @Pattern(regexp = ValidationConstant.NAME_REGEXP)
     private final String lastName;
 
@@ -42,7 +44,8 @@ public class UserRegistrationDto {
     private final SecurityQuestion securityQuestion;
 
     @NotEmpty
-    @Size(max = ValidationConstant.SECURITY_QUESTION_ANSWER_MAX_LENGTH)
+    @Size(min = ValidationConstant.STRING_MIN_LENGTH,
+            max = ValidationConstant.SECURITY_QUESTION_ANSWER_MAX_LENGTH)
     private final String securityQuestionAnswer;
 
     private final Role role = Role.USER;

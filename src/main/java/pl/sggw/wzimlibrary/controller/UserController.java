@@ -1,10 +1,18 @@
 package pl.sggw.wzimlibrary.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import pl.sggw.wzimlibrary.model.dto.UserPanelChangePasswordDto;
+import pl.sggw.wzimlibrary.exception.WrongRoleException;
+import pl.sggw.wzimlibrary.exception.PasswordMismatchException;
+import pl.sggw.wzimlibrary.exception.SecurityQuestionAnswerMismatchException;
+import pl.sggw.wzimlibrary.exception.UserNotFoundException;
+import pl.sggw.wzimlibrary.model.annotation.CurrentlyLoggedUser;
+import pl.sggw.wzimlibrary.model.dto.user.UserForgottenPasswordDto;
+import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangePasswordDto;
+import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangeQuestionDto;
+import pl.sggw.wzimlibrary.model.dto.user.UserWorkerPromotionDto;
 import pl.sggw.wzimlibrary.service.UserService;
 
 import java.util.concurrent.ExecutionException;
@@ -22,11 +30,38 @@ public class UserController {
         return ResponseEntity.ok(userService.findAll().get());
     }
 
+    @GetMapping("user/summary")
+    ResponseEntity<?> getUserSummary(@CurrentlyLoggedUser UserDetails userDetails) throws UserNotFoundException {
+        return ResponseEntity.ok(userService.getUserSummary(userDetails));
+    }
+
     @PatchMapping("/user/changePassword")
-    ResponseEntity<?> changePassword(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody UserPanelChangePasswordDto userPanelChangePasswordDto) throws ExecutionException, InterruptedException {
-        if (userService.changePassword(token, userPanelChangePasswordDto)) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.badRequest().build();
+    ResponseEntity<?> changePassword(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserPanelChangePasswordDto userPanelChangePasswordDto) throws UserNotFoundException, PasswordMismatchException, ExecutionException, InterruptedException {
+        userService.changePassword(userDetails, userPanelChangePasswordDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/user/forgottenPassword")
+    ResponseEntity<?> forgottenPassword(@RequestBody UserForgottenPasswordDto userForgottenPasswordDto) throws ExecutionException, InterruptedException, SecurityQuestionAnswerMismatchException, PasswordMismatchException {
+        userService.changeForgottenPassword(userForgottenPasswordDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/user/changeQuestion")
+    ResponseEntity<?> changeQuestion(@CurrentlyLoggedUser UserDetails userDetails, @RequestBody UserPanelChangeQuestionDto userPanelChangeQuestionDto) throws UserNotFoundException, PasswordMismatchException, ExecutionException, InterruptedException {
+        userService.changeQuestion(userDetails, userPanelChangeQuestionDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/user/workerPromotion")
+    ResponseEntity<?> promoteWorker(@RequestBody UserWorkerPromotionDto userWorkerPromotionDto) throws WrongRoleException, ExecutionException, InterruptedException {
+        userService.promoteWorker(userWorkerPromotionDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/user/workerDemotion")
+    ResponseEntity<?> demoteWorker(@RequestBody UserWorkerPromotionDto userWorkerPromotionDto) throws WrongRoleException, ExecutionException, InterruptedException {
+        userService.demoteWorker(userWorkerPromotionDto);
+        return ResponseEntity.ok().build();
     }
 }
