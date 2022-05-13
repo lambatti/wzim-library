@@ -43,7 +43,8 @@ public class UserCacheService {
 
     @Caching(evict = {
             @CacheEvict(value = "userEmail", key = "#email"),
-            @CacheEvict(value = "allUsers", allEntries = true)
+            @CacheEvict(value = "allUsers", allEntries = true),
+            @CacheEvict(value = "allWorkers", allEntries = true)
     })
     public void changeRole(String email, String role) {
         userRepository.setRole(email, role);
@@ -55,13 +56,11 @@ public class UserCacheService {
     }
 
     @Cacheable(value = "allWorkers")
-    @CacheEvict(value = "allWorkers", allEntries = true)
     public List<User> findAllWorkers() {
         return userRepository.findAllByRoleEquals(Role.WORKER);
     }
 
     @Cacheable(value = "allUsers")
-
     public List<User> findAll() {
         return userRepository.findAll();
     }

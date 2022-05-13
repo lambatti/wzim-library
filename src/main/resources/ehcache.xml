@@ -13,7 +13,10 @@ https://www.ehcache.org/schema/ehcache-core-3.0.xsd">
     <cache alias="userExistsByEmail" uses-template="default"/>
     <cache alias="userEmail" uses-template="default"/>
     <cache alias="allUsers" uses-template="default"/>
-    <cache alias="allWorkers" uses-template="default"/>
+
+    <cache alias="allWorkers">
+        <heap unit="entries">50</heap>
+    </cache>
 
     <cache alias="bookBySlug">
         <expiry>

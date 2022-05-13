@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.sggw.wzimlibrary.model.constant.Gender;
 
-import java.time.LocalDate;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -17,6 +15,5 @@ public class WorkerDto {
     private String lastName;
     private String email;
     private Gender gender;
-//    private final LocalDate birthDate;
 }
 
