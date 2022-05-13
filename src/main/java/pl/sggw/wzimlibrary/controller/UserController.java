@@ -9,10 +9,7 @@ import pl.sggw.wzimlibrary.exception.PasswordMismatchException;
 import pl.sggw.wzimlibrary.exception.SecurityQuestionAnswerMismatchException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
 import pl.sggw.wzimlibrary.model.annotation.CurrentlyLoggedUser;
-import pl.sggw.wzimlibrary.model.dto.user.UserForgottenPasswordDto;
-import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangePasswordDto;
-import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangeQuestionDto;
-import pl.sggw.wzimlibrary.model.dto.user.UserWorkerPromotionDto;
+import pl.sggw.wzimlibrary.model.dto.user.*;
 import pl.sggw.wzimlibrary.service.UserService;
 
 import java.util.concurrent.ExecutionException;
@@ -63,5 +60,15 @@ public class UserController {
     ResponseEntity<?> demoteWorker(@RequestBody UserWorkerPromotionDto userWorkerPromotionDto) throws WrongRoleException, ExecutionException, InterruptedException {
         userService.demoteWorker(userWorkerPromotionDto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/user/borrowedBooks")
+    ResponseEntity<?> borrowedBooks(@CurrentlyLoggedUser UserDetails userDetails) throws UserNotFoundException, ExecutionException, InterruptedException {
+        return ResponseEntity.ok(userService.borrowedBooks(userDetails));
+    }
+
+    @GetMapping("/user/workers")
+    ResponseEntity<?> getAllWorkers() throws ExecutionException, InterruptedException {
+        return ResponseEntity.ok(userService.getAllWorkers());
     }
 }

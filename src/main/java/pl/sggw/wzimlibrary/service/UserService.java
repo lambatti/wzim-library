@@ -1,6 +1,7 @@
 package pl.sggw.wzimlibrary.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.sggw.wzimlibrary.exception.*;
 import pl.sggw.wzimlibrary.model.*;
 import pl.sggw.wzimlibrary.model.constant.Role;
+import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowDto;
 import pl.sggw.wzimlibrary.model.dto.user.*;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
 
@@ -22,10 +24,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Log
 public class UserService implements UserDetailsService {
 
     private final ModelMapper modelMapper;
@@ -41,6 +45,11 @@ public class UserService implements UserDetailsService {
     @Async
     public CompletableFuture<List<User>> findAll() {
         return CompletableFuture.completedFuture(userCacheService.findAll());
+    }
+
+    @Async
+    public CompletableFuture<List<User>> findAllWorkers() {
+        return CompletableFuture.completedFuture(userCacheService.findAllWorkers());
     }
 
     @Async
@@ -272,4 +281,29 @@ public class UserService implements UserDetailsService {
         }
         changeRole(user.getEmail(), "USER");
     }
+
+    public List<UserBorrowedBooksDto> borrowedBooks(UserDetails userDetails) throws UserNotFoundException, ExecutionException, InterruptedException {
+        User user = getUserFromUserDetails(userDetails);
+
+//        List<String> borrowedBookSlugList = getSlugFromBookBorrowDto(user.getId());
+
+//        log.info(borrowedBookSlugList.toString());
+
+
+        List<UserBorrowedBooksDto> userBorrowedBooksDtoList = new ArrayList<>();
+        return userBorrowedBooksDtoList;
+    }
+
+    public List<WorkerDto> getAllWorkers() throws ExecutionException, InterruptedException {
+        return findAllWorkers().get()
+                .stream()
+                .map(user -> modelMapper.map(user, WorkerDto.class))
+                .collect(Collectors.toList());
+    }
+
+//    private List<String> getSlugFromBookBorrowDto(Integer id) throws ExecutionException, InterruptedException {
+//        return bookBorrowService.getAllBookBorrowsByUserId(id)
+//                .stream().map(BookBorrowDto::getBookSlug)
+//                .collect(Collectors.toList());
+//    }
 }

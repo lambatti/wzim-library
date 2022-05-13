@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sggw.wzimlibrary.model.User;
+import pl.sggw.wzimlibrary.model.constant.Role;
 import pl.sggw.wzimlibrary.repository.UserRepository;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface SqlUserRepository extends UserRepository, JpaRepository<User, I
 
     @Override
     List<User> findAll();
+
+    List<User> findAllByRoleEquals(Role role);
 
     @Override
     Optional<User> findByEmail(String email);
