@@ -62,7 +62,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/user/borrowedBooks")
+    @GetMapping("user/borrowedBooks")
     ResponseEntity<?> borrowedBooks(@CurrentlyLoggedUser UserDetails userDetails) throws UserNotFoundException, ExecutionException, InterruptedException {
         return ResponseEntity.ok(userService.borrowedBooks(userDetails));
     }
