@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import pl.sggw.wzimlibrary.exception.WrongRoleException;
 import pl.sggw.wzimlibrary.exception.PasswordMismatchException;
 import pl.sggw.wzimlibrary.exception.SecurityQuestionAnswerMismatchException;
 import pl.sggw.wzimlibrary.exception.UserNotFoundException;
+import pl.sggw.wzimlibrary.exception.WrongRoleException;
 import pl.sggw.wzimlibrary.model.annotation.CurrentlyLoggedUser;
 import pl.sggw.wzimlibrary.model.dto.user.UserForgottenPasswordDto;
 import pl.sggw.wzimlibrary.model.dto.user.UserPanelChangePasswordDto;
@@ -33,6 +33,11 @@ public class UserController {
     @GetMapping("user/summary")
     ResponseEntity<?> getUserSummary(@CurrentlyLoggedUser UserDetails userDetails) throws UserNotFoundException {
         return ResponseEntity.ok(userService.getUserSummary(userDetails));
+    }
+
+    @GetMapping("user/borrowSummary")
+    ResponseEntity<?> getBookBorrowSummary(@CurrentlyLoggedUser UserDetails userDetails) throws UserNotFoundException {
+        return ResponseEntity.ok(userService.getBookBorrowSummary(userDetails));
     }
 
     @PatchMapping("/user/changePassword")

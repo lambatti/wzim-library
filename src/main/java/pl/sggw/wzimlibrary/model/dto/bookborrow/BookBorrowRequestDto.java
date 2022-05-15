@@ -11,8 +11,6 @@ public class BookBorrowRequestDto {
     private String bookSlug;
     private String firstName;
     private String lastName;
-    private int borrowedBooks;
-    private int readBooks;
     private LocalDate requestDate;
 
 }
