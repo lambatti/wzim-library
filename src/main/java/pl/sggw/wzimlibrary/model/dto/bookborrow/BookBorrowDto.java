@@ -5,10 +5,8 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class BookBorrowDto {
+public class BookBorrowDto extends BookBorrowBaseDto {
 
-    private Integer userId;
-    private String bookSlug;
     private LocalDate borrowDate;
     private LocalDate returnDate;
 
