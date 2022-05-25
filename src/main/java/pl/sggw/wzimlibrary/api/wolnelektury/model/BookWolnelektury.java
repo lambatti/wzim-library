@@ -14,6 +14,8 @@ import java.util.List;
 public class BookWolnelektury {
     @JsonProperty("title")
     private String title;
+    @JsonProperty("slug")
+    private String slug;
     @JsonProperty("language")
     private String language;
     @JsonProperty("epochs")

@@ -23,10 +23,9 @@ public class BookWolnelekturyService {
                 .encode()
                 .toUriString();
         try {
-            return restTemplate.getForObject(
-                    urlTemplate,
-                    BookWolnelektury.class
-            );
+            BookWolnelektury output = restTemplate.getForObject(urlTemplate, BookWolnelektury.class);
+            output.setSlug(bookSlug);
+            return output;
         } catch (final HttpClientErrorException.NotFound e) {
             return null; // nie znaleziono
         }
