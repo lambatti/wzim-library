@@ -8,6 +8,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import pl.sggw.wzimlibrary.api.wolnelektury.model.BookWolnelektury;
+import pl.sggw.wzimlibrary.api.wolnelektury.model.NameProp;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -30,4 +33,5 @@ public class BookWolnelekturyService {
             return null; // nie znaleziono
         }
     }
+
 }
