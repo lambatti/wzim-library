@@ -26,19 +26,24 @@ export class BookService {
 
   // GET BOOKS TO HOME PAGE WITH PARAM x3
 
-  getBooksToHomePageCard = (): Observable<BookCard[]> => this._http.get<BookCard[]>(`${environment.url}/books/home`);
-
+  getBooksToHomePageCard = (): Observable<BookCard[]> =>
+    this._http.get<BookCard[]>(`${environment.url}/books/home`);
 
   // BORROW BOOK
 
   // GET ALL BOOK WITH CATEGORY
-  getBookGenres = (): Observable<BookCategory[]> => this._http.get<BookCategory[]>(`${environment.url}/books/genres`);
-  getBookEpochs = (): Observable<BookCategory[]> => this._http.get<BookCategory[]>(`${environment.url}/books/epochs`);
+  getBookGenres = (): Observable<BookCategory[]> =>
+    this._http.get<BookCategory[]>(`${environment.url}/books/genres`);
+  getBookEpochs = (): Observable<BookCategory[]> =>
+    this._http.get<BookCategory[]>(`${environment.url}/books/epochs`);
   // tu trzeba wyswietlać categorie po czym sortujemy
 
   // FIND ONE BOOK BY TEXT
 
   // GET BOOK DATA BY SLUG
+
+    getBookBySlug = (slug: string): Observable<Book> =>
+      this._http.get<Book>(`${environment.url}/books/${slug}`);
 
   // GET ONE BOOK TEXT
 

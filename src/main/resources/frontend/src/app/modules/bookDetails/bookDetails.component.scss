@@ -1,14 +1,17 @@
 @import "src/app/styles/main";
 
 .wrapper {
+  position: relative;
   height: 100vh;
   background: linear-gradient(180deg, $gray-dark 40%, $white 40%);
+  z-index: 10;
   @include respond-to('lg') {
     background: linear-gradient(90deg, $gray-dark 30%, $white 30%);
     display: grid;
     grid-template-columns: 1fr 3fr;
     grid-template-rows: 1fr 9fr;
   }
+
 
 }
 
@@ -26,7 +29,6 @@
 
 .section__content {
   border: 2px solid $primary-color;
-  margin: 5vw;
   border-radius: 10px;
   padding: 150px 5vw 0 5vw;
   height: 60vh;
@@ -87,13 +89,13 @@
       color: $gray-dark;
       position: relative;
       left: 200%;
-      top: 5vh;
+      margin: 5vh;
       font-size: map-get($font-size, 'xl');
     }
   }
 
   &__cover {
-    @include background-center("../../../assets/images/image_3.png");
+  //  @include background-center("../../../assets/images/image_3.png");
     border-radius: 10px;
     min-width: 250px;
     height: 300px;
@@ -102,6 +104,10 @@
     position: absolute;
     top: 20vh;
     z-index: 2;
+    img {
+      width: 100%;
+      height: 100%;
+    }
     @include keyframes(show) {
       from {
         opacity: 0;

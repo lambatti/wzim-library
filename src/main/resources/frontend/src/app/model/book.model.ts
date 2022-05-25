@@ -2,11 +2,11 @@ export interface Book {
   slug: string,
   title: string,
   language: string,
-  epochs: string,
-  genres: string,
-  kinds: string,
-  authors: string,
-  translators: string,
+  epochs: string[],
+  genres: string[],
+  kinds: string[],
+  authors: string[],
+  translators: string[],
   cover: string
 }
 
@@ -19,6 +19,7 @@ export interface BookCard {
   kinds: string[];
   cover: string;
   authors: string[];
+  slug: string;
 }
 
 

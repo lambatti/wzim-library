@@ -3,23 +3,25 @@
 
   <div nz-row class='section__background'>
 
-    <h1 class='details__heading'>Płuca zlepione Tomkami</h1>
-    <div class='details__cover'></div>
+    <h1 class='details__heading'>{{bookData.title}}</h1>
+    <div class='details__cover'>
+      <img [src]='bookData.cover' alt=''>
+    </div>
   </div>
   <div nz-row class='section__content'>
     <ul class='details__list'>
       <li>Autor</li>
-      <li>Tomek</li>
+      <li>{{bookData.authors[0]}}</li>
       <li>Język</li>
-      <li>Tomkowy</li>
+      <li>{{bookData.language}}</li>
       <li>Epoka</li>
-      <li>Tomka</li>
+      <li>{{bookData.epochs[0]}}</li>
       <li>Gatunek</li>
-      <li>Tomkowy</li>
+      <li>{{bookData.genres[0]}}</li>
       <li>Rodzaj</li>
-      <li>Tomek</li>
+      <li>{{bookData.kinds[0]}}</li>
       <li>Tłumaczenie</li>
-      <li>Tomka</li>
+      <li>{{ bookData.translators.length !== 0 ?  bookData.translators[0] : "Oryginał" }}</li>
     </ul>
     <div  class='btn__group'>
       <button nz-button nzType='primary' routerLink='/categories'>Powrót</button>

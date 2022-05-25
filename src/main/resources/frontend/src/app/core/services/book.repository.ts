@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BookService } from '../http/book.service';
-import { BookCard, BookCategory } from '../../model/book.model';
+import { BookCard, BookCategory, Book } from '../../model/book.model';
 import { Observable } from 'rxjs';
 
 
@@ -16,7 +16,9 @@ export class BookRepository {
 
 
   getBooksToHomePageCard(): Observable<BookCard[]> {
-
+    this._bookService.getBooksToHomePageCard().subscribe(x => {
+      console.log(x);
+    })
     return this._bookService.getBooksToHomePageCard();
   }
 
@@ -27,6 +29,10 @@ export class BookRepository {
     return this._bookService.getBookEpochs();
 
 
+  }
+
+  getBookBySlug(slug: string): Observable<Book> {
+    return this._bookService.getBookBySlug(slug);
   }
 
   // BORROW BOOK

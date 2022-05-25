@@ -10,6 +10,8 @@ export class CardComponent {
   @Input() title: string = '';
   @Input() description: string = '';
   @Input() coverImg: string = '';
+  @Input() slug: string = '';
+  @Input() kind: string = '';
 
 
 }
