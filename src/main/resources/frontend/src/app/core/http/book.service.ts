@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Book, BookCard } from '../../model/book.model';
+import { Book, BookCard, BookCategory } from '../../model/book.model';
 import { environment } from '../../../environments/environment';
 
 
@@ -32,6 +32,8 @@ export class BookService {
   // BORROW BOOK
 
   // GET ALL BOOK WITH CATEGORY
+  getBookGenres = (): Observable<BookCategory[]> => this._http.get<BookCategory[]>(`${environment.url}/books/genres`);
+  getBookEpochs = (): Observable<BookCategory[]> => this._http.get<BookCategory[]>(`${environment.url}/books/epochs`);
   // tu trzeba wyswietlać categorie po czym sortujemy
 
   // FIND ONE BOOK BY TEXT

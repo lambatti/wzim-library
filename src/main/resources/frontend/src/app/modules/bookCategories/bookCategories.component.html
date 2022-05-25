@@ -23,21 +23,14 @@
           </ng-template>
         </div>
         <ul nz-menu nzMode='inline'>
-          <li nz-menu-item>Bestsellery</li>
           <li nz-submenu nzTitle='Gatunki'>
             <ul>
-              <li nz-menu-item>fkdsbj</li>
-              <li nz-menu-item>fkdsbj</li>
+              <li *ngFor='let items of genres' nz-menu-item>{{items.name}}</li>
             </ul>
           </li>
           <li nz-submenu nzTitle='Epoki'>
             <ul>
-              <li nz-menu-item>fkdsbj</li>
-            </ul>
-          </li>
-          <li nz-submenu nzTitle='Rodzaje'>
-            <ul>
-              <li nz-menu-item>fkdsbj</li>
+              <li *ngFor='let kind of epochs' nz-menu-item>{{kind.name}}</li>
             </ul>
           </li>
         </ul>

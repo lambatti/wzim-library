@@ -1,4 +1,5 @@
 export interface Book {
+  slug: string,
   title: string,
   language: string,
   epochs: string,
@@ -24,4 +25,9 @@ export interface BookCard {
 export interface UserBookStatus {
   borrowedBooks: number,
   booksRead: number,
+}
+
+
+export interface BookCategory {
+  name: string
 }
