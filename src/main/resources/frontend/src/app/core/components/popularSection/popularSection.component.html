@@ -5,11 +5,10 @@
     <h1 nz-typography class='heading__text'>{{heading.toUpperCase()}}</h1>
 
   </div>
-
   <div class='cards' nz-row nzJustify='center'>
-    <app-card *ngFor='let item of cardList' class='card' nz-col [nzXs]='18' [nzSm]='12' [nzXl]='6' [nzMd]='10'
-              [nzXXl]='5' [title]='item.title'
-              [description]='item.author'
-              [coverImg]='item.cover'></app-card>
+    <app-card *ngFor='let item of cardList' [coverImg]='item.cover' [description]='item.authors[0]' [nzMd]='10' [nzSm]='12' [nzXXl]='5' [nzXl]='6'
+              [nzXs]='18' [title]='item.title'
+              class='card'
+              nz-col></app-card>
   </div>
 </nz-content>

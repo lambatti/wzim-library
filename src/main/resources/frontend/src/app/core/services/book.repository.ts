@@ -13,13 +13,11 @@ export class BookRepository {
 
   // PROLONGACJA KSIĄŻKI
 
-  // GET BOOKS TO HOME PAGE WITH PARAM x3
 
-  getBooksToHomePageCard(kind: string): Observable<BookCard[]> {
-    this._bookService.getBooksToHomePageCard(kind).subscribe(x => {
-      console.log(x);
-    });
-    return this._bookService.getBooksToHomePageCard(kind as string);
+
+  getBooksToHomePageCard(): Observable<BookCard[]> {
+
+    return this._bookService.getBooksToHomePageCard();
   }
 
   // BORROW BOOK

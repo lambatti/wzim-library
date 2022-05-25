@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Book, BookCard } from '../../model/book.model';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable()
@@ -25,11 +26,7 @@ export class BookService {
 
   // GET BOOKS TO HOME PAGE WITH PARAM x3
 
-  getBooksToHomePageCard(kind: string): Observable<BookCard[]> {
-
-    return this._http.get<BookCard[]>(`http://localhost:5000/fiveBook/${kind}`);
-
-  }
+  getBooksToHomePageCard = (): Observable<BookCard[]> => this._http.get<BookCard[]>(`${environment.url}/books/home`);
 
 
   // BORROW BOOK

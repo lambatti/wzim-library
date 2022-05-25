@@ -11,6 +11,5 @@ export class CardComponent {
   @Input() description: string = '';
   @Input() coverImg: string = '';
 
-
-
+  
 }

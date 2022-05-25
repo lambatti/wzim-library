@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BookCard } from '../../../model/book.model';
 
 
@@ -7,10 +7,16 @@ import { BookCard } from '../../../model/book.model';
   templateUrl: 'popularSection.component.html',
   styleUrls: ['popularSection.component.scss']
 })
-export class PopularSectionComponent {
+export class PopularSectionComponent implements OnInit{
 
   @Input() heading: string = '';
   @Input() cardList: BookCard[] = null!;
   @Input() shape: string = null!;
+
+
+
+  ngOnInit(): void {
+    console.log(this.heading);
+  }
 
 }

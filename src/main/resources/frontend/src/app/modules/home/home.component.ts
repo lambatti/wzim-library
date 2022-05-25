@@ -19,19 +19,30 @@ export class HomeComponent implements OnInit {
   epic: BookCard[] = [];
   poetry: BookCard[] = [];
   drama: BookCard[] = [];
-
+  kindEpic: string = '';
+  kindPoetry: string = '';
+  kindDrama: string = '';
 
   ngOnInit(): void {
-    this._bookRepository.getBooksToHomePageCard('Epika').subscribe(books => {
-      this.epic = books;
-    });
-    this._bookRepository.getBooksToHomePageCard('Liryka').subscribe(books => {
-      this.poetry = books;
-    });
-    this._bookRepository.getBooksToHomePageCard('Dramat').subscribe(books => {
-      this.drama = books;
-    });
+    this._bookRepository.getBooksToHomePageCard().subscribe(books => {
+      books.forEach((item: BookCard) => {
 
+        let [kind] = item.kinds;
+
+        if (kind === 'Epika') {
+          this.epic = [...this.epic,item];
+          this.kindEpic = kind;
+        }
+        if (kind === 'Liryka') {
+          this.poetry = [...this.poetry, item];
+          this.kindPoetry = kind;
+        }
+        if (kind === 'Dramat') {
+          this.drama = [...this.drama, item]
+          this.kindDrama = kind;
+        }
+      })
+    });
   }
 
   dodaj() {

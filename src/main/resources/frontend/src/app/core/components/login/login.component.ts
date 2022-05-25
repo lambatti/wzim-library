@@ -28,9 +28,12 @@ export class LoginComponent {
     if (this.formGroup.valid) {
       this._authentication
         .login(this.newUser)
-        .subscribe( ({token})=> {
-          localStorage.setItem('token', token);
-         localStorage.setItem('email', this._jwt.decodeToken(token).sub);
+        .subscribe( (response: any)=> {
+          console.log(response);
+          const header = response.headers.get('Authorization');
+          console.log(header);
+          // localStorage.setItem('token', header);
+         // localStorage.setItem('email', this._jwt.decodeToken(header).sub);
           this.router.navigateByUrl('/');
         });
       this.newUser = new LoginUserModel();
