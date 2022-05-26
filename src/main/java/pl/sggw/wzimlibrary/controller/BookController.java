@@ -10,6 +10,7 @@ import pl.sggw.wzimlibrary.service.BookService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin
 @RestController
@@ -28,25 +29,36 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBookBySlug(slug));
     }
 
+    @GetMapping(path = "/kinds")
+    ResponseEntity<Set<NameProp>> readBookKinds() {
+        return ResponseEntity.ok(bookService.getBookKinds());
+    }
+
     @GetMapping(path = "/kinds/{kind}")
     ResponseEntity<List<Book>> readAllBooksByKind(@PathVariable String kind) {
         return ResponseEntity.ok(bookService.getAllBooksByKind(kind));
     }
 
-    @GetMapping(path = "/kinds")
-    ResponseEntity<List<NameProp>> readBookKinds() {
-        return ResponseEntity.ok(bookService.getBookKinds());
-    }
-
     @GetMapping(path = "/epochs")
-    ResponseEntity<List<NameProp>> readBookEpochs() {
+    ResponseEntity<Set<NameProp>> readBookEpochs() {
         return ResponseEntity.ok(bookService.getBookEpochs());
     }
 
+    @GetMapping(path = "/epochs/{epoch}")
+    ResponseEntity<List<Book>> readAllBooksByEpoch(@PathVariable String epoch) {
+        return ResponseEntity.ok(bookService.getAllBooksByEpoch(epoch));
+    }
+
     @GetMapping(path = "/genres")
-    ResponseEntity<List<NameProp>> readBookGenres() {
+    ResponseEntity<Set<NameProp>> readBookGenres() {
         return ResponseEntity.ok(bookService.getBookGenres());
     }
+
+    @GetMapping(path = "/genres/{genre}")
+    ResponseEntity<List<Book>> readAllBooksByGenre(@PathVariable String genre) {
+        return ResponseEntity.ok(bookService.getAllBooksByGenre(genre));
+    }
+
 
     @GetMapping(path = "/read/{slug}")
     ResponseEntity<BookReadDto> readBookRead(@PathVariable String slug) {

@@ -12,10 +12,7 @@ import pl.sggw.wzimlibrary.api.wolnelektury.service.BookWolnelekturyService;
 import pl.sggw.wzimlibrary.model.Book;
 import pl.sggw.wzimlibrary.model.dto.BookReadDto;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,22 +44,34 @@ public class BookService {
                 }.getType());
     }
 
+    public Set<NameProp> getBookKinds() {
+        return allBooksWolnelekturyService.getAllKinds();
+    }
+
     public List<Book> getAllBooksByKind(String kind) {
         final List<Book> allBooks = this.getAllBooks();
         return allBooks.stream()
                 .filter(book -> book.getKinds().contains(kind)).collect(Collectors.toList());
     }
 
-    public List<NameProp> getBookKinds() {
-        return bookNamePropService.getNameProp("kinds");
+    public Set<NameProp> getBookEpochs() {
+        return allBooksWolnelekturyService.getAllEpochs();
     }
 
-    public List<NameProp> getBookEpochs() {
-        return bookNamePropService.getNameProp("epochs");
+    public List<Book> getAllBooksByEpoch(String epoch) {
+        final List<Book> allBooks = this.getAllBooks();
+        return allBooks.stream()
+                .filter(book -> book.getEpochs().contains(epoch)).collect(Collectors.toList());
     }
 
-    public List<NameProp> getBookGenres() {
-        return bookNamePropService.getNameProp("genres");
+    public Set<NameProp> getBookGenres() {
+        return allBooksWolnelekturyService.getAllGenres();
+    }
+
+    public List<Book> getAllBooksByGenre(String genre) {
+        final List<Book> allBooks = this.getAllBooks();
+        return allBooks.stream()
+                .filter(book -> book.getGenres().contains(genre)).collect(Collectors.toList());
     }
 
     public BookReadDto getBookRead(String slug) {
