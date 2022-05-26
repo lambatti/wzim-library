@@ -1,7 +1,7 @@
 <div nz-row nzJustify='center'>
 
 
-<nz-card [routerLink]='kind+"/"+slug' nzHoverable class='card' [nzCover]='cover'>
+<nz-card [routerLink]='"category/"+kind+"/"+slug' nzHoverable class='card' [nzCover]='cover'>
   <nz-card-meta [nzTitle]='title' [nzDescription]='description'></nz-card-meta>
 </nz-card>
 <ng-template #cover>

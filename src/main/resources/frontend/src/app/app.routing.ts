@@ -14,10 +14,10 @@ import { ChangeQuestionComponent } from './core/components/changeQuestion/change
 
 
 const routes: Routes = [
-  { path: ':category/:id/read', component: ReadBookComponent },
-  { path: ':category/:id', component: BookDetailsComponent },
-  { path: ':category', component: BookCategoriesComponent },
- // { path: '', component: BookCategoriesComponent },
+  { path: 'category/:category/:id/read', component: ReadBookComponent },
+  { path: 'category/:category/:id', component: BookDetailsComponent },
+  { path: 'category/:category', component: BookCategoriesComponent },
+   { path: 'category', component: BookCategoriesComponent },
   {
     path: 'user', component: UserTemplateComponent, pathMatch: 'prefix', children: [
       { path: 'changePassword', component: ChangePasswordComponent },

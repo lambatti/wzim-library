@@ -18,7 +18,7 @@ export class BookService {
 
   // PROLONGACJA KSIĄŻKI
 
-  prolongationBoook(id: number): Observable<any> {
+  prolongationBook(id: number): Observable<any> {
 
     return this._http.post(``, id);
   }
@@ -32,8 +32,8 @@ export class BookService {
   // BORROW BOOK
 
   // GET ALL BOOK WITH CATEGORY
-  getBookGenres = (): Observable<BookCategory[]> =>
-    this._http.get<BookCategory[]>(`${environment.url}/books/genres`);
+  getBookGenres =  (): Observable<BookCategory[]> =>
+   this._http.get<BookCategory[]>(`${environment.url}/books/genres`);
   getBookEpochs = (): Observable<BookCategory[]> =>
     this._http.get<BookCategory[]>(`${environment.url}/books/epochs`);
   // tu trzeba wyswietlać categorie po czym sortujemy
@@ -41,6 +41,8 @@ export class BookService {
   // FIND ONE BOOK BY TEXT
 
   // GET BOOK DATA BY SLUG
+
+    //getBooksByGenres = () => this._http.get()
 
     getBookBySlug = (slug: string): Observable<Book> =>
       this._http.get<Book>(`${environment.url}/books/${slug}`);
