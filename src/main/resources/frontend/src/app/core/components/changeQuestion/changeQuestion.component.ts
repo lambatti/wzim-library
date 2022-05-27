@@ -23,7 +23,7 @@ export class ChangeQuestionComponent {
   submitForm(): void {
 
     if (this.formGroup.valid) {
-      this._userRepository.changeQusetion(this.changeQuestionModel).subscribe(() => {
+      this._userRepository.changeQuestion(this.changeQuestionModel).subscribe(() => {
         this.isVisible = true;
       });
       this.isSubmitted = true;

@@ -16,21 +16,22 @@ export class UserService {
   }
 
   getUserData(): Observable<ShowedUserModel> {
-    return this._http.get<ShowedUserModel>(`http://localhost:5000/user`, UserService.httpOptions());
+    return this._http.get<ShowedUserModel>(`${environment.url}/user/summary`, UserService.httpOptions());
   }
 
   getUserBooksCount(): Observable<UserBookStatus> {
-    return this._http.get<UserBookStatus>(`http://localhost:5000/bookstatus`, UserService.httpOptions());
+    return this._http.get<UserBookStatus>(`${environment.url}/bookBorrowRequests`, UserService.httpOptions());
   }
 
   // CHANGE PASSWORD FROM PANEL ------ handle error
   changePassword(changedData: ChangePasswordModel): Observable<Object> {
-    return this._http.patch<ChangePassword>(`${environment.url}/changePassword`, changedData, UserService.httpOptions());
+    console.log(changedData);
+    return this._http.patch<ChangePassword>(`${environment.url}/user/changePassword`, changedData, UserService.httpOptions());
   }
 
   // CHANGE VERIFICATION DATA ---- handle error
-  changeQusetion(changedData: ChangeQuestionModel): Observable<Object> {
-    return this._http.patch<ChangeQuestionModel>(`${environment.url}/changePassword`, changedData, UserService.httpOptions());
+  changeQuestion(changedData: ChangeQuestionModel): Observable<Object> {
+    return this._http.patch<ChangeQuestionModel>(`${environment.url}/user/changeQuestion`, changedData, UserService.httpOptions());
   }
 
 
@@ -41,7 +42,7 @@ export class UserService {
   private static httpOptions() {
     return {
       headers: new HttpHeaders({
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `${localStorage.getItem('token')}`
       })
     };
   }

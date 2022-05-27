@@ -29,9 +29,9 @@ export class UserRepository {
       .pipe(catchError(() => throwError(`Podane dane nie są poprawne`)));
   }
 
-  changeQusetion(changedData: ChangeQuestionModel): Observable<Object> {
+  changeQuestion(changedData: ChangeQuestionModel): Observable<Object> {
     return this._userService
-      .changeQusetion(changedData)
+      .changeQuestion(changedData)
       .pipe(catchError(() => throwError(`Podane dane nie są poprawne`)));
   }
 
