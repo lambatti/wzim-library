@@ -12,16 +12,19 @@ export class UserTemplateComponent implements OnInit {
 
   constructor(private readonly _userRepository: UserRepository) {
   }
+  firstname: string = localStorage.getItem('firstname') as string;
 
+  booksStatus: UserBookStatus = {
+    booksRead: 0,
+    borrowedBooks: 0
+  };
 
-  booksStatus: UserBookStatus;
-
-  firstName: any;
+  firstName: string = localStorage.getItem('firstname') as string;
 
   ngOnInit(): void {
-    this._userRepository.showUserBooksStatus().subscribe((data) => {
-      this.booksStatus = data;
-    });
+    // this._userRepository.showUserBooksStatus().subscribe((data) => {
+    //   this.booksStatus = data;
+    // });
 
   }
 }

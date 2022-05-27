@@ -3,10 +3,10 @@
     <app-header></app-header>
   </div>
   <nz-layout>
-    <app-user-drawer class='drawer__show' [firstName]='"Kami"'></app-user-drawer>
+    <app-user-drawer class='drawer__show' [firstName]='firstname'></app-user-drawer>
     <nz-sider class='sider__show'>
       <ul nz-menu nzMode='inline' class='flex-space-around'>
-        <a [routerLink]='["/user", "Tomek"]'>
+        <a [routerLink]='["/user", firstName]'>
           <li nz-menu-item>Zobacz swój profil</li>
         </a>
         <a routerLink='/user/myBooks'>

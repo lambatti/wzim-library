@@ -14,7 +14,13 @@ export class UserDataComponent implements OnInit {
   constructor(private readonly _userRepository: UserRepository) {
   }
 
-  userData: ShowedUserModel;
+  userData: ShowedUserModel = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    gender: '',
+    creationDate: ''
+  };
 
   ngOnInit(): void {
     this._userRepository.showUserData().subscribe((data) => {
