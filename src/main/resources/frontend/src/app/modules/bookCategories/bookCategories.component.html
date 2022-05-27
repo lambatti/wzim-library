@@ -1,7 +1,7 @@
 <nz-layout>
   <div class='background'>
     <app-header></app-header>
-    <h1 nz-typography class='sorted__value'>BESTSELLERY</h1>
+    <h1 nz-typography class='sorted__value'>{{actualRoute}}</h1>
   </div>
   <nz-layout>
     <button class='open__drawer' nz-button nzType='primary' (click)='open()'><i nz-icon nzType='right'
@@ -25,12 +25,12 @@
         <ul nz-menu nzMode='inline'>
           <li nz-submenu nzTitle='Gatunki'>
             <ul>
-              <li *ngFor='let items of genres' nz-menu-item>{{items.name}}</li>
+              <li (click)='changeCategory(items.name)' *ngFor='let items of genres' nz-menu-item>{{items.name}}</li>
             </ul>
           </li>
           <li nz-submenu nzTitle='Epoki'>
             <ul>
-              <li *ngFor='let kind of epochs' nz-menu-item>{{kind.name}}</li>
+              <li (click)='changeCategory(kind.name)' *ngFor='let kind of epochs' nz-menu-item>{{kind.name}}</li>
             </ul>
           </li>
         </ul>
@@ -41,26 +41,13 @@
 
       <nz-content nz-row [nzGutter]='{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 32 }'
                   nzJustify='center' nzAlign='middle'>
-        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
-                  coverImg='https://picsum.photos/200/300'></app-card>
-        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
-                  coverImg='https://picsum.photos/200/300'></app-card>
-        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
-                  coverImg='https://picsum.photos/200/300'></app-card>
-        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
-                  coverImg='https://picsum.photos/200/300'></app-card>
-        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
-                  coverImg='https://picsum.photos/200/300'></app-card>
-        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
-                  coverImg='https://picsum.photos/200/300'></app-card>
-        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
-                  coverImg='https://picsum.photos/200/300'></app-card>
-        <app-card nz-col class='mb' title='Czy to ja?' description='Tomasz Comasz'
-                  coverImg='https://picsum.photos/200/300'></app-card>
+        <p *ngIf='allBooksByCategory.length === 0'>Ładowanie danych</p>
+        <app-card *ngFor='let item of books' nz-col class='mb' [title]='item.title' [description]='item.authors[0]'
+                  [coverImg]='item.cover'></app-card>
 
       </nz-content>
     </nz-layout>
-    <nz-pagination nz-row nzJustify='center' class='pagination' [nzPageIndex]='1' nzTotal='21'
+    <nz-pagination nz-row nzJustify='center' class='pagination'  (nzPageIndexChange)='changePageIndex($event)' [nzPageIndex]='selectedPage' [nzTotal]='total'
                    [nzPageSize]='10'></nz-pagination>
   </nz-layout>
   <app-footer></app-footer>

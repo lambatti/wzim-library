@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class BookRepository {
 
+
   constructor(private _bookService: BookService) {
   }
 
@@ -16,9 +17,6 @@ export class BookRepository {
 
 
   getBooksToHomePageCard(): Observable<BookCard[]> {
-    this._bookService.getBooksToHomePageCard().subscribe(x => {
-      console.log(x);
-    })
     return this._bookService.getBooksToHomePageCard();
   }
 
@@ -35,8 +33,16 @@ export class BookRepository {
     return this._bookService.getBookBySlug(slug);
   }
 
-  // BORROW BOOK
+  getBooksByCategory = (category: string, genres: boolean): Observable<BookCard[]> => {
+    if (genres) {
 
+    return this._bookService.getBooksByGenres(category);
+    }
+    return this._bookService.getBooksByEpochs(category);
+  }
+  // BORROW BOOK
+  getBestBooks = ():Observable<BookCard[]> =>
+      this._bookService.getBestBooks();
   // GET ALL BOOK WITH CATEGORY
   // tu trzeba wyswietlać categorie po czym sortujemy
 

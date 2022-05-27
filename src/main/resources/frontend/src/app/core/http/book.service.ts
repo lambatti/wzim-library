@@ -49,5 +49,13 @@ export class BookService {
 
   // GET ONE BOOK TEXT
 
+  getBestBooks = (): Observable<BookCard[]> =>
+    this._http.get<BookCard[]>(`${environment.url}/books/best`)
+
+  getBooksByGenres = (genre: string): Observable<BookCard[]> =>
+     this._http.get<BookCard[]>(`${environment.url}/books/genres/${genre}`);
+
+  getBooksByEpochs = (epoch: string): Observable<BookCard[]> =>
+    this._http.get<BookCard[]>(`${environment.url}/books/epochs/${epoch}`)
 
 }
