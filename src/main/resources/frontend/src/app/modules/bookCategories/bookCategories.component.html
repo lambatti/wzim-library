@@ -23,6 +23,7 @@
           </ng-template>
         </div>
         <ul nz-menu nzMode='inline'>
+          <li nz-menu-item routerLink='/category'>Bestsellery</li>
           <li nz-submenu nzTitle='Gatunki'>
             <ul>
               <li (click)='changeCategory(items.name)' *ngFor='let items of genres' nz-menu-item>{{items.name}}</li>

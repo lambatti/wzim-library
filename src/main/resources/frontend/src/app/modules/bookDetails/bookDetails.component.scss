@@ -89,7 +89,7 @@
       color: $gray-dark;
       position: relative;
       left: 200%;
-      margin: 5vh;
+      margin-top: 5vh;
       font-size: map-get($font-size, 'xl');
     }
   }
@@ -153,6 +153,7 @@
 
       &:nth-child(2n) {
         justify-self: end;
+      text-align: end;
       }
     }
 

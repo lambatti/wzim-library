@@ -25,7 +25,7 @@ export class BookDetailsComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this._bookRepository.getBookBySlug(this._router.url.split('/')[2]).subscribe(book => {
+    this._bookRepository.getBookBySlug(this._router.url.split('/')[3]).subscribe(book => {
       this.bookData = book;
     });
   }

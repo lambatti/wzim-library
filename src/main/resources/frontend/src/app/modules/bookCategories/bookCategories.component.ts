@@ -30,7 +30,6 @@ export class BookCategoriesComponent implements OnInit {
     })
     this._bookRepository.getBooksCategory('epochs').subscribe((items: BookCategory[]) => {
       this.epochs = items;
-
     })
     this._bookRepository.getBestBooks().subscribe(items => {
       this.allBooksByCategory = items;
@@ -65,16 +64,12 @@ export class BookCategoriesComponent implements OnInit {
       console.log(this.actualRoute);
       this.allBooksByCategory = items;
       this.total = items.length;
-      console.log(this.total);
-
     })
     }
     this._bookRepository.getBooksByCategory(name,false).subscribe(items => {
       console.log(this.actualRoute);
       this.allBooksByCategory = items;
       this.total = items.length;
-      console.log(this.total);
-
     })
     this.close();
   }
