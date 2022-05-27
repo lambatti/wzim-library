@@ -6,11 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import pl.sggw.wzimlibrary.model.BookBorrow;
 import pl.sggw.wzimlibrary.model.BookBorrowProlongationRequest;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
-import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowDto;
 import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowProlongationRequestDto;
 import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowRequestDto;
-import pl.sggw.wzimlibrary.model.dto.user.UserPanelSummaryDto;
 
 @Configuration
 public class ModelMapperConfig {
@@ -27,8 +25,6 @@ public class ModelMapperConfig {
                     mapper.map(src -> src.getUser().getId(), BookBorrowRequestDto::setUserId);
                     mapper.map(src -> src.getUser().getFirstName(), BookBorrowRequestDto::setFirstName);
                     mapper.map(src -> src.getUser().getLastName(), BookBorrowRequestDto::setLastName);
-                    mapper.map(src -> src.getUser().getBorrowStatistics().getBorrowedBooks(), BookBorrowRequestDto::setBorrowedBooks);
-                    mapper.map(src -> src.getUser().getBorrowStatistics().getReadBooks(), BookBorrowRequestDto::setReadBooks);
                 });
 
         modelMapper.createTypeMap(BookBorrowProlongationRequest.class, BookBorrowProlongationRequestDto.class)
@@ -36,14 +32,6 @@ public class ModelMapperConfig {
                     mapper.map(src -> src.getUser().getId(), BookBorrowProlongationRequestDto::setUserId);
                     mapper.map(src -> src.getUser().getFirstName(), BookBorrowProlongationRequestDto::setFirstName);
                     mapper.map(src -> src.getUser().getLastName(), BookBorrowProlongationRequestDto::setLastName);
-                    mapper.map(src -> src.getUser().getBorrowStatistics().getBorrowedBooks(), BookBorrowProlongationRequestDto::setBorrowedBooks);
-                    mapper.map(src -> src.getUser().getBorrowStatistics().getReadBooks(), BookBorrowProlongationRequestDto::setReadBooks);
-                });
-
-        modelMapper.createTypeMap(User.class, UserPanelSummaryDto.class)
-                .addMappings(mapper -> {
-                    mapper.map(src -> src.getBorrowStatistics().getBorrowedBooks(), UserPanelSummaryDto::setBorrowedBooks);
-                    mapper.map(src -> src.getBorrowStatistics().getReadBooks(), UserPanelSummaryDto::setReadBooks);
                 });
 
         return modelMapper;
