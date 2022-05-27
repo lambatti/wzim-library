@@ -11,6 +11,7 @@ import { UserTemplateComponent } from './modules/userTemplate/userTemplate.compo
 import { UserDataComponent } from './core/components/userData/userData.component';
 import { ChangePasswordComponent } from './core/components/changePassword/changePassword.component';
 import { ChangeQuestionComponent } from './core/components/changeQuestion/changeQuestion.component';
+import { AuthGuard } from './core/guards/authGuard.guard';
 
 
 const routes: Routes = [
@@ -19,7 +20,7 @@ const routes: Routes = [
   { path: 'category/:category', component: BookCategoriesComponent },
    { path: 'category', component: BookCategoriesComponent },
   {
-    path: 'user', component: UserTemplateComponent, pathMatch: 'prefix', children: [
+    path: 'user', component: UserTemplateComponent, canActivate: [AuthGuard], pathMatch: 'prefix', children: [
       { path: 'changePassword', component: ChangePasswordComponent },
       { path: 'changeQuestion', component: ChangeQuestionComponent },
       { path: ':name', component: UserDataComponent }
