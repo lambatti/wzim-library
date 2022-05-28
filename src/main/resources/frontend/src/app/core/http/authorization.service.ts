@@ -20,11 +20,11 @@ export class AuthorizationService {
 
   register(newUser: RegisterUserModel): Observable<Object> {
     console.log(newUser);
-    return this._http.post(`${environment.url}/users`, newUser);
+    return this._http.post(`${environment.url}/registerUser`, newUser);
   }
 
   passwordReminder(newAuthenticationData: PasswordReminderModel): Observable<Object> {
-      return this._http.patch(`${environment.url}/reminderPassword`, newAuthenticationData);
+      return this._http.patch(`${environment.url}/user/forgottenPassword`, newAuthenticationData);
   }
 
 }

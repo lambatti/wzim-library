@@ -14,6 +14,7 @@ export class HeaderComponent {
   public name: string = localStorage.getItem('firstname') as string;
 
   constructor(public _auth: AuthService, private router: Router) {
+    console.log(this.name);
   }
 
   get isAuth(): boolean {

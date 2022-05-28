@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PasswordReminder } from '../../validators/passwordReminder.model';
 import { PasswordReminderModel } from '../../../model/passwordReminder.model';
 import { AuthenticationService } from '../../authentication/authentication.service';
+import { securityQuestions } from '../../enums/securityQuestionEnum';
 
 
 @Component({
@@ -24,13 +25,8 @@ export class ForgotPasswordComponent {
   formSubmitted: boolean = false;
 
 
-  get questionVerification(): string[] {
-    return [
-      'Co pije krowa?',
-      'Jak się mają tomki?',
-      'Jak się macie?'
-    ];
-
+  get questionVerification() {
+    return securityQuestions;
   }
 
   submitFrom(): void {

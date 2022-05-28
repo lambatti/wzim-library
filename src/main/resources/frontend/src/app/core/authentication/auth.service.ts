@@ -10,7 +10,6 @@ export class AuthService {
   isAuthenticated(): boolean {
     const token: string = localStorage.getItem('token') as string;
     if (!this.jwtHelper.isTokenExpired(token)) {
-      localStorage.setItem('firstname',this.jwtHelper.decodeToken(token).name);
       return !this.jwtHelper.isTokenExpired(token);
     } else {
       localStorage.removeItem('token');
@@ -20,5 +19,6 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('firstname');
   }
 }

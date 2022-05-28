@@ -9,8 +9,8 @@ export class PasswordReminder extends FormGroup {
         Validators.required,
         Validators.email
       ])),
-      securityQuestion: new CustomFormControl('Pytanie weryfikacyjne', 'securityQuestion', '', Validators.required),
-      securityQuestionAnswer: new CustomFormControl('Odpowiedź', 'securityQuestionAnswer', '', Validators.compose([
+      question: new CustomFormControl('Pytanie weryfikacyjne', 'securityQuestion', '', Validators.required),
+      answer: new CustomFormControl('Odpowiedź', 'securityQuestionAnswer', '', Validators.compose([
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(30)
@@ -20,7 +20,7 @@ export class PasswordReminder extends FormGroup {
         Validators.minLength(7),
         Validators.maxLength(30)
       ])),
-      passwordConfirmation: new CustomFormControl('Potwierdź nowe hasło', 'passwordConfirmation', '', Validators.compose([
+      newPasswordConfirmation: new CustomFormControl('Potwierdź nowe hasło', 'passwordConfirmation', '', Validators.compose([
         Validators.required,
         Validators.minLength(7),
         Validators.maxLength(30)

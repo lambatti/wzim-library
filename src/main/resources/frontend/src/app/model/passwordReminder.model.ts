@@ -1,10 +1,10 @@
 export class PasswordReminderModel {
 
   constructor(public email?: string,
-              public securityQuestion?: string,
-              public securityQuestionAnswer?: string,
+              public question?: string,
+              public answer?: string,
               public newPassword?: string,
-              public passwordConfirmation?: string) {
+              public newPasswordConfirmation?: string) {
   }
 
 }

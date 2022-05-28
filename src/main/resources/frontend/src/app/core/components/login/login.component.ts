@@ -30,7 +30,7 @@ export class LoginComponent {
         .login(this.newUser)
         .subscribe( (response)=> {
           localStorage.setItem('token', response.token);
-         localStorage.setItem('email', this._jwt.decodeToken(response.token).sub);
+          localStorage.setItem('firstname', this._jwt.decodeToken(response.token).name);
           this.router.navigateByUrl('/');
         });
       this.newUser = new LoginUserModel();
