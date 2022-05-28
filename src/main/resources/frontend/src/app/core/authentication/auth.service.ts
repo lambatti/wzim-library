@@ -16,6 +16,20 @@ export class AuthService {
       return false;
     }
   }
+  isAdmin(): boolean {
+    const token: string = localStorage.getItem('token') as string;
+    if (!this.jwtHelper.isTokenExpired(token) && this.jwtHelper.decodeToken(token).role === 'ADMIN') {
+      return !this.jwtHelper.isTokenExpired(token);
+    }else  {
+    localStorage.removeItem('token');
+    return false;
+
+    }
+
+
+  }
+
+
 
   logout(): void {
     localStorage.removeItem('token');

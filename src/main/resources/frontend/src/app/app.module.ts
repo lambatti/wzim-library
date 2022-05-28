@@ -13,13 +13,15 @@ import { NzWaveModule } from 'ng-zorro-antd/core/wave';
 import { ModuleModule } from './modules/module.module';
 import { CoreModule } from './core/core.module';
 import { RouterModule } from '@angular/router';
-import { routing } from './app.routing';
+import { routes } from './app.routing';
 import { AuthorizationService } from './core/http/authorization.service';
 import { AuthenticationService } from './core/authentication/authentication.service';
 import { AuthService } from './core/authentication/auth.service';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { AuthGuard } from './core/guards/authGuard.guard';
 import { BookService } from './core/http/book.service';
+import { AdminModule } from './modules/admin/admin.module';
+import { AdminAuthGuard } from './core/guards/adminAuth.guard';
 
 registerLocaleData(en);
 
@@ -29,14 +31,14 @@ registerLocaleData(en);
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule,
     NzWaveModule,
     CoreModule,
     ModuleModule,
-    RouterModule,
-    routing
+    AdminModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [{
     provide: NZ_I18N,
@@ -49,6 +51,7 @@ registerLocaleData(en);
       useValue: JWT_OPTIONS
     },
     AuthGuard,
+    AdminAuthGuard,
     BookService],
   bootstrap: [AppComponent]
 })

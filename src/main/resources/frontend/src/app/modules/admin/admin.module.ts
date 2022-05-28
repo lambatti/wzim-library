@@ -20,26 +20,26 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DeleteUserComponent } from './deleteUser/deleteUser.component';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
-
-let routing = RouterModule.forChild([
-  { path: 'auth', component: AuthComponent },
-  {
-    path: '', component: AdminPanelComponent, children: [
-      { path: 'workersSummary', component: WorkersSummaryComponent },
-      { path: 'addWorker', component: AddWorkerComponent },
-      { path: 'deleteUser', component: DeleteUserComponent }
-      //  { path: 'borrowedBooks', component: WorkersSummaryComponent },
-
-    ]
-  },
-  { path: '**', redirectTo: 'auth' }
-]);
-
 @NgModule({
-  imports: [CommonModule, NzFormModule, NzLayoutModule, routing,
-    NzButtonModule, NzMenuModule, NzToolTipModule, NzIconModule, NzPageHeaderModule,
-    NzDescriptionsModule, NzModalModule, CoreModule, NzInputModule, ReactiveFormsModule, NzTypographyModule],
-  declarations: [AuthComponent, AdminPanelComponent, WorkersSummaryComponent, AddWorkerComponent, DeleteUserComponent]
+  imports: [
+    CommonModule,
+    NzFormModule,
+    NzLayoutModule,
+    NzButtonModule,
+    NzMenuModule,
+    NzToolTipModule,
+    NzIconModule,
+    NzPageHeaderModule,
+    NzDescriptionsModule,
+    NzModalModule,
+    CoreModule,
+    NzInputModule,
+    ReactiveFormsModule,
+    NzTypographyModule,
+    RouterModule
+  ],
+  declarations: [AuthComponent, AdminPanelComponent, WorkersSummaryComponent, AddWorkerComponent, DeleteUserComponent],
+  exports: [AuthComponent, AdminPanelComponent, WorkersSummaryComponent, AddWorkerComponent, DeleteUserComponent],
 })
 export class AdminModule {
 }

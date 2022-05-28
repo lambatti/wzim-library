@@ -1,7 +1,7 @@
 <nz-layout>
   <nz-header nz-row nzJustify='space-between' nzAlign='middle'>
     <a nz-button nzType='link' routerLink='/'>Moja książka</a>
-    <a nz-button nzType='link'>Wyloguj się</a>
+    <a nz-button (click)='logout()'  nzType='link'>Wyloguj się</a>
   </nz-header>
   <nz-layout>
     <button (click)='toggleCollapsed()' nz-button nzType='primary'><i nz-icon nzType='right'></i></button>
