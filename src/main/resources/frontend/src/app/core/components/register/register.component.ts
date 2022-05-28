@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RegisterFormGroup } from '../../validators/registerFormGroup.model';
 import { RegisterUserModel } from '../../../model/registerUser.model';
 import { AuthenticationService } from '../../authentication/authentication.service';
+import { SecurityQuestionEnum } from '../../enums/securityQuestionEnum';
 
 
 @Component({
@@ -15,6 +16,22 @@ export class RegisterComponent {
   formGroup: RegisterFormGroup = new RegisterFormGroup();
   newUser: RegisterUserModel = new RegisterUserModel();
   formSubmitted: boolean = false;
+
+  securityQuestions = [
+    {
+      key: Object.keys(SecurityQuestionEnum)[0],
+      value: SecurityQuestionEnum.ANIMAL
+    },
+    {
+      key: Object.keys(SecurityQuestionEnum)[1],
+      value: SecurityQuestionEnum.FRIENDS_NAME
+    },
+    {
+      key: Object.keys(SecurityQuestionEnum)[2],
+      value: SecurityQuestionEnum.SANDWICH
+    }
+  ]
+
 
   constructor(private _authentication: AuthenticationService) {
   }

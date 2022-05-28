@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Book } from '../../model/book.model';
 import { BookRepository } from '../../core/services/book.repository';
+import { AuthService } from '../../core/authentication/auth.service';
 
 
 @Component({
@@ -21,10 +22,13 @@ export class BookDetailsComponent implements OnInit{
     translators: [],
     cover: '',
   };
-  constructor(private readonly _router: Router, private readonly _bookRepository: BookRepository) {
+  isAuthenticated: boolean;
+  constructor(private readonly _router: Router,
+              private readonly _bookRepository: BookRepository,
+              private readonly _auth: AuthService) {
   }
-
   ngOnInit(): void {
+    this.isAuthenticated = this._auth.isAuthenticated();
     this._bookRepository.getBookBySlug(this._router.url.split('/')[3]).subscribe(book => {
       this.bookData = book;
     });

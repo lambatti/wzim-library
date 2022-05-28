@@ -24,7 +24,9 @@
       <li>{{ bookData.translators.length !== 0 ?  bookData.translators[0] : "Oryginał" }}</li>
     </ul>
     <div  class='btn__group'>
-      <button nz-button nzType='primary' routerLink='/categories'>Powrót</button>
+      <button nz-button nzType='primary' routerLink='/category'>Powrót</button>
+      <button *ngIf='isAuthenticated' class='with__auth' nz-button nzType='primary'>Wypożycz</button>
+      <button *ngIf='isAuthenticated' class='with__auth' nz-button nzType='primary'>Prolonguj</button>
     </div>
   </div>
 </nz-layout>

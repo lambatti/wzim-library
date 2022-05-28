@@ -19,7 +19,8 @@ export class AuthorizationService {
   }
 
   register(newUser: RegisterUserModel): Observable<Object> {
-    return this._http.post(`${environment.url}/register`, newUser);
+    console.log(newUser);
+    return this._http.post(`${environment.url}/users`, newUser);
   }
 
   passwordReminder(newAuthenticationData: PasswordReminderModel): Observable<Object> {

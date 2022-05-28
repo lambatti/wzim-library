@@ -68,13 +68,11 @@
         <nz-form-label nzRequired><span>Pytanie weryfikacyjne:</span></nz-form-label>
         <nz-form-control [nzErrorTip]='formGroup.getValidationMessages("securityQuestion")[0]'>
           <nz-select nzServerSearch nzAllowClear formControlName='securityQuestion'>
-            <nz-option nzLabel='Czy coś tam działa?' nzValue='N'></nz-option>
-            <nz-option nzLabel='Jak się mają tomki?' nzValue='F'></nz-option>
-            <nz-option nzLabel='Co pije krowa?' nzValue='M'></nz-option>
+            <nz-option *ngFor='let item of securityQuestions' [nzLabel]='item.value'
+                       [nzValue]='item.key'></nz-option>
           </nz-select>
         </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
+
         <nz-form-label nzRequired><span>Odpowiedź:</span></nz-form-label>
         <nz-form-control [nzErrorTip]='formGroup.getValidationMessages("securityQuestionAnswer")[0]'>
           <input nz-input nzSize='default' type='text' formControlName='securityQuestionAnswer' />
