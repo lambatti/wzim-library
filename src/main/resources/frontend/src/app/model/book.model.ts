@@ -25,7 +25,7 @@ export interface BookCard {
 
 export interface UserBookStatus {
   borrowedBooks: number,
-  booksRead: number,
+  readBooks: number,
 }
 
 

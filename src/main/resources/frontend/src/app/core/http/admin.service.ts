@@ -12,8 +12,8 @@ export class AdminService {
 
   // GET ALL USERS TO PROMOTE
 
-  getAllUsers = () => {
-   // return this._http.get()
+  getAllWorkers = () => {
+ //  return this._http.get()
   }
 
 

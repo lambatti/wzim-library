@@ -20,7 +20,7 @@ export class UserService {
   }
 
   getUserBooksCount(): Observable<UserBookStatus> {
-    return this._http.get<UserBookStatus>(`${environment.url}/bookBorrowRequests`, UserService.httpOptions());
+    return this._http.get<UserBookStatus>(`${environment.url}/user/borrowSummary`, UserService.httpOptions());
   }
 
   // CHANGE PASSWORD FROM PANEL ------ handle error
