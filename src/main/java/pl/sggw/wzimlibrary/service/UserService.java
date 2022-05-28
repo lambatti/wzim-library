@@ -126,6 +126,11 @@ public class UserService implements UserDetailsService {
         return modelMapper.map(user, UserPanelSummaryDto.class);
     }
 
+    public UserBorrowStatisticsDto getBookBorrowSummary(UserDetails userDetails) throws UserNotFoundException {
+        User user = getUserFromUserDetails(userDetails);
+        return modelMapper.map(user.getBorrowStatistics(), UserBorrowStatisticsDto.class);
+    }
+
     public User getUserFromUserDetails(UserDetails userDetails) throws UserNotFoundException {
 
         String email = "";

@@ -20,10 +20,7 @@ import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.base.BookBorrowBase;
 import pl.sggw.wzimlibrary.model.constant.BookBorrowConstant;
 import pl.sggw.wzimlibrary.model.constant.SchedulingConstant;
-import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowActionDto;
-import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowDto;
-import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowProlongationRequestDto;
-import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowRequestDto;
+import pl.sggw.wzimlibrary.model.dto.bookborrow.*;
 
 import java.sql.Date;
 import java.util.List;
@@ -43,6 +40,7 @@ public class BookBorrowService {
     private final SqlBookBorrowProlongationRequestRepository bookBorrowProlongationRequestRepository;
 
     private final UserService userService;
+    private final BookService bookService;
 
     private final ModelMapper modelMapper;
 
@@ -182,12 +180,14 @@ public class BookBorrowService {
     }
 
 
-    private <T, S extends BookBorrowBase> List<T> convertBookBorrowListToDto(List<S> bookBorrowList, Class<T> dtoClass) {
+    private <T extends BookBorrowBaseDto, S extends BookBorrowBase> List<T> convertBookBorrowListToDto(List<S> bookBorrowList, Class<T> dtoClass) {
         return bookBorrowList.stream().map(bookBorrow -> convertEntityToDto(bookBorrow, dtoClass)).collect(Collectors.toList());
     }
 
-    private <T, S extends BookBorrowBase> T convertEntityToDto(S bookBorrow, Class<T> dtoClass) {
-        return modelMapper.map(bookBorrow, dtoClass);
+    private <T extends BookBorrowBaseDto, S extends BookBorrowBase> T convertEntityToDto(S bookBorrow, Class<T> dtoClass) {
+        T dto = modelMapper.map(bookBorrow, dtoClass);
+        dto.setTitle(bookService.getTitleBySlug(bookBorrow.getBookSlug()));
+        return dto;
     }
 
     @Transactional

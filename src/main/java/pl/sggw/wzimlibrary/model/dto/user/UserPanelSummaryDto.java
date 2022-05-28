@@ -9,7 +9,5 @@ public class UserPanelSummaryDto {
     private String lastName;
     private String email;
     private String gender;
-    private int borrowedBooks;
-    private int readBooks;
 
 }
