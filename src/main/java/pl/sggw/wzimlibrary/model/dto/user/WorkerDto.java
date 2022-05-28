@@ -11,6 +11,7 @@ import pl.sggw.wzimlibrary.model.constant.Gender;
 @Getter
 @Setter
 public class WorkerDto {
+    private Integer id;
     private String firstName;
     private String lastName;
     private String email;
