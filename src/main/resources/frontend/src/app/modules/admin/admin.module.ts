@@ -19,6 +19,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DeleteUserComponent } from './deleteUser/deleteUser.component';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { AdminService } from '../../core/http/admin.service';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
     NzTypographyModule,
     RouterModule
   ],
+  providers: [AdminService],
   declarations: [AuthComponent, AdminPanelComponent, WorkersSummaryComponent, AddWorkerComponent, DeleteUserComponent],
   exports: [AuthComponent, AdminPanelComponent, WorkersSummaryComponent, AddWorkerComponent, DeleteUserComponent],
 })
