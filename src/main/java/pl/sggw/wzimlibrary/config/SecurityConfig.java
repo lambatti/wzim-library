@@ -37,8 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.cors().and().authorizeRequests()
                 .antMatchers("/api/users").hasAuthority(Role.ADMIN.toString())
-                .antMatchers("/api//user/workerPromotion").hasAuthority(Role.ADMIN.toString())
-                .antMatchers("/api//user/workerDemotion").hasAuthority(Role.ADMIN.toString())
+                .antMatchers("/api/user/workerPromotion").hasAuthority(Role.ADMIN.toString())
+                .antMatchers("/api/user/workerDemotion").hasAuthority(Role.ADMIN.toString())
+                .antMatchers("/api//user/workers").hasAuthority(Role.ADMIN.toString())
                 .antMatchers("/api/bookBorrowRequests/accept").hasAuthority(Role.WORKER.toString())
                 .antMatchers("/api/bookBorrowRequests/reject").hasAuthority(Role.WORKER.toString())
                 .antMatchers("/api/bookBorrowProlongationRequests/accept").hasAuthority(Role.WORKER.toString())

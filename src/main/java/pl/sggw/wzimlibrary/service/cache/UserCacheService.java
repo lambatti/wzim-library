@@ -13,6 +13,7 @@ import pl.sggw.wzimlibrary.model.BookBorrowProlongationRequest;
 import pl.sggw.wzimlibrary.model.BookBorrowRequest;
 import pl.sggw.wzimlibrary.model.User;
 import pl.sggw.wzimlibrary.model.constant.BookBorrowConstant;
+import pl.sggw.wzimlibrary.model.constant.Role;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +43,8 @@ public class UserCacheService {
 
     @Caching(evict = {
             @CacheEvict(value = "userEmail", key = "#email"),
-            @CacheEvict(value = "allUsers", allEntries = true)
+            @CacheEvict(value = "allUsers", allEntries = true),
+            @CacheEvict(value = "allWorkers", allEntries = true)
     })
     public void changeRole(String email, String role) {
         userRepository.setRole(email, role);
@@ -51,6 +53,11 @@ public class UserCacheService {
     @Cacheable(value = "userEmail", key = "#email")
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Cacheable(value = "allWorkers")
+    public List<User> findAllWorkers() {
+        return userRepository.findAllByRoleEquals(Role.WORKER);
     }
 
     @Cacheable(value = "allUsers")
