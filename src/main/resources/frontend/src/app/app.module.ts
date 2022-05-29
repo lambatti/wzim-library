@@ -22,6 +22,7 @@ import { AuthGuard } from './core/guards/authGuard.guard';
 import { BookService } from './core/http/book.service';
 import { AdminModule } from './modules/admin/admin.module';
 import { AdminAuthGuard } from './core/guards/adminAuth.guard';
+import { WorkerAuthGuard } from './core/guards/workerAuth.guard';
 
 registerLocaleData(en);
 
@@ -52,6 +53,7 @@ registerLocaleData(en);
     },
     AuthGuard,
     AdminAuthGuard,
+    WorkerAuthGuard,
     BookService],
   bootstrap: [AppComponent]
 })

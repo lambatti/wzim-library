@@ -20,13 +20,21 @@ export class AuthService {
     const token: string = localStorage.getItem('token') as string;
     if (!this.jwtHelper.isTokenExpired(token) && this.jwtHelper.decodeToken(token).role === 'ADMIN') {
       return !this.jwtHelper.isTokenExpired(token);
-    }else  {
-    localStorage.removeItem('token');
-    return false;
-
+    } else  {
+      localStorage.removeItem('token');
+      return false;
     }
+  }
 
 
+  isWorker(): boolean {
+    const token: string = localStorage.getItem('token') as string;
+    if (!this.jwtHelper.isTokenExpired(token) && this.jwtHelper.decodeToken(token).role === 'WORKER') {
+      return !this.jwtHelper.isTokenExpired(token);
+    } else {
+      localStorage.removeItem('token');
+      return false;
+    }
   }
 
 

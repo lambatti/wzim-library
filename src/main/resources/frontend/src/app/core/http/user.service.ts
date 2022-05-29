@@ -37,6 +37,12 @@ export class UserService {
 
   // BORROWED BOOKS USER  ----- basic get method
 
+
+  borrowBook(slug: string): Observable<Object> {
+    console.log(slug);
+    return this._http.post<string>(`${environment.url}/bookBorrowRequests`, slug, UserService.httpOptions());
+  }
+
   // Verification questions
 
   private static httpOptions() {

@@ -23,15 +23,29 @@ export class BookDetailsComponent implements OnInit{
     cover: '',
   };
   isAuthenticated: boolean;
+  isVisibleModal: boolean = false;
   constructor(private readonly _router: Router,
               private readonly _bookRepository: BookRepository,
               private readonly _auth: AuthService) {
   }
+
+  handleOk = () => {
+    this.isVisibleModal = false;
+  };
+
   ngOnInit(): void {
     this.isAuthenticated = this._auth.isAuthenticated();
     this._bookRepository.getBookBySlug(this._router.url.split('/')[3]).subscribe(book => {
       this.bookData = book;
     });
+  }
+
+  borrow(slug: string) {
+    this._bookRepository.borrowBookBySlug(slug).subscribe(() => {
+      this.isVisibleModal = true
+    }
+    );
+
   }
 
 }

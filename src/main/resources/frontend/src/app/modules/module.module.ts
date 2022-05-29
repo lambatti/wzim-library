@@ -20,6 +20,7 @@ import { ReadBookComponent } from './readBook/readBook.component';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { FormsModule } from '@angular/forms';
 import { UserTemplateComponent } from './userTemplate/userTemplate.component';
+import { WorkerPanelComponent } from './workerPanel/workerPanel.component';
 
 
 @NgModule({
@@ -40,8 +41,24 @@ import { UserTemplateComponent } from './userTemplate/userTemplate.component';
     NzSwitchModule,
     FormsModule,
   ],
-  declarations: [HomeComponent, LoginTemplateComponent, UserTemplateComponent, BookDetailsComponent, BookCategoriesComponent, ReadBookComponent],
-  exports: [HomeComponent, LoginTemplateComponent, UserTemplateComponent, BookDetailsComponent, BookCategoriesComponent, ReadBookComponent]
+  declarations: [
+    HomeComponent,
+    LoginTemplateComponent,
+    UserTemplateComponent,
+    BookDetailsComponent,
+    BookCategoriesComponent,
+    ReadBookComponent,
+    WorkerPanelComponent
+  ],
+  exports: [
+    HomeComponent,
+    LoginTemplateComponent,
+    UserTemplateComponent,
+    BookDetailsComponent,
+    BookCategoriesComponent,
+    ReadBookComponent,
+    WorkerPanelComponent
+  ]
 })
 export class ModuleModule {
 }

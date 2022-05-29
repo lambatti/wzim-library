@@ -25,8 +25,10 @@
     </ul>
     <div  class='btn__group'>
       <button nz-button nzType='primary' routerLink='/category'>Powrót</button>
-      <button *ngIf='isAuthenticated' class='with__auth' nz-button nzType='primary'>Wypożycz</button>
+      <button *ngIf='isAuthenticated' (click)='borrow(bookData.slug)' class='with__auth' nz-button nzType='primary'>Wypożycz</button>
       <button *ngIf='isAuthenticated' class='with__auth' nz-button nzType='primary'>Prolonguj</button>
     </div>
   </div>
 </nz-layout>
+
+<app-ok-modal title='Udało się' [isVisible]='isVisibleModal' status='success' [handleOk]='handleOk'></app-ok-modal>

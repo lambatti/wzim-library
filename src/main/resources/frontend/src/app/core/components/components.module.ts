@@ -62,15 +62,15 @@ import { NzResultModule } from 'ng-zorro-antd/result';
     NzDrawerModule,
     NzMenuModule,
     NzModalModule, ReactiveFormsModule, MessageModule, NzDropDownModule, NzResultModule],
-  exports: [HeaderComponent,
-    CardComponent,
-    PopularSectionComponent,
-    FooterComponent,
-    UserDataComponent,
-    UserDrawerComponent,
-    ChangePasswordComponent,
-    ChangeQuestionComponent,
-    ModalComponent]
+    exports: [HeaderComponent,
+        CardComponent,
+        PopularSectionComponent,
+        FooterComponent,
+        UserDataComponent,
+        UserDrawerComponent,
+        ChangePasswordComponent,
+        ChangeQuestionComponent,
+        ModalComponent, OkModalComponent]
 })
 export class ComponentsModule {
 }

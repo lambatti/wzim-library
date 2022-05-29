@@ -21,6 +21,10 @@ export class HeaderComponent {
     return this._auth.isAuthenticated();
   }
 
+  get isWorker(): boolean {
+    return this._auth.isWorker();
+  }
+
   logout(): void {
     this._auth.logout();
     this.router.navigateByUrl('/');

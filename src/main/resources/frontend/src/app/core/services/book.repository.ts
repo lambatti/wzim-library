@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BookService } from '../http/book.service';
 import { BookCard, BookCategory, Book } from '../../model/book.model';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { UserService } from '../http/user.service';
+import { catchError } from 'rxjs/operators';
 
 
 @Injectable()
 export class BookRepository {
 
 
-  constructor(private _bookService: BookService) {
+  constructor(private _bookService: BookService, private _userService: UserService) {
   }
 
 
@@ -41,6 +43,11 @@ export class BookRepository {
     return this._bookService.getBooksByEpochs(category);
   }
   // BORROW BOOK
+  borrowBookBySlug(slug: string): Observable<Object> {
+    return this._userService.borrowBook(slug)
+      .pipe(catchError(() => throwError('Książka została już wypożycznona lub czeka na potwierdzenie')))
+  }
+
   getBestBooks = ():Observable<BookCard[]> =>
       this._bookService.getBestBooks();
   // GET ALL BOOK WITH CATEGORY

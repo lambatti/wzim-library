@@ -18,6 +18,8 @@ import { WorkersSummaryComponent } from './modules/admin/workersSummary/workersS
 import { AddWorkerComponent } from './modules/admin/addWorker/addWorker.component';
 import { DeleteUserComponent } from './modules/admin/deleteUser/deleteUser.component';
 import { AdminAuthGuard } from './core/guards/adminAuth.guard';
+import { WorkerPanelComponent } from './modules/workerPanel/workerPanel.component';
+import { WorkerAuthGuard } from './core/guards/workerAuth.guard';
 
 
 export const routes: Routes = [
@@ -42,6 +44,7 @@ export const routes: Routes = [
       { path: 'forgotPassword', component: ForgotPasswordComponent },
     ]
   },
+  {path: 'workerPanel', component: WorkerPanelComponent, canActivate: [WorkerAuthGuard]},
   {
     path: 'admin/auth', component: AuthComponent
   },

@@ -13,4 +13,9 @@ export class OkModalComponent {
   @Input() title!: string;
   @Input() status!: NzResultStatusType;
 
+
+  handleOKs() {
+    this.isVisible = false;
+  }
+
 }
