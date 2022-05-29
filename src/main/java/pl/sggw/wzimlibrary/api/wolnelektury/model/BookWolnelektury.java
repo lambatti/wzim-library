@@ -30,6 +30,6 @@ public class BookWolnelektury {
     private List<NameProp> translators = null;
     @JsonProperty("txt")
     private String txt;
-    @JsonProperty("cover")
+    @JsonProperty("cover_thumb")
     private String cover;
 }
