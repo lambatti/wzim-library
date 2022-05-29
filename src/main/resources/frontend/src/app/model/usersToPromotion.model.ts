@@ -8,6 +8,5 @@ export interface UsersToPromotionModel {
   firstName: string,
   lastName: string,
   email: string,
-  role: string,
   gender: string
 }

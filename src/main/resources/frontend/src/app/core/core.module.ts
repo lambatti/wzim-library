@@ -7,12 +7,13 @@ import { UserService } from './http/user.service';
 import { BookRepository } from './services/book.repository';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptorService } from './interceptors/httpInterceptor.service';
+import { AdminRepository } from './services/admin.repository';
 
 
 @NgModule({
   imports: [ComponentsModule, ValidatorsModule, MessageModule],
   exports: [ComponentsModule, MessageModule],
-  providers: [UserRepository, UserService, BookRepository, { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }]
+  providers: [UserRepository, UserService, BookRepository,AdminRepository, { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }]
 })
 export class CoreModule {
 }

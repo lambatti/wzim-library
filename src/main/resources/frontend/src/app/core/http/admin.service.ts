@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UsersToPromotionModel } from '../../model/usersToPromotion.model';
+import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs';
 
 
 @Injectable()
@@ -12,8 +15,8 @@ export class AdminService {
 
   // GET ALL USERS TO PROMOTE
 
-  getAllWorkers = () => {
- //  return this._http.get()
+  getAllWorkers = (): Observable<UsersToPromotionModel[]> => {
+   return this._http.get<UsersToPromotionModel[]>(`${environment.url}/user/workers`, AdminService.httpOptions())
   }
 
 
@@ -22,12 +25,12 @@ export class AdminService {
 
 
 
-  // private static httpOptions() {
-  //   return {
-  //     headers: new HttpHeaders({
-  //       Authorization: `${localStorage.getItem('token')}`
-  //     })
-  //   };
-  // }
+  private static httpOptions() {
+    return {
+      headers: new HttpHeaders({
+        Authorization: `${localStorage.getItem('token')}`
+      })
+    };
+  }
 
 }
