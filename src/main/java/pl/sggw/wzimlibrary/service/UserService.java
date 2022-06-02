@@ -16,9 +16,7 @@ import pl.sggw.wzimlibrary.adapter.SqlBookBorrowRepository;
 import pl.sggw.wzimlibrary.exception.*;
 import pl.sggw.wzimlibrary.model.*;
 import pl.sggw.wzimlibrary.model.constant.Role;
-import pl.sggw.wzimlibrary.model.dto.bookborrow.BookBorrowDto;
 import pl.sggw.wzimlibrary.model.dto.user.*;
-import pl.sggw.wzimlibrary.repository.BookBorrowRepository;
 import pl.sggw.wzimlibrary.service.cache.UserCacheService;
 
 import java.util.ArrayList;
@@ -37,8 +35,8 @@ public class UserService implements UserDetailsService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserCacheService userCacheService;
-    private SqlBookBorrowRepository bookBorrowRepository;
-    private BookService bookService;
+    private final SqlBookBorrowRepository bookBorrowRepository;
+    private final BookService bookService;
 
     @Async
     public CompletableFuture<Optional<User>> findByEmail(String email) {
@@ -293,31 +291,24 @@ public class UserService implements UserDetailsService {
 
     public List<UserBorrowedBooksDto> borrowedBooks(UserDetails userDetails) throws UserNotFoundException, ExecutionException, InterruptedException {
         User user = getUserFromUserDetails(userDetails);
-        List<String> borrowedBookSlugList = getSlugFromBookBorrowDto(user.getId());
-
-        log.info(borrowedBookSlugList.toString());
-
-        List<Book> userBookList = borrowedBookSlugList.stream()
-                .map(slug -> bookService.getBookBySlug(slug))
-                .collect(Collectors.toList());
-
-        List<UserBorrowedBooksDto> userBorrowedBooksDtoList = userBookList.stream()
-                .map(book -> modelMapper.map(book, UserBorrowedBooksDto.class))
-                .collect(Collectors.toList());
+        List<String> borrowedBookSlugList = getSlugsFromBookBorrowDto(user.getId());
+        List<UserBorrowedBooksDto> userBorrowedBooksDtoList = new ArrayList<>();
 
         for (String slug : borrowedBookSlugList) {
-            userBorrowedBooksDtoList.forEach(userBorrowedBooksDto -> userBorrowedBooksDto.setBookSlug(slug));
+            UserBorrowedBooksDto userBorrowedBooksDto = modelMapper.map(bookService.getBookBySlug(slug), UserBorrowedBooksDto.class);
+            userBorrowedBooksDto.setSlug(slug);
+            userBorrowedBooksDtoList.add(userBorrowedBooksDto);
         }
-
         return userBorrowedBooksDtoList;
     }
 
-        private List<String> getSlugFromBookBorrowDto(Integer id) throws ExecutionException, InterruptedException {
+    private List<String> getSlugsFromBookBorrowDto(Integer id) throws ExecutionException, InterruptedException {
         return findAllBookBorrowsByUserId(id).get()
                 .stream()
                 .map(bookBorrow -> modelMapper.map(bookBorrow.getBookSlug(), String.class))
                 .collect(Collectors.toList());
     }
+
     @Async
     public CompletableFuture<List<BookBorrow>> findAllBookBorrowsByUserId(Integer userId) {
         return CompletableFuture.completedFuture(bookBorrowRepository.findAllByUser_Id(userId));
