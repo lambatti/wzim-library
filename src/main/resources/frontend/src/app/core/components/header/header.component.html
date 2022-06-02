@@ -18,7 +18,7 @@
       <nz-dropdown-menu #menu='nzDropdownMenu'>
         <ul nz-menu nzSelectable>
           <li nz-menu-item ><a [routerLink]='["/user", name]' style='color: #000'> Moje konto</a></li>
-          <li nz-menu-item *ngIf='isWorker && isAuth' ><a routerLink='/workerPanel' style='color: #000'>Wypożyczenia</a></li>
+<!--          <li nz-menu-item *ngIf='isWorker && isAuth' ><a routerLink='/workerPanel' style='color: #000'>Wypożyczenia</a></li>-->
           <li nz-menu-item (click)='logout()'>Wyloguj się</li>
         </ul>
       </nz-dropdown-menu>

@@ -40,7 +40,7 @@
 
     <nz-layout class='content'>
 
-      <nz-content nz-row [nzGutter]='{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 32 }'
+      <nz-content class='content__books' nz-row [nzGutter]='{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 32 }'
                   nzJustify='center' nzAlign='middle'>
         <p *ngIf='allBooksByCategory.length === 0'>Ładowanie danych</p>
         <app-card *ngFor='let item of books' nz-col class='mb' [slug]='item.slug' [kind]='item.kinds[0]' [title]='item.title' [description]='item.authors[0]'
