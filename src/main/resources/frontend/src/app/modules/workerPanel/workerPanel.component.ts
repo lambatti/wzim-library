@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { WorkerService } from '../../core/http/worker.service';
 
 
 @Component({
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
 })
 export class WorkerPanelComponent {
 
+  constructor(private readonly _workerService: WorkerService) {
+  }
 }

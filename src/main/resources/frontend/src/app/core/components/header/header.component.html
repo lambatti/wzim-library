@@ -9,6 +9,7 @@
       <li><a nz-button nzType='link' class='navigation__link' routerLink='/register'>Rejestracja</a></li>
     </ul>
   </nav>
+<!--  TODO tu generuje błąd związany z piorytetem zdarzeń-->
   <div *ngIf='isAuth && !isRegister' nz-col [nzXs]='12' [nzMd]='12'>
     <div nz-row nzJustify='end' nzAlign='middle'>
       <h5 class='user'>Witaj<span class='user--dark'>{{name}}</span></h5>
@@ -17,7 +18,7 @@
       <nz-dropdown-menu #menu='nzDropdownMenu'>
         <ul nz-menu nzSelectable>
           <li nz-menu-item ><a [routerLink]='["/user", name]' style='color: #000'> Moje konto</a></li>
-          <li nz-menu-item *ngIf='isWorker' ><a routerLink='/workerPanel' style='color: #000'>Wypożyczenia</a></li>
+          <li nz-menu-item *ngIf='isWorker && isAuth' ><a routerLink='/workerPanel' style='color: #000'>Wypożyczenia</a></li>
           <li nz-menu-item (click)='logout()'>Wyloguj się</li>
         </ul>
       </nz-dropdown-menu>

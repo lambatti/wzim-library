@@ -34,7 +34,6 @@ export class BookCategoriesComponent implements OnInit {
     this._bookRepository.getBestBooks().subscribe(items => {
       this.allBooksByCategory = items;
       this.total = items.length;
-      console.log(this.total);
     })
   }
 
@@ -58,19 +57,20 @@ export class BookCategoriesComponent implements OnInit {
     this.actualRoute = name;
     this._router.navigateByUrl(`/category/${name}`);
     this.allBooksByCategory = [];
-    console.log(this.genres.some(x => x.name === name));
     if (this.genres.some(x => x.name === name)) {
     this._bookRepository.getBooksByCategory(name,true).subscribe(items => {
       console.log(this.actualRoute);
       this.allBooksByCategory = items;
       this.total = items.length;
     })
-    }
+    } else  {
     this._bookRepository.getBooksByCategory(name,false).subscribe(items => {
       console.log(this.actualRoute);
       this.allBooksByCategory = items;
       this.total = items.length;
     })
+
+    }
     this.close();
   }
 

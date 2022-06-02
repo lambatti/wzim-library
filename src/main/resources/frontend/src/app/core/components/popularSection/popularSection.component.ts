@@ -16,7 +16,6 @@ export class PopularSectionComponent implements OnInit{
 
 
   ngOnInit(): void {
-    console.log(this.heading);
   }
 
 }

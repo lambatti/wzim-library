@@ -18,7 +18,9 @@ export class UserTemplateComponent implements OnInit {
     readBooks: 0,
     borrowedBooks: 0
   };
-
+  get firstLetterName(): string {
+    return (localStorage.getItem('firstname') as string)[0];
+  }
   firstName: string = localStorage.getItem('firstname') as string;
 
   ngOnInit(): void {
