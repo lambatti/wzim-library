@@ -9,6 +9,7 @@ public class BookBorrowProlongationRequestDto extends BookBorrowBaseDto {
 
     private String firstName;
     private String lastName;
+    private String email;
     private LocalDate borrowDate;
     private LocalDate requestDate;
     private LocalDate prolongationDate;
