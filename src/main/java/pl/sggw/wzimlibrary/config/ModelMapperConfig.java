@@ -25,6 +25,7 @@ public class ModelMapperConfig {
                     mapper.map(src -> src.getUser().getId(), BookBorrowRequestDto::setUserId);
                     mapper.map(src -> src.getUser().getFirstName(), BookBorrowRequestDto::setFirstName);
                     mapper.map(src -> src.getUser().getLastName(), BookBorrowRequestDto::setLastName);
+                    mapper.map(src -> src.getUser().getEmail(), BookBorrowRequestDto::setEmail);
                 });
 
         modelMapper.createTypeMap(BookBorrowProlongationRequest.class, BookBorrowProlongationRequestDto.class)
@@ -32,6 +33,7 @@ public class ModelMapperConfig {
                     mapper.map(src -> src.getUser().getId(), BookBorrowProlongationRequestDto::setUserId);
                     mapper.map(src -> src.getUser().getFirstName(), BookBorrowProlongationRequestDto::setFirstName);
                     mapper.map(src -> src.getUser().getLastName(), BookBorrowProlongationRequestDto::setLastName);
+                    mapper.map(src -> src.getUser().getEmail(), BookBorrowProlongationRequestDto::setEmail);
                 });
 
         return modelMapper;
