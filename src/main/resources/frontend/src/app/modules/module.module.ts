@@ -21,26 +21,32 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { FormsModule } from '@angular/forms';
 import { UserTemplateComponent } from './userTemplate/userTemplate.component';
 import { WorkerPanelComponent } from './workerPanel/workerPanel.component';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 
 @NgModule({
-  imports: [
-    NzLayoutModule,
-    CoreModule,
-    NzTypographyModule,
-    NzGridModule,
-    NzButtonModule,
-    NzInputModule,
-    NzIconModule,
-    CommonModule,
-    RouterModule,
-    NzMenuModule,
-    NzDrawerModule,
-    NzDropDownModule,
-    NzPaginationModule,
-    NzSwitchModule,
-    FormsModule,
-  ],
+    imports: [
+        NzLayoutModule,
+        CoreModule,
+        NzTypographyModule,
+        NzGridModule,
+        NzButtonModule,
+        NzInputModule,
+        NzIconModule,
+        CommonModule,
+        RouterModule,
+        NzMenuModule,
+        NzDrawerModule,
+        NzDropDownModule,
+        NzPaginationModule,
+        NzSwitchModule,
+        FormsModule,
+        NzPageHeaderModule,
+        NzDescriptionsModule,
+        NzTagModule
+    ],
   declarations: [
     HomeComponent,
     LoginTemplateComponent,

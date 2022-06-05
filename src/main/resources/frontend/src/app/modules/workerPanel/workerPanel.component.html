@@ -1,5 +1,37 @@
 <nz-layout>
-
-  worker panel
-
+  <nz-header><a routerLink='/'>Moja książka</a></nz-header>
+  <nz-page-header *ngFor='let item of borrowedBooks' [nzGhost]='true'>
+    <nz-page-header-title>{{item.title}}</nz-page-header-title>
+    <nz-page-header-tags>
+      <nz-tag [nzColor]="'blue'">Wypożyczenie</nz-tag>
+    </nz-page-header-tags>
+    <nz-page-header-extra>
+      <button nz-button nzType='primary' nzDanger (click)='reject(true, item.email, item.bookSlug)' >Odrzuć</button>
+      <button nz-button nzType='primary' (click)='accept(true, item.email, item.bookSlug)' >Zaakceptuj</button>
+    </nz-page-header-extra>
+    <nz-page-header-content>
+      <nz-descriptions nzSize='small' [nzColumn]='1'>
+        <nz-descriptions-item nzTitle='Imię' [nzSpan]='1'>{{item.firstName}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle='Nazwisko' [nzSpan]='1'>{{item.lastName}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle='Data wysłania' [nzSpan]='1'>{{item.requestDate}}</nz-descriptions-item>
+      </nz-descriptions>
+    </nz-page-header-content>
+  </nz-page-header>
+  <nz-page-header *ngFor='let item of prolongationBooks' [nzGhost]='true'>
+    <nz-page-header-title>{{item.title}}</nz-page-header-title>
+    <nz-page-header-tags>
+      <nz-tag [nzColor]="'green'">Prolongacja</nz-tag>
+    </nz-page-header-tags>
+    <nz-page-header-extra>
+      <button nz-button nzType='primary' nzDanger (click)='reject(false, item.email, item.bookSlug)'>Odrzuć</button>
+      <button nz-button nzType='primary' (click)='accept(false, item.email, item.bookSlug)'>Zaakceptuj</button>
+    </nz-page-header-extra>
+    <nz-page-header-content>
+      <nz-descriptions nzSize='small' [nzColumn]='1'>
+        <nz-descriptions-item nzTitle='Imię' [nzSpan]='1'>{{item?.firstName}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle='Nazwisko' [nzSpan]='1'>{{item?.lastName}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle='Data wysłania' [nzSpan]='1'>{{item?.requestDate}}</nz-descriptions-item>
+      </nz-descriptions>
+    </nz-page-header-content>
+  </nz-page-header>
 </nz-layout>

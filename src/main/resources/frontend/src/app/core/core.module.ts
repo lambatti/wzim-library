@@ -9,12 +9,13 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptorService } from './interceptors/httpInterceptor.service';
 import { AdminRepository } from './services/admin.repository';
 import { WorkerService } from './http/worker.service';
+import { WorkerRepository } from './services/worker.repository';
 
 
 @NgModule({
   imports: [ComponentsModule, ValidatorsModule, MessageModule],
   exports: [ComponentsModule, MessageModule],
-  providers: [UserRepository, UserService, WorkerService, BookRepository,AdminRepository, { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }]
+  providers: [UserRepository, UserService, WorkerService, BookRepository,AdminRepository,WorkerRepository, { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }]
 })
 export class CoreModule {
 }
