@@ -31,6 +31,8 @@ import { MessageModule } from '../message/message.module';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { OkModalComponent } from './okModal/okModal.component';
 import { NzResultModule } from 'ng-zorro-antd/result';
+import { BorrowedBooksComponent } from './borrowedBooks/borrowedBooks.component';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 
 @NgModule({
@@ -45,23 +47,24 @@ import { NzResultModule } from 'ng-zorro-antd/result';
     UserDrawerComponent,
     ChangePasswordComponent,
     ChangeQuestionComponent,
+    BorrowedBooksComponent,
     OkModalComponent,
     ModalComponent],
-  imports: [NzLayoutModule,
-    NzGridModule,
-    NzTypographyModule,
-    NzListModule,
-    NzButtonModule,
-    NzCardModule,
-    CommonModule,
-    NzIconModule,
-    RouterModule,
-    NzFormModule,
-    NzInputModule,
-    NzSelectModule,
-    NzDrawerModule,
-    NzMenuModule,
-    NzModalModule, ReactiveFormsModule, MessageModule, NzDropDownModule, NzResultModule],
+    imports: [NzLayoutModule,
+        NzGridModule,
+        NzTypographyModule,
+        NzListModule,
+        NzButtonModule,
+        NzCardModule,
+        CommonModule,
+        NzIconModule,
+        RouterModule,
+        NzFormModule,
+        NzInputModule,
+        NzSelectModule,
+        NzDrawerModule,
+        NzMenuModule,
+        NzModalModule, ReactiveFormsModule, MessageModule, NzDropDownModule, NzResultModule, NzPaginationModule],
     exports: [HeaderComponent,
         CardComponent,
         PopularSectionComponent,
@@ -70,6 +73,7 @@ import { NzResultModule } from 'ng-zorro-antd/result';
         UserDrawerComponent,
         ChangePasswordComponent,
         ChangeQuestionComponent,
+      BorrowedBooksComponent,
         ModalComponent, OkModalComponent]
 })
 export class ComponentsModule {

@@ -45,7 +45,9 @@ export class BookDetailsComponent implements OnInit{
       this.isVisibleModal = true
     }
     );
-
+  }
+  prolongation(slug: string) {
+    this._bookRepository.prolongationBook(slug).subscribe();
   }
 
 }

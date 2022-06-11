@@ -1,0 +1,15 @@
+<nz-layout class='wrapper' nz-row nzJustify='center' nzAlign='middle'>
+  <h2 nz-col class='no__books__title' *ngIf='borrowedBooksList.length === 0'>Nie posiadasz wypożyczonych książek 😥 </h2>
+ <div nz-col class='wrapper__books'>
+   <app-card
+     *ngFor='let item of books'
+     [title]='item.title'
+     [description]='item.authors[0]'
+     [coverImg]='item.cover'
+     [slug]='item.slug'
+     [kind]='item.kind'
+   ></app-card>
+ </div>
+   <nz-pagination nz-row nzJustify='center' nzAlign='middle' class='pagination' (nzPageIndexChange)='changePageIndex($event)' [nzPageIndex]='selectedPage' [nzTotal]='total'
+                  [nzPageSize]='3'></nz-pagination>
+</nz-layout>

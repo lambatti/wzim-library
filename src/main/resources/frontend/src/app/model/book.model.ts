@@ -32,3 +32,12 @@ export interface UserBookStatus {
 export interface BookCategory {
   name: string
 }
+
+export type BorrowedUserBooksDTO = {
+  title: string,
+  cover: string,
+  authors: string[],
+  slug: string,
+  kind: string,
+}
+

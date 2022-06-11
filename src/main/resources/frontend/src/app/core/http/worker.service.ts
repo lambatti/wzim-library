@@ -31,11 +31,11 @@ export class WorkerService {
   }
 
   acceptProlongationRequest(email: string, bookSlug: string): Observable<Object> {
-    return this._http.post(`${environment.url}/bookProlongationRequests/reject`, {email,bookSlug}, WorkerService.httpOptions())
+    return this._http.post(`${environment.url}/bookBorrowProlongationRequests/accept`, {email,bookSlug}, WorkerService.httpOptions())
   }
 
   rejectProlongationRequest(email: string, bookSlug: string): Observable<Object> {
-    return this._http.post(`${environment.url}/bookProlongationRequests/reject`, {email,bookSlug}, WorkerService.httpOptions())
+    return this._http.post(`${environment.url}/bookBorrowProlongationRequests/reject`, {email,bookSlug}, WorkerService.httpOptions())
   }
 
 

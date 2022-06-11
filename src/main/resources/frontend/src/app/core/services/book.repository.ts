@@ -16,7 +16,11 @@ export class BookRepository {
 
   // PROLONGACJA KSIĄŻKI
 
-
+  prolongationBook(slug: string): Observable<Object> {
+    return this._userService
+      .prolongationBook(slug)
+      .pipe(catchError(()=> throwError(`Nie masz wypożyczonej książki`)));
+  }
 
   getBooksToHomePageCard(): Observable<BookCard[]> {
     return this._bookService.getBooksToHomePageCard();
@@ -50,14 +54,7 @@ export class BookRepository {
 
   getBestBooks = ():Observable<BookCard[]> =>
       this._bookService.getBestBooks();
-  // GET ALL BOOK WITH CATEGORY
-  // tu trzeba wyswietlać categorie po czym sortujemy
 
-  // FIND ONE BOOK BY TEXT
-
-  // GET BOOK DATA BY SLUG
-
-  // GET ONE BOOK TEXT
 
 
 }

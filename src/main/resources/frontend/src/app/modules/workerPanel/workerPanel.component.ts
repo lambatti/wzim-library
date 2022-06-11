@@ -30,6 +30,7 @@ export class WorkerPanelComponent implements OnInit{
     } else {
       this._workerRepository.acceptProlongation(email, bookSlug).subscribe()
     }
+    window.location.reload();
   }
 
   reject(isBorrow: boolean, email: string, bookSlug: string) {
@@ -38,9 +39,7 @@ export class WorkerPanelComponent implements OnInit{
     } else {
       this._workerRepository.rejectProlongation(email, bookSlug).subscribe()
     }
+    window.location.reload();
+
   }
-
-
-
-
 }

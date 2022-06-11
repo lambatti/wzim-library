@@ -1,0 +1,26 @@
+@import "src/app/styles/main";
+
+
+.wrapper {
+
+
+  margin: 5vh 2vw;
+
+  //@include respond-to('md') {
+  //  height: 65vh;
+  //}
+  h2 {
+   text-align: center;
+  }
+  .wrapper__books {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+
+  }
+}
+.pagination {
+  margin: 5vh 0;
+}

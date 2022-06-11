@@ -20,6 +20,7 @@ import { DeleteUserComponent } from './modules/admin/deleteUser/deleteUser.compo
 import { AdminAuthGuard } from './core/guards/adminAuth.guard';
 import { WorkerPanelComponent } from './modules/workerPanel/workerPanel.component';
 import { WorkerAuthGuard } from './core/guards/workerAuth.guard';
+import { BorrowedBooksComponent } from './core/components/borrowedBooks/borrowedBooks.component';
 
 
 export const routes: Routes = [
@@ -30,6 +31,7 @@ export const routes: Routes = [
   {
     path: 'user', component: UserTemplateComponent, canActivate: [AuthGuard], pathMatch: 'prefix', children: [
       { path: 'changePassword', component: ChangePasswordComponent },
+      { path: 'myBooks', component: BorrowedBooksComponent },
       { path: 'changeQuestion', component: ChangeQuestionComponent },
       { path: ':name', component: UserDataComponent }
     ]
@@ -52,8 +54,8 @@ export const routes: Routes = [
     path: 'admin',  pathMatch: 'prefix', component: AdminPanelComponent, canActivate: [AdminAuthGuard],  children: [
       { path: 'workersSummary', component: WorkersSummaryComponent},
       { path: 'addWorker', component: AddWorkerComponent },
-      { path: 'deleteUser', component: DeleteUserComponent }
-      //  { path: 'borrowedBooks', component: WorkersSummaryComponent },
+      { path: 'deleteUser', component: DeleteUserComponent },
+      //{ path: 'borrowedBooks', component: BorrowedBooksComponent },
 
     ]
   },

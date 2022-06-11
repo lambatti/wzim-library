@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ShowedUserModel } from '../../model/user.model';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
-import { UserBookStatus } from '../../model/book.model';
+import { BorrowedUserBooksDTO, UserBookStatus } from '../../model/book.model';
 import { ChangePassword } from '../validators/changePassword.model';
 import { ChangePasswordModel } from '../../model/changePassword.model';
 import { ChangeQuestionModel } from '../../model/changeQuestion.model';
@@ -37,11 +37,20 @@ export class UserService {
 
   // BORROWED BOOKS USER  ----- basic get method
 
+  borrowedUserBooks(): Observable<BorrowedUserBooksDTO[]>  {
+    return this._http.get<BorrowedUserBooksDTO[]>(`${environment.url}/user/borrowedBooks`, UserService.httpOptions());
+  }
+
 
   borrowBook(slug: string): Observable<Object> {
     console.log(slug);
     return this._http.post<string>(`${environment.url}/bookBorrowRequests`, slug, UserService.httpOptions());
   }
+  prolongationBook(slug: string): Observable<any> {
+
+    return this._http.post(`${environment.url}/bookBorrowProlongationRequests`, slug, UserService.httpOptions());
+  }
+
 
   // Verification questions
 

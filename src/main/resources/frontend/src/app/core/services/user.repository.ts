@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ShowedUserModel } from '../../model/user.model';
 import { UserService } from '../http/user.service';
 import { Observable, throwError } from 'rxjs';
-import { UserBookStatus } from '../../model/book.model';
+import { BorrowedUserBooksDTO, UserBookStatus } from '../../model/book.model';
 import { catchError } from 'rxjs/operators';
 import { ChangePasswordModel } from '../../model/changePassword.model';
 import { ChangeQuestionModel } from '../../model/changeQuestion.model';
@@ -34,5 +34,12 @@ export class UserRepository {
       .changeQuestion(changedData)
       .pipe(catchError(() => throwError(`Podane dane nie są poprawne`)));
   }
+
+  borrowedBooks(): Observable<BorrowedUserBooksDTO[]> {
+    return this._userService
+      .borrowedUserBooks()
+      .pipe(catchError(() => throwError(``)));
+  }
+
 
 }

@@ -7,8 +7,15 @@
   </div>
   <div class='cards' nz-row nzJustify='center'>
     <h2 *ngIf='cardList.length === 0'>Ladowanie danych...</h2>
-    <app-card *ngFor='let item of cardList' [kind]='item.kinds[0]' [slug]='item.slug' [coverImg]='item.cover' [description]='item.authors[0]' [nzMd]='10' [nzSm]='12' [nzXXl]='5' [nzXl]='6'
-              [nzXs]='18' [title]='item.title'
+    <app-card *ngFor='let item of cardList' [kind]='item.kinds[0]'
+              [slug]='item.slug'
+              [coverImg]='item.cover' [description]='item.authors[0]'
+              [nzMd]='10'
+              [nzSm]='12'
+              [nzXXl]='5'
+              [nzXl]='6'
+              [nzXs]='18'
+              [title]='item.title'
               class='card'
               nz-col></app-card>
   </div>

@@ -1,7 +1,7 @@
 @import "src/app/styles/main";
 
 .background {
-  width: 99vw;
+  width: 100vw;
   height: 100vh;
   background: $background-color;
   @include respond-to('md') {

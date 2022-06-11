@@ -18,10 +18,6 @@ export class BookService {
 
   // PROLONGACJA KSIĄŻKI
 
-  prolongationBook(id: number): Observable<any> {
-
-    return this._http.post(``, id);
-  }
 
 
   // GET BOOKS TO HOME PAGE WITH PARAM x3
