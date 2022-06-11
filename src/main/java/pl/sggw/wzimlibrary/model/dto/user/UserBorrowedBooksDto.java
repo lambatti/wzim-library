@@ -11,5 +11,6 @@ public class UserBorrowedBooksDto {
     private String title;
     private List<String> authors;
     private String cover;
+    private List<String> kinds;
     private String slug;
 }
