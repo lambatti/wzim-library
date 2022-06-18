@@ -19,11 +19,6 @@ import java.util.Set;
 public class BookController {
     private final BookService bookService;
 
-    @GetMapping
-    ResponseEntity<List<Book>> readAllBooksDetails() {
-        return ResponseEntity.ok(bookService.getAllBooks());
-    }
-
     @GetMapping(path = "/{slug}")
     ResponseEntity<Book> readBookBySlug(@PathVariable String slug) {
         return ResponseEntity.ok(bookService.getBookBySlug(slug));
@@ -75,5 +70,16 @@ public class BookController {
     @GetMapping(path = "/best")
     ResponseEntity<List<Book>> readBestPage() {
         return ResponseEntity.ok(bookService.getRandomBooks(24));
+    }
+
+    @GetMapping
+    ResponseEntity<List<Book>> getBooks(
+            @RequestParam(required = false, value = "title") String inputTitle,
+            @RequestParam(required = false, value = "author") String inputAuthor) {
+        if (inputAuthor == null && inputTitle == null) {
+            return ResponseEntity.ok(bookService.getAllBooks());
+        } else {
+            return ResponseEntity.ok(bookService.findAllByFilters(inputAuthor, inputTitle));
+        }
     }
 }

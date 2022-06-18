@@ -3,6 +3,7 @@ package pl.sggw.wzimlibrary.service;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pl.sggw.wzimlibrary.api.wolnelektury.model.BookWolnelektury;
 import pl.sggw.wzimlibrary.api.wolnelektury.model.NameProp;
@@ -24,7 +25,6 @@ public class BookService {
     private final BookNamePropService bookNamePropService;
     private boolean isBestShuffle = false;
     private List<Book> randomBookList = new ArrayList<>();
-
 
     public List<Book> getAllBooks() {
         final List<BookWolnelektury> allBook = allBooksWolnelekturyService.getAllBook();
@@ -93,6 +93,19 @@ public class BookService {
             isBestShuffle = true;
         }
         return randomBookList.subList(0, numberOfBooks);
+    }
+
+    public List<Book> findAllByFilters(String author, String title) {
+        final List<Book> filtered = this.getAllBooks();
+        if (author != null) {
+            filtered.removeAll(filtered.stream().filter(
+                    book -> !book.getAuthors().contains(author)).collect(Collectors.toList()));
+        }
+        if (title != null) {
+            filtered.removeAll(filtered.stream().filter(
+                    book -> !book.getTitle().contains(title)).collect(Collectors.toList()));
+        }
+        return filtered;
     }
 
 }
