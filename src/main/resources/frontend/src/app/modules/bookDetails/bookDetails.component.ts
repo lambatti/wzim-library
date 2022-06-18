@@ -50,4 +50,6 @@ export class BookDetailsComponent implements OnInit{
     this._bookRepository.prolongationBook(slug).subscribe();
   }
 
+
+
 }

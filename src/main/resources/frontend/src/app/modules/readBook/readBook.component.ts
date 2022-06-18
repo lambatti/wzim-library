@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../core/http/user.service';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -6,7 +9,11 @@ import { Component } from '@angular/core';
   templateUrl: 'readBook.component.html',
   styleUrls: ['readBook.component.scss']
 })
-export class ReadBookComponent {
+export class ReadBookComponent implements OnInit{
+
+  constructor(private readonly _repository: UserService, private router: Router, private http: HttpClient) {
+  }
+  title = '';
   text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus metus. Aenean blandit luctus mi, sit amet feugiat purus molestie ut. Donec interdum diam diam, ut volutpat nibh dignissim sed. Aliquam erat volutpat. Ut eu justo pretium, semper neque nec, iaculis erat. Aenean pharetra auctor pulvinar. Phasellus rhoncus luctus est, eget pharetra risus pulvinar id. Nulla nec volutpat felis. In consequat nulla velit, sed pulvinar eros malesuada et. Quisque lectus nibh, malesuada non mi ac, lacinia accumsan elit. Suspendisse mollis mollis erat, non viverra erat porta sit amet. Vivamus ultrices a felis nec sollicitudin.\n' +
     '\n' +
     'Pellentesque tempus, nunc id luctus finibus, sem nibh porttitor augue, ut tristique orci sapien sit amet arcu. Nulla facilisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam cursus at purus nec laoreet. Suspendisse ut semper est. Suspendisse potenti. Donec ut hendrerit leo, sed sodales quam. Sed facilisis eros eu urna pulvinar, sit amet bibendum augue gravida. Pellentesque interdum dignissim dapibus.\n' +
@@ -22,6 +29,23 @@ export class ReadBookComponent {
     'Morbi faucibus commodo magna, eget hendrerit lectus dignissim a. Nunc volutpat, felis eu feugiat maximus, nunc augue finibus augue, sed commodo justo ipsum et tellus. Nullam id tempus nibh. Suspendisse quam velit, rhoncus at efficitur sed, cursus a sem.';
 
   darkMode: boolean = Boolean(localStorage.getItem('darkMode')) || false;
+  slug: string = this.router.url.split('/')[3];
+
+
+
+  ngOnInit(): void {
+    this._repository.readBook(this.slug).subscribe(item => {
+      this.title = item.title;
+      this.http.get<string>(item.txt).subscribe(value => {
+        this.text = value;
+      })
+
+    })
+
+
+  }
+
+
 
 
 }

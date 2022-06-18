@@ -52,6 +52,11 @@ export class UserService {
   }
 
 
+  readBook(slug: string): Observable<{title: string, txt: string}> {
+    return this._http.get<{title: string, txt: string}>(`${environment.url}/books/read/${slug}`, UserService.httpOptions());
+  }
+
+
   // Verification questions
 
   private static httpOptions() {

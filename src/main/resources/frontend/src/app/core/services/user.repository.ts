@@ -41,5 +41,10 @@ export class UserRepository {
       .pipe(catchError(() => throwError(``)));
   }
 
+  read(slug: string): Observable<{title: string, txt: string}> {
+    return this._userService
+      .readBook(slug)
+      .pipe(catchError(() => throwError(`Wystąpił problem`)));
+  }
 
 }
