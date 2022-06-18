@@ -6,9 +6,11 @@ import org.modelmapper.TypeToken;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pl.sggw.wzimlibrary.api.wolnelektury.model.BookWolnelektury;
+import pl.sggw.wzimlibrary.api.wolnelektury.model.BookWolnelekturyDetailedSlug;
 import pl.sggw.wzimlibrary.api.wolnelektury.model.NameProp;
 import pl.sggw.wzimlibrary.api.wolnelektury.service.AllBooksWolnelekturyService;
 import pl.sggw.wzimlibrary.api.wolnelektury.service.BookNamePropService;
+import pl.sggw.wzimlibrary.api.wolnelektury.service.BookWolnelekturyDetailedSlugService;
 import pl.sggw.wzimlibrary.api.wolnelektury.service.BookWolnelekturyService;
 import pl.sggw.wzimlibrary.model.Book;
 import pl.sggw.wzimlibrary.model.dto.BookReadDto;
@@ -22,7 +24,7 @@ public class BookService {
     private final ModelMapper modelMapper;
     private final AllBooksWolnelekturyService allBooksWolnelekturyService;
     private final BookWolnelekturyService bookWolnelekturyService;
-    private final BookNamePropService bookNamePropService;
+    private final BookWolnelekturyDetailedSlugService bookWolnelekturyDetailedSlugService;
     private boolean isBestShuffle = false;
     private List<Book> randomBookList = new ArrayList<>();
 
@@ -42,6 +44,13 @@ public class BookService {
         return modelMapper
                 .map(bookBySlug, new TypeToken<Book>() {
                 }.getType());
+    }
+
+    public Book getDetailedBookBySlug(String slug) {
+        final BookWolnelekturyDetailedSlug bookBySlug = bookWolnelekturyDetailedSlugService.getBookBySlug(slug);
+        return modelMapper
+                .map(bookBySlug, new TypeToken<Book>() {
+        }.getType());
     }
 
     public Set<NameProp> getBookKinds() {

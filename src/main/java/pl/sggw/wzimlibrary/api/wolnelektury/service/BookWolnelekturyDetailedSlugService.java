@@ -2,31 +2,26 @@ package pl.sggw.wzimlibrary.api.wolnelektury.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import pl.sggw.wzimlibrary.api.wolnelektury.model.BookWolnelektury;
-import pl.sggw.wzimlibrary.api.wolnelektury.model.NameProp;
-
-import java.util.List;
+import pl.sggw.wzimlibrary.api.wolnelektury.model.BookWolnelekturyDetailedSlug;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class BookWolnelekturyService {
+public class BookWolnelekturyDetailedSlugService {
     private final RestTemplate restTemplate;
 
-    @Cacheable(value = "bookBySlug", key = "#bookSlug")
-    public BookWolnelektury getBookBySlug(final String bookSlug) {
-        log.debug("Pobieram: {}", bookSlug);
+    public BookWolnelekturyDetailedSlug getBookBySlug(final String bookSlug) {
+        log.debug("Pobieram detailedSlug: {}", bookSlug);
         final String urlTemplate = UriComponentsBuilder.fromPath("/books/" + bookSlug + "/")
                 .queryParam("format", "json")
                 .encode()
                 .toUriString();
         try {
-            BookWolnelektury output = restTemplate.getForObject(urlTemplate, BookWolnelektury.class);
+            BookWolnelekturyDetailedSlug output = restTemplate.getForObject(urlTemplate, BookWolnelekturyDetailedSlug.class);
             output.setSlug(bookSlug);
             return output;
         } catch (final HttpClientErrorException.NotFound e) {
