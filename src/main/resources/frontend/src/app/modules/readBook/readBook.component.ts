@@ -29,7 +29,7 @@ export class ReadBookComponent implements OnInit{
     'Morbi faucibus commodo magna, eget hendrerit lectus dignissim a. Nunc volutpat, felis eu feugiat maximus, nunc augue finibus augue, sed commodo justo ipsum et tellus. Nullam id tempus nibh. Suspendisse quam velit, rhoncus at efficitur sed, cursus a sem.';
 
   darkMode: boolean = Boolean(localStorage.getItem('darkMode')) || false;
-  slug: string = this.router.url.split('/')[3];
+  slug: string = this.router.url.split('/')[5];
 
 
 

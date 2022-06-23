@@ -27,7 +27,7 @@
       <button nz-button nzType='primary' routerLink='/category'>Powrót</button>
       <button *ngIf='isAuthenticated' (click)='borrow(bookData.slug)' class='with__auth' nz-button nzType='primary'>Wypożycz</button>
       <button *ngIf='isAuthenticated'  (click)='prolongation(bookData.slug)' class='with__auth' nz-button nzType='primary'>Prolonguj</button>
-      <button *ngIf='isAuthenticated'  [routerLink]='"category/"+bookData.kinds[0]+"/"+bookData.slug+"/read"' class='with__auth' nz-button nzType='primary'>Czytaj</button>
+      <button *ngIf='isAuthenticated && isBorrowedBool'  [routerLink]='"category/"+bookData.kinds[0]+"/"+bookData.slug+"/read"' class='with__auth' nz-button nzType='primary'>Czytaj</button>
     </div>
   </div>
 </nz-layout>
